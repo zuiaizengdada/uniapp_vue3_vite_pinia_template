@@ -6,7 +6,7 @@ const { userName, setUserName } = useStore('user')
   <view class="index">
     {{ userName }}
 
-    <button @tap="setUserName('zengdada1')">修改名字</button>
+    <button @tap="setUserName('zengdada1')">修改名字2</button>
   </view>
 </template>
 
