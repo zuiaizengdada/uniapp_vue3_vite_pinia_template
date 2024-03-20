@@ -12,7 +12,8 @@ export const calculateAge = (birthDate: string): number => {
   // 检查生日是否已经过了今年
   if (
     today.getMonth() < birthDateTime.getMonth() ||
-    (today.getMonth() === birthDateTime.getMonth() && today.getDate() < birthDateTime.getDate())
+    (today.getMonth() === birthDateTime.getMonth() &&
+      today.getDate() < birthDateTime.getDate())
   ) {
     // 如果生日还没到，年龄减去 1
     age--

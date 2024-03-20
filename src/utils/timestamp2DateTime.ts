@@ -41,7 +41,8 @@ export const timestamp2DateTime = (
     const seconds = ('0' + date.getSeconds()).slice(-2)
 
     // 拼接时间部分
-    dateTimeStr += ' ' + hours + timeSeparator + minutes + timeSeparator + seconds
+    dateTimeStr +=
+      ' ' + hours + timeSeparator + minutes + timeSeparator + seconds
   }
 
   return dateTimeStr

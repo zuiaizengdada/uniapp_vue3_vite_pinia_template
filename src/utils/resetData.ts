@@ -1,7 +1,12 @@
-import { EducationExperienceForm, WorkExperienceForm } from '@/pages/experience/type'
+import {
+  EducationExperienceForm,
+  WorkExperienceForm
+} from '@/pages/experience/type'
 
 // 重置数据
-export const resetData = (dialogModel: WorkExperienceForm | EducationExperienceForm) => {
+export const resetData = (
+  dialogModel: WorkExperienceForm | EducationExperienceForm
+) => {
   const keys = Object.keys(dialogModel)
   const obj: Record<string, any> = {}
 

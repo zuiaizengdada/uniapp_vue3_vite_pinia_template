@@ -4,7 +4,7 @@
 // @ts-nocheck
 import type { AutoToRefs, ToRef } from 'vue'
 
-import systemStore from '@/store/system'
+import memberStore from '@/store/member'
 import userStore from '@/store/user'
 
 import store from '@/store'
@@ -16,12 +16,14 @@ declare module 'vue' {
 }
 
 const storeExports = {
-  system: systemStore,
-  user: userStore,
+  member: memberStore,
+  user: userStore
 }
 
 export function useStore<T extends keyof typeof storeExports>(storeName: T) {
   const targetStore = storeExports[storeName](store)
   const storeRefs = storeToRefs(targetStore)
-  return { ...targetStore, ...storeRefs } as unknown as AutoToRefs<ReturnType<typeof storeExports[T]>>
+  return { ...targetStore, ...storeRefs } as unknown as AutoToRefs<
+    ReturnType<(typeof storeExports)[T]>
+  >
 }

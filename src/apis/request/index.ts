@@ -32,7 +32,10 @@ class ApiService {
       uni.request({
         ...options,
         success(res) {
-          if (res.statusCode >= HttpStatusCode.OK && res.statusCode < HttpStatusCode.MultipleChoices) {
+          if (
+            res.statusCode >= HttpStatusCode.OK &&
+            res.statusCode < HttpStatusCode.MultipleChoices
+          ) {
             resolve(res.data as Data<T>)
           } else if (res.statusCode === HttpStatusCode.Unauthorized) {
             router.redirectTo('/pages/login/login')
@@ -68,26 +71,62 @@ class ApiService {
     })
   }
 
-  public get<T>(url: string, params?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
-    const requestOptions: UniApp.RequestOptions = { ...options, url, method: 'GET', data: params }
+  public get<T>(
+    url: string,
+    params?: any,
+    options?: UniApp.RequestOptions
+  ): Promise<Data<T>> {
+    const requestOptions: UniApp.RequestOptions = {
+      ...options,
+      url,
+      method: 'GET',
+      data: params
+    }
     this.setupInterceptors(requestOptions)
     return this.request<T>(requestOptions)
   }
 
-  public post<T>(url: string, data?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
-    const requestOptions: UniApp.RequestOptions = { ...options, url, method: 'POST', data }
+  public post<T>(
+    url: string,
+    data?: any,
+    options?: UniApp.RequestOptions
+  ): Promise<Data<T>> {
+    const requestOptions: UniApp.RequestOptions = {
+      ...options,
+      url,
+      method: 'POST',
+      data
+    }
     this.setupInterceptors(requestOptions)
     return this.request<T>(requestOptions)
   }
 
-  public put<T>(url: string, data?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
-    const requestOptions: UniApp.RequestOptions = { ...options, url, method: 'PUT', data }
+  public put<T>(
+    url: string,
+    data?: any,
+    options?: UniApp.RequestOptions
+  ): Promise<Data<T>> {
+    const requestOptions: UniApp.RequestOptions = {
+      ...options,
+      url,
+      method: 'PUT',
+      data
+    }
     this.setupInterceptors(requestOptions)
     return this.request<T>(requestOptions)
   }
 
-  public delete<T>(url: string, params?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
-    const requestOptions: UniApp.RequestOptions = { ...options, url, method: 'DELETE', data: params }
+  public delete<T>(
+    url: string,
+    params?: any,
+    options?: UniApp.RequestOptions
+  ): Promise<Data<T>> {
+    const requestOptions: UniApp.RequestOptions = {
+      ...options,
+      url,
+      method: 'DELETE',
+      data: params
+    }
     this.setupInterceptors(requestOptions)
     return this.request<T>(requestOptions)
   }

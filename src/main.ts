@@ -2,7 +2,6 @@ import { createSSRApp } from 'vue'
 import App from './App.vue'
 import registerApp from '@/common/register/RegisterApp'
 
-
 // pinia
 import store, { Pinia } from '@/store'
 
