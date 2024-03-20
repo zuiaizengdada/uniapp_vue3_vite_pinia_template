@@ -1,0 +1,11 @@
+{
+  "loading": "loading",
+  "request": {
+    "InternalServerError": "Server internal error",
+    "NotFound": "Request address error",
+    "TimeOut": "Request timed out",
+    "Unauthorized": "The request is not authorized, please log in and try again.",
+    "Unkown": "unknown mistake",
+    "success": "Request successful"
+  }
+}
