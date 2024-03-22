@@ -1,22 +1,25 @@
 /**
  * @description: 时间戳转时间
  * @param {number} timestamp
- * @param {*} separator
- * @param {*} includeTime
- * @param {*} timeSeparator
- * @return {*}
+ * @param {string} separator
+ * @param {boolean} includeMonth
+ * @param {boolean} includeDay
+ * @param {boolean} includeTime
+ * @param {string} timeSeparator
+ * @return {string}
  */
 export const timestamp2DateTime = (
   timestamp: number,
   separator = '-',
   includeMonth = true,
+  includeDay = true,
   includeTime = true,
   timeSeparator = ':'
 ) => {
   const date = new Date(timestamp)
 
   // 获取年份
-  const year = date.getFullYear()
+  const year = date.getFullYear() + ''
 
   // 如果需要包含月份
   let month = ''
@@ -25,14 +28,19 @@ export const timestamp2DateTime = (
   }
 
   // 获取日期
-  const day = ('0' + date.getDate()).slice(-2)
+  let day = ''
+  if (includeDay) {
+    day = ('0' + date.getDate()).slice(-2)
+  }
 
   // 拼接日期部分
-  let dateTimeStr = year + separator
+  let dateTimeStr = year
   if (includeMonth) {
-    dateTimeStr += month + separator
+    dateTimeStr += separator + month
   }
-  dateTimeStr += day
+  if (includeDay) {
+    dateTimeStr += separator + day
+  }
 
   // 如果需要包含时间部分
   if (includeTime) {
@@ -41,8 +49,7 @@ export const timestamp2DateTime = (
     const seconds = ('0' + date.getSeconds()).slice(-2)
 
     // 拼接时间部分
-    dateTimeStr +=
-      ' ' + hours + timeSeparator + minutes + timeSeparator + seconds
+    dateTimeStr += ' ' + hours + timeSeparator + minutes + timeSeparator + seconds
   }
 
   return dateTimeStr
