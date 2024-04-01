@@ -8,7 +8,7 @@ import type { RequestConfig } from './type'
 const t = i18n.global.t
 
 class ApiService {
-  constructor(private config: RequestConfig) {}
+  constructor(private config: RequestConfig, private needToken: boolean = false) { }
 
   private setupInterceptors(options: UniApp.RequestOptions) {
     if (!options.url.startsWith('http')) {
@@ -20,10 +20,12 @@ class ApiService {
       ...options.header
     }
 
-    const AccessToken = uniStorage.getSync('user.AccessToken')
+    if (this.needToken) {
+      const AccessToken = uniStorage.getSync('user.AccessToken')
 
-    if (AccessToken) {
-      options.header.Authorization = AccessToken
+      if (AccessToken) {
+        options.header.Authorization = AccessToken
+      }
     }
   }
 
