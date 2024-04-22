@@ -8,7 +8,10 @@ import type { RequestConfig } from './type'
 const t = i18n.global.t
 
 class ApiService {
-  constructor(private config: RequestConfig, private needToken: boolean = false) { }
+  constructor(
+    private config: RequestConfig,
+    private needToken: boolean = false
+  ) {}
 
   private setupInterceptors(options: UniApp.RequestOptions) {
     if (!options.url.startsWith('http')) {
