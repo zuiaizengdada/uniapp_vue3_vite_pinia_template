@@ -1,4 +1,5 @@
 {
+  "demo": "Internationalization example",
   "loading": "loading",
   "request": {
     "InternalServerError": "Server internal error",

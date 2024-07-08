@@ -1,5 +1,6 @@
 {
   "loading": "加载中",
+  "demo": "国际化示例",
   "request": {
     "success": "请求成功",
     "Unauthorized": "请求未授权，请登录后重试",
