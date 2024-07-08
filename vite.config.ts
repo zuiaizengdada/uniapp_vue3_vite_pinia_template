@@ -3,6 +3,8 @@ import uni from '@dcloudio/vite-plugin-uni'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import PiniaAutoRefs from 'pinia-auto-refs'
+import tailwindcss from 'tailwindcss'
+import uniTailwind from '@uni-helper/vite-plugin-uni-tailwind'
 
 import { resolve } from 'path'
 
@@ -18,6 +20,7 @@ export default defineConfig({
   base: './',
   plugins: [
     uni(),
+    uniTailwind(),
     AutoImport({
       imports: [
         'vue',
@@ -41,5 +44,10 @@ export default defineConfig({
       //指定类型声明文件，为true时在项目根目录创建
       dts: 'src/types/components.d.ts'
     })
-  ]
+  ],
+  css: {
+    postcss: {
+      plugins: [tailwindcss()]
+    }
+  }
 })

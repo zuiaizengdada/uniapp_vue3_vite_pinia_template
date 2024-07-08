@@ -10,6 +10,7 @@ import i18n from '@/locale'
 
 // css初始化
 import 'normalize.css'
+import '@/static/style/tailwind.css'
 
 export function createApp() {
   const app = createSSRApp(App)

@@ -11,7 +11,7 @@ function handleChangeLanguageTap(language: Languages) {
 </script>
 
 <template>
-  <view class="index">
+  <view class="index bg-rose-600">
     <view class="name">
       <text>
         {{ userName }}
