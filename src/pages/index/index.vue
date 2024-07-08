@@ -6,8 +6,16 @@ const { userName, setUserName } = useStore('user')
   <view class="index">
     {{ userName }}
 
-    <button @tap="setUserName('zengdada1')">修改名字2</button>
+    <button @tap="setUserName('zengdada1')">修改名字1</button>
   </view>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.index {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
