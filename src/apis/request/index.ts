@@ -37,10 +37,7 @@ class ApiService {
       uni.request({
         ...options,
         success(res) {
-          if (
-            res.statusCode >= HttpStatusCode.OK &&
-            res.statusCode < HttpStatusCode.MultipleChoices
-          ) {
+          if (res.statusCode >= HttpStatusCode.OK && res.statusCode < HttpStatusCode.MultipleChoices) {
             resolve(res.data as Data<T>)
           } else if (res.statusCode === HttpStatusCode.Unauthorized) {
             router.redirectTo('/pages/login/login')
@@ -76,11 +73,7 @@ class ApiService {
     })
   }
 
-  public get<T>(
-    url: string,
-    params?: any,
-    options?: UniApp.RequestOptions
-  ): Promise<Data<T>> {
+  public get<T>(url: string, params?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
@@ -91,11 +84,7 @@ class ApiService {
     return this.request<T>(requestOptions)
   }
 
-  public post<T>(
-    url: string,
-    data?: any,
-    options?: UniApp.RequestOptions
-  ): Promise<Data<T>> {
+  public post<T>(url: string, data?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
@@ -106,11 +95,7 @@ class ApiService {
     return this.request<T>(requestOptions)
   }
 
-  public put<T>(
-    url: string,
-    data?: any,
-    options?: UniApp.RequestOptions
-  ): Promise<Data<T>> {
+  public put<T>(url: string, data?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
@@ -121,11 +106,7 @@ class ApiService {
     return this.request<T>(requestOptions)
   }
 
-  public delete<T>(
-    url: string,
-    params?: any,
-    options?: UniApp.RequestOptions
-  ): Promise<Data<T>> {
+  public delete<T>(url: string, params?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,

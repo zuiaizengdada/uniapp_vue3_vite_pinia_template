@@ -4,9 +4,13 @@ const { userName, setUserName } = useStore('user')
 
 <template>
   <view class="index">
-    {{ userName }}
+    <view class="name">
+      {{ userName }}
+    </view>
 
-    <button @tap="setUserName('zengdada1')">修改名字</button>
+    <view class="btn">
+      <button @tap="setUserName('zengdada1')">修改名字</button>
+    </view>
   </view>
 </template>
 
@@ -15,7 +19,17 @@ const { userName, setUserName } = useStore('user')
   width: 100%;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  .name {
+    width: 100%;
+    text-align: center;
+  }
+
+  .btn {
+    margin-top: 10px;
+  }
 }
 </style>

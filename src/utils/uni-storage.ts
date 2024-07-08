@@ -29,12 +29,7 @@ class UniStorage implements UniStorageMethods {
     return value
   }
 
-  set(params: {
-    key: string
-    data: any
-    success?: () => void
-    fail?: (error: Error) => void
-  }): void {
+  set(params: { key: string; data: any; success?: () => void; fail?: (error: Error) => void }): void {
     const keys = params.key.split('.')
     const obj: any = {}
     let temp = obj

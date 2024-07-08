@@ -20,12 +20,5 @@
       "@uni-helper/uni-ui-types" // uni-ui 组件类型  // [!code ++]]
     ]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "*.ts",
-    "*.d.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "*.ts", "*.d.ts"]
 }

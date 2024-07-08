@@ -7,12 +7,7 @@ class Router {
   private buildUrl(path: string, params?: Record<string, any>): string {
     if (!params) return path
     const query = Object.keys(params)
-      .map(
-        (key) =>
-          `${encodeURIComponent(key)}=${encodeURIComponent(
-            params[key] as string
-          )}`
-      )
+      .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key] as string)}`)
       .join('&')
     return `${path}?${query}`
   }
