@@ -11,14 +11,14 @@ function handleChangeLanguageTap(language: Languages) {
 </script>
 
 <template>
-  <view class="index bg-rose-600">
+  <view class="index">
     <view class="name">
       <text>
         {{ userName }}
       </text>
     </view>
 
-    <view class="btn-group">
+    <view>
       <button @tap="setUserName('zengdada1')">修改名字</button>
     </view>
 
@@ -26,7 +26,7 @@ function handleChangeLanguageTap(language: Languages) {
       <text>{{ t('demo') }}</text>
     </view>
 
-    <view class="btn-group">
+    <view class="flex items-center gap-5">
       <button @tap="handleChangeLanguageTap('zh')">中文</button>
       <button @tap="handleChangeLanguageTap('en')">English</button>
     </view>
