@@ -49,5 +49,14 @@ export default defineConfig({
     postcss: {
       plugins: [tailwindcss()]
     }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://devzyh5.hokkj.cn',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   }
 })

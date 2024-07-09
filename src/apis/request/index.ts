@@ -40,17 +40,21 @@ class ApiService {
           if (res.statusCode >= HttpStatusCode.OK && res.statusCode < HttpStatusCode.MultipleChoices) {
             resolve(res.data as Data<T>)
           } else if (res.statusCode === HttpStatusCode.Unauthorized) {
-            router.redirectTo('/pages/login/login')
+            // 重定向到登录页
+            router.redirectTo('/pages/login/index')
+
             uni.showToast({
               icon: 'none',
               title: (res.data as Data<T>).message || t('request.Unauthorized')
             })
+
             reject(res)
           } else if (res.statusCode === HttpStatusCode.NotFound) {
             uni.showToast({
               icon: 'none',
               title: (res.data as Data<T>).message || t('request.NotFound')
             })
+
             reject(res)
           }
         },
