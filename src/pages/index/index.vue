@@ -47,5 +47,7 @@ function handleGotoMitt() {
     <view class="flex items-center">
       <button @tap="handleGotoMitt">跳转到mitt示例页面</button>
     </view>
+
+    <TestComponent />
   </view>
 </template>

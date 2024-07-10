@@ -1,11 +1,9 @@
 import { defineConfig } from 'vite'
 import uni from '@dcloudio/vite-plugin-uni'
 import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
 import PiniaAutoRefs from 'pinia-auto-refs'
 import tailwindcss from 'tailwindcss'
 import uniTailwind from '@uni-helper/vite-plugin-uni-tailwind'
-
 import { resolve } from 'path'
 
 export default defineConfig({
@@ -35,14 +33,6 @@ export default defineConfig({
     }),
     PiniaAutoRefs({
       outputFile: 'src/utils/pinia-auto-refs.ts'
-    }),
-    Components({
-      //自动加载的组件目录，默认值为 ['src/components']
-      dirs: ['src/components'],
-      //组件名称包含目录，防止同名组件冲突
-      directoryAsNamespace: true,
-      //指定类型声明文件，为true时在项目根目录创建
-      dts: 'src/types/components.d.ts'
     })
   ],
   css: {
