@@ -2,8 +2,7 @@ import { HttpStatusCode } from '@/common/constants/HttpStatusCode'
 import { router } from '@/utils'
 import { uniStorage } from '@/utils/uni-storage'
 import i18n from '@/locale'
-import type { Data } from '@/types/global'
-import type { RequestConfig } from './type'
+import type { RequestConfig, Data } from './type'
 
 const t = i18n.global.t
 
