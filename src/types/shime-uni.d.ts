@@ -1,4 +1,4 @@
-import mitt from 'mitt'
+import type { EventType, Emitter } from 'mitt'
 import { Composer } from 'vue-i18n'
 export {}
 
@@ -9,6 +9,6 @@ declare module 'vue' {
   }
 
   export interface ComponentCustomProperties {
-    $mitt: typeof mitt
+    $mitt: Emitter<Record<EventType,any>>
   }
 }

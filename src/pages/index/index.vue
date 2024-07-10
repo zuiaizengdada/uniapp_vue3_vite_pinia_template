@@ -1,25 +1,34 @@
 <script setup lang="ts">
 import i18n from '@/locale'
+import { router } from '@/utils'
 const { userName, setUserName } = useStore('user')
 
 const t = i18n.global.t
 
 type Languages = 'zh' | 'en'
-function handleChangeLanguageTap(language: Languages) {
+function handleSwitchLanguage(language: Languages) {
   i18n.global.locale = language
+}
+
+function handleGotoLogin() {
+  router.navigateTo('/pages/login/index')
+}
+
+function handleGotoMitt() {
+  router.navigateTo('/pages/mitt/index')
 }
 </script>
 
 <template>
-  <view class="index">
-    <view class="name">
+  <view class="index w-full h-screen flex flex-col items-center justify-center gap-2.5">
+    <view class="name w-full text-center">
       <text>
         {{ userName }}
       </text>
     </view>
 
     <view>
-      <button @tap="setUserName('zengdada1')">修改名字</button>
+      <button @tap="setUserName('zengdada1')">修改名字 pinia 数据持久化</button>
     </view>
 
     <view class="i18n">
@@ -27,25 +36,16 @@ function handleChangeLanguageTap(language: Languages) {
     </view>
 
     <view class="flex items-center gap-5">
-      <button @tap="handleChangeLanguageTap('zh')">中文</button>
-      <button @tap="handleChangeLanguageTap('en')">English</button>
+      <button @tap="handleSwitchLanguage('zh')">中文</button>
+      <button @tap="handleSwitchLanguage('en')">English</button>
+    </view>
+
+    <view class="flex items-center">
+      <button @tap="handleGotoLogin">跳转到登录页</button>
+    </view>
+
+    <view class="flex items-center">
+      <button @tap="handleGotoMitt">跳转到mitt示例页面</button>
     </view>
   </view>
 </template>
-
-<style lang="scss" scoped>
-.index {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-
-  .name {
-    width: 100%;
-    text-align: center;
-  }
-}
-</style>
