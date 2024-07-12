@@ -9,13 +9,13 @@
     {
       "path": "pages/login/index",
       "style": {
-        "navigationBarTitleText": "登录页面"
+        "navigationStyle": "custom"
       }
     },
     {
       "path": "pages/mitt/index",
       "style": {
-        "navigationBarTitleText": "mitt示例页面"
+        "navigationStyle": "custom"
       }
     }
   ],
