@@ -1,3 +1,2 @@
-export { selectorQueryClientRect } from './selectQuery'
-export { router } from './router'
-
+export { selectorQueryClientRect } from "./selectQuery";
+export { router } from "./router";

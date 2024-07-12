@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Component1 } from './components'
-import { Component2 } from './components'
+import Component1 from './components/Component1/Component1.vue'
+import Component2 from './components/Component2/Component2.vue'
 </script>
 <template>
   <view class="mitt w-full h-screen flex flex-col items-center justify-center gap-2.5">
