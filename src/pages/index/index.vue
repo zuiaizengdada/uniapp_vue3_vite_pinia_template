@@ -20,7 +20,7 @@ function handleGotoMitt() {
 </script>
 
 <template>
-  <view class="index w-full h-screen flex flex-col items-center justify-center gap-2.5">
+  <view class="index w-full h-screen flex flex-col items-center justify-center gap-[10px]">
     <view class="name w-full text-center">
       <text>
         {{ userName }}
@@ -50,7 +50,7 @@ function handleGotoMitt() {
 
     <TestComponent />
 
-    <view class="box flex-c-c"> box </view>
+    <view class="box flex-c-c">box</view>
   </view>
 </template>
 
