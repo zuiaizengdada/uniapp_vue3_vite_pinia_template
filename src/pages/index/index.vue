@@ -49,5 +49,13 @@ function handleGotoMitt() {
     </view>
 
     <TestComponent />
+
+    <view class="box flex-c-c"> box </view>
   </view>
 </template>
+
+<style lang="scss" scoped>
+.box {
+  @apply w-[302px] h-[100px] bg-red-500;
+}
+</style>
