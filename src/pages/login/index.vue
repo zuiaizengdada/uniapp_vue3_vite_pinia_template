@@ -1,6 +1,6 @@
 <template>
-  <view class="login w-full h-screen flex items-center justify-center">
-    <view class="title text-center">
+  <view class="flex items-center justify-center w-full h-screen login">
+    <view class="text-center title">
       <text class="text-red-500">登录页面</text>
     </view>
   </view>

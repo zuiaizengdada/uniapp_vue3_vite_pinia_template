@@ -21,7 +21,7 @@ function handleGotoMitt() {
 
 <template>
   <view class="index w-full h-screen flex flex-col items-center justify-center gap-[10px]">
-    <view class="name w-full text-center">
+    <view class="w-full text-center name">
       <text>
         {{ userName }}
       </text>
@@ -50,12 +50,10 @@ function handleGotoMitt() {
 
     <TestComponent />
 
-    <view class="box flex-c-c">box</view>
+    <view class="flex-c-c bg-red-500 size-[200px]">
+      <view class="line-clamp-3"
+        >示例红色背示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景景</view
+      >
+    </view>
   </view>
 </template>
-
-<style lang="scss" scoped>
-.box {
-  @apply w-[302px] h-[100px] bg-red-500;
-}
-</style>

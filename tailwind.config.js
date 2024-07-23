@@ -1,4 +1,4 @@
-//@ts-nockeck
+/** @type {import('tailwindcss').Config} */
 export default {
   mode: 'jit',
   darkMode: 'class',
