@@ -56,8 +56,6 @@
     "appid": "",
     "setting": {
       "urlCheck": false
-      // "ignoreDevUnusedFiles": false,
-      // "ignoreUploadUnusedFiles": false
     },
     "usingComponents": true
   },
