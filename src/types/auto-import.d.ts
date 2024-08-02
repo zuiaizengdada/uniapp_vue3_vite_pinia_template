@@ -89,7 +89,7 @@ declare global {
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
   const useSlots: typeof import('vue')['useSlots']
-  const useStore: typeof import('@/utils/pinia-auto-refs')['useStore']
+  const useStore: typeof import('@/utils/modules/pinia-auto-refs')['useStore']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']

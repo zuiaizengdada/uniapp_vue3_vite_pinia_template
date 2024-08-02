@@ -25,14 +25,14 @@ export default defineConfig({
         'pinia',
         'uni-app',
         {
-          '@/utils/pinia-auto-refs': ['useStore']
+          '@/utils/modules/pinia-auto-refs': ['useStore']
         }
       ],
       //为true时在项目根目录自动创建
       dts: 'src/types/auto-import.d.ts'
     }),
     PiniaAutoRefs({
-      outputFile: 'src/utils/pinia-auto-refs.ts'
+      outputFile: 'src/utils/modules/pinia-auto-refs.ts'
     })
   ],
   css: {
