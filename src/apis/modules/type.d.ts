@@ -1,11 +1,6 @@
-export interface Book {
+export interface Post {
   id: number
-  name: string
-  author: string
-  date: string
-  price: number
-  publish: string
-  category: string
-  description: string
-  cover: string
+  userId: number
+  title: string
+  body: string
 }

@@ -1,13 +1,25 @@
 <script setup lang="ts">
 import i18n from '@/locale'
 import { router } from '@/utils'
-import { getBookData } from '@/apis/modules/data'
+import { createPost, deletePost, getPost, getPostById, updatePost } from '@/apis/modules/data'
 const { userName, setUserName } = useStore('user')
 
 const t = i18n.global.t
 
 onMounted(async () => {
-  const res = await getBookData()
+  const res2 = await getPostById(1)
+  console.log(res2)
+
+  const res3 = await updatePost(1, '更新文章', '更新文章内容')
+  console.log(res3)
+
+  const res4 = await deletePost(1)
+  console.log(res4)
+
+  const res5 = await createPost('测试文章', '测试文章内容')
+  console.log(res5)
+
+  const res = await getPost()
   console.log(res)
 })
 
