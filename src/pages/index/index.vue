@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import i18n from '@/locale'
 import { router } from '@/utils'
+import { getBookData } from '@/apis/modules/data'
 const { userName, setUserName } = useStore('user')
 
 const t = i18n.global.t
+
+onMounted(async () => {
+  const res = await getBookData()
+  console.log(res)
+})
 
 type Languages = 'zh' | 'en'
 function handleSwitchLanguage(language: Languages) {

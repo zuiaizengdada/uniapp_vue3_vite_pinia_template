@@ -1,13 +1,19 @@
 // 请求配置
-export type RequestConfig = {
+export interface RequestConfig  {
   // 请求地址
   baseURL: string
   // 请求超时时间
   timeout?: number
 }
 
+// 自定义配置参数
+export interface CustomConfig {
+  // 是否开启mock
+  mock:boolean
+}
+
 // 网络请求返回格式
-export type Data<T> = {
+export interface Data<T> {
   // 状态码
   code?: number
   // 响应对象

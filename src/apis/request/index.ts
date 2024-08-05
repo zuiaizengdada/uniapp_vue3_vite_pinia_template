@@ -2,20 +2,22 @@ import { HttpStatusCode } from '@/common/constants/HttpStatusCode'
 import { router } from '@/utils'
 import { uniStorage } from '@/utils/uni-storage'
 import i18n from '@/locale'
-import type { RequestConfig, Data } from './type'
+import type { RequestConfig, Data, CustomConfig } from './type'
 
 const t = i18n.global.t
 
 class ApiService {
   constructor(
     private config: RequestConfig,
-    private needToken: boolean = false
+    private needToken: boolean = false,
+    private mock: boolean = false
   ) {}
 
-  private setupInterceptors(options: UniApp.RequestOptions) {
-    if (!options.url.startsWith('http')) {
+  private setupInterceptors(options: Partial<UniApp.RequestOptions & CustomConfig>) {
+    if (!options.url!.startsWith('http') && !this.mock && !options.mock) {
       options.url = this.config.baseURL + options.url
     }
+
     options.timeout = this.config.timeout || 15000
     options.header = {
       'source-client': 'miniapp',
@@ -76,7 +78,7 @@ class ApiService {
     })
   }
 
-  public get<T>(url: string, params?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
+  public get<T>(url: string, params?: any, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
@@ -87,7 +89,7 @@ class ApiService {
     return this.request<T>(requestOptions)
   }
 
-  public post<T>(url: string, data?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
+  public post<T>(url: string, data?: any, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
@@ -98,7 +100,7 @@ class ApiService {
     return this.request<T>(requestOptions)
   }
 
-  public put<T>(url: string, data?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
+  public put<T>(url: string, data?: any, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
@@ -109,7 +111,11 @@ class ApiService {
     return this.request<T>(requestOptions)
   }
 
-  public delete<T>(url: string, params?: any, options?: UniApp.RequestOptions): Promise<Data<T>> {
+  public delete<T>(
+    url: string,
+    params?: any,
+    options?: Partial<UniApp.RequestOptions & CustomConfig>
+  ): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
