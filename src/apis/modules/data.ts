@@ -3,7 +3,7 @@ import { type Data } from '@/apis/request/type'
 import { type Post } from './type'
 
 // 获取所有文章数据
-export function getPost(): Promise<Data<Post>> {
+export function getPosts(): Promise<Data<Post>> {
   return apiService.get('/posts', {}, { mock: true })
 }
 

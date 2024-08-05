@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import i18n from '@/locale'
 import { router } from '@/utils'
-import { createPost, deletePost, getPost, getPostById, updatePost } from '@/apis/modules/data'
+import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/data'
 const { userName, setUserName } = useStore('user')
 
 const t = i18n.global.t
@@ -19,7 +19,7 @@ onMounted(async () => {
   const res5 = await createPost('测试文章', '测试文章内容')
   console.log(res5)
 
-  const res = await getPost()
+  const res = await getPosts()
   console.log(res)
 })
 
@@ -69,9 +69,9 @@ function handleGotoMitt() {
     <TestComponent />
 
     <view class="flex-c-c bg-red-500 size-[200px]">
-      <view class="line-clamp-3"
-        >示例红色背示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景景</view
-      >
+      <view class="line-clamp-3">
+        示例红色背示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景景
+      </view>
     </view>
   </view>
 </template>
