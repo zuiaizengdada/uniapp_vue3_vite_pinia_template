@@ -24,6 +24,7 @@ export function createApp() {
 
   app.use(store)
   app.use(i18n)
+
   return {
     app,
     Pinia
