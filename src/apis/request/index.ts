@@ -1,6 +1,6 @@
 import { HttpStatusCode } from '@/common/constants/HttpStatusCode'
 import { router } from '@/utils'
-import { uniStorage } from '@/utils/uni-storage'
+import { uniStorage } from '@/utils'
 import i18n from '@/locale'
 import type { RequestConfig, Data, CustomConfig } from './type'
 

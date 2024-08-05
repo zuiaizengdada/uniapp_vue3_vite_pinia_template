@@ -1,4 +1,4 @@
-import type { UniStorageMethods } from './type.d.ts'
+import type { UniStorageMethods } from '../type'
 
 class UniStorage implements UniStorageMethods {
   get(key: string): any {
