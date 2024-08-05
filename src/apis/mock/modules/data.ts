@@ -15,7 +15,7 @@ const posts = mock({
 // 获取所有文章数据
 mock('/posts', 'GET', {
   code: 1,
-  msg: 'success',
+  message: 'success',
   data: posts
 })
 
@@ -26,13 +26,13 @@ mock('/post/:id', 'GET', (req: any) => {
   if (post) {
     return {
       code: 1,
-      msg: 'success',
+      message: 'success',
       data: post
     }
   } else {
     return {
       code: 0,
-      msg: 'Article not found'
+      message: 'Article not found'
     }
   }
 })
@@ -47,13 +47,13 @@ mock('/post/:id', 'PUT', (req: any) => {
     post.body = body
     return {
       code: 1,
-      msg: 'success',
+      message: 'success',
       data: post
     }
   } else {
     return {
       code: 0,
-      msg: 'Article not found'
+      message: 'Article not found'
     }
   }
 })
@@ -66,13 +66,13 @@ mock('/post/:id', 'DELETE', (req: any) => {
     posts.splice(posts.indexOf(post), 1)
     return {
       code: 1,
-      msg: 'success',
+      message: 'success',
       data: post
     }
   } else {
     return {
       code: 0,
-      msg: 'Article not found'
+      message: 'Article not found'
     }
   }
 })
@@ -89,7 +89,7 @@ mock('/post', 'POST', (req: any) => {
   posts.push(post)
   return {
     code: 1,
-    msg: 'success',
+    message: 'success',
     data: post
   }
 })
