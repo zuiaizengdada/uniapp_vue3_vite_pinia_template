@@ -1,5 +1,5 @@
-import { type Post } from '@/apis/modules/type'
 import { mock } from 'better-mock/dist/mock.mp'
+import { type Post } from '@/apis/modules/type'
 
 const posts = mock({
   'data|10': [

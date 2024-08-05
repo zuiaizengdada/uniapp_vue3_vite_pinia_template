@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import i18n from '@/locale'
 import { router } from '@/utils'
-import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/data'
+import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/post'
 const { userName, setUserName } = useStore('user')
 
 const t = i18n.global.t
