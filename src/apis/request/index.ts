@@ -78,7 +78,11 @@ class ApiService {
     })
   }
 
-  public get<T>(url: string, params?: any, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
+  public get<T>(
+    url: string,
+    params?: Record<string, any>,
+    options?: Partial<UniApp.RequestOptions & CustomConfig>
+  ): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
@@ -89,7 +93,11 @@ class ApiService {
     return this.request<T>(requestOptions)
   }
 
-  public post<T>(url: string, data?: any, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
+  public post<T>(
+    url: string,
+    data?: Record<string, any>,
+    options?: Partial<UniApp.RequestOptions & CustomConfig>
+  ): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
@@ -100,7 +108,11 @@ class ApiService {
     return this.request<T>(requestOptions)
   }
 
-  public put<T>(url: string, data?: any, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
+  public put<T>(
+    url: string,
+    data?: Record<string, any>,
+    options?: Partial<UniApp.RequestOptions & CustomConfig>
+  ): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
@@ -113,7 +125,7 @@ class ApiService {
 
   public delete<T>(
     url: string,
-    params?: any,
+    params?: Record<string, any>,
     options?: Partial<UniApp.RequestOptions & CustomConfig>
   ): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {

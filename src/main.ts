@@ -13,6 +13,8 @@ import i18n from '@/locale'
 
 // css初始化
 import 'normalize.css'
+
+// tailwind初始化
 import '@/static/style/tailwind.scss'
 
 export function createApp() {
