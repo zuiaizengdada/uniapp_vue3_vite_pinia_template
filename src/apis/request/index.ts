@@ -25,10 +25,11 @@ class ApiService {
     }
 
     if (this.needToken) {
+      const AccessTokenKey = 'Authorization'
       const AccessToken = uniStorage.getSync('user.AccessToken')
 
       if (AccessToken) {
-        options.header.Authorization = AccessToken
+        options.header[AccessTokenKey] = AccessToken
       }
     }
   }
