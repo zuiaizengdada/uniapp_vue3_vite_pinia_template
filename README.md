@@ -6,7 +6,7 @@
 
 ## 目录结构
 
-```
+```text
 UNI_TEMPLATE
 ├── .hbuilderx
 ├── .husky
@@ -199,7 +199,7 @@ function getBookData(): Promise<Data<Book>> {
 
 本项目已经开启了`easycom`自动导入组件，在`components`文件夹中建立同名文件夹和文件，无须手动导入即可在`vue`文件中直接使用。
 
-```
+```js
 ├── components
 │   ├──TestComponent
         ├──TestComponent
