@@ -9,5 +9,5 @@ pnpm-lock.yaml
 ​
 /public/*
 
-**/*.d.ts
+/src/types/*.d.ts
 /src/utils/pinia-auto-refs.ts

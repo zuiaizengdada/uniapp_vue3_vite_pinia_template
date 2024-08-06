@@ -38,10 +38,13 @@ function handleGotoLogin() {
 function handleGotoMitt() {
   router.navigateTo('/pages/mitt/index')
 }
+
+const containStatusBar = ref(false)
 </script>
 
 <template>
-  <view class="index w-full h-screen flex flex-col items-center justify-center gap-[10px]">
+  <AppHeader :containStatusBar="containStatusBar" />
+  <view class="w-full flex flex-col items-center justify-center gap-[10px]">
     <view class="w-full text-center name">
       <text>
         {{ userName }}
@@ -76,5 +79,7 @@ function handleGotoMitt() {
         示例红色背示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景景
       </view>
     </view>
+
+    <button @tap="containStatusBar = true">修改颜色</button>
   </view>
 </template>
