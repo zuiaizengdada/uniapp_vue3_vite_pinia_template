@@ -1,5 +1,5 @@
 // 请求配置
-export interface RequestConfig  {
+export interface RequestConfig {
   // 请求地址
   baseURL: string
   // 请求超时时间
@@ -9,7 +9,7 @@ export interface RequestConfig  {
 // 自定义配置参数
 export interface CustomConfig {
   // 是否开启mock
-  mock:boolean
+  mock: boolean
 }
 
 // 网络请求返回格式
