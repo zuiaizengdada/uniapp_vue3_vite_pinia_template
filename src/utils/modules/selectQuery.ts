@@ -1,11 +1,26 @@
-// 获取元素实例
-export const selectorQueryClientRect = (selector: string): Promise<UniApp.NodeInfo | UniApp.NodeInfo[]> =>
-  new Promise((resolve) => {
-    const query = uni.createSelectorQuery()
-    query
-      .select(selector)
-      .boundingClientRect((res: UniApp.NodeInfo | UniApp.NodeInfo[]) => {
-        resolve(res)
+import { type ComponentInternalInstance } from 'vue'
+
+export function selectorQueryClientRect(
+  selector: string | string[],
+  instance?: ComponentInternalInstance
+): Promise<UniApp.NodeInfo | UniApp.NodeInfo[]> {
+  return new Promise((resolve) => {
+    const query = instance ? uni.createSelectorQuery().in(instance) : uni.createSelectorQuery()
+
+    if (Array.isArray(selector)) {
+      selector.forEach((item) => {
+        query.select(item).boundingClientRect()
       })
-      .exec()
+    } else {
+      query.select(selector).boundingClientRect()
+    }
+
+    query.exec((res: UniApp.NodeInfo[]) => {
+      if (res.length > 1) {
+        resolve(res)
+      } else {
+        resolve(res[0])
+      }
+    })
   })
+}

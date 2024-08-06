@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import i18n from '@/locale'
-import { router } from '@/utils'
+import { router, selectorQueryClientRect } from '@/utils'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/post'
 const { userName, setUserName } = useStore('user')
 
@@ -21,6 +21,9 @@ onMounted(async () => {
 
   const res = await getPosts()
   console.log(res)
+
+  const res6 = await selectorQueryClientRect('.name')
+  console.log(res6)
 })
 
 type Languages = 'zh' | 'en'
