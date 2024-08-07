@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '@/common/constants/HttpStatusCode'
+import { HttpStatusCode } from '@/common/constants'
 import { router } from '@/utils'
 import { uniStorage } from '@/utils'
 import i18n from '@/locale'
