@@ -2,6 +2,8 @@
 import i18n from '@/locale'
 import { router, selectorQueryClientRect } from '@/utils'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/post'
+import { useScroll } from '@/hooks'
+import { ComponentInternalInstance } from 'vue'
 const { userName, setUserName } = useStore('user')
 
 const t = i18n.global.t
@@ -38,42 +40,86 @@ function handleGotoLogin() {
 function handleGotoMitt() {
   router.navigateTo('/pages/mitt/index')
 }
+
+const instance = getCurrentInstance() as ComponentInternalInstance
+const { scrollTop, scrollToBottom } = useScroll(instance)
+
+onMounted(() => {
+  scrollToBottom('.scroll-wrapper', '.scroll-content')
+})
 </script>
 
 <template>
-  <AppHeader
-    containStatusBar
-    showLeft
-    :customStyle="{
-      padding: '10px'
-    }"
-  />
-  <view class="w-full flex flex-col items-center justify-center gap-[10px]">
-    <view class="w-full text-center name">
-      <text>
-        {{ userName }}
-      </text>
-    </view>
+  <AppHeader containStatusBar showLeft />
+  <scroll-view
+    :scroll-top="scrollTop"
+    scroll-y
+    scroll-with-animation
+    class="w-full flex flex-col items-center h-[800px] overflow-scroll bg-yellow-400 gap-[10px] scroll-wrapper"
+  >
+    <view class="flex flex-col items-center w-full scroll-content">
+      <view class="w-full text-center name">
+        <text>
+          {{ userName }}
+        </text>
+      </view>
 
-    <view>
-      <button @tap="setUserName('zengdada1')">修改名字 pinia 数据持久化</button>
-    </view>
+      <view>
+        <button @tap="setUserName('zengdada1')">修改名字 pinia 数据持久化</button>
+      </view>
 
-    <view class="i18n">
-      <text>{{ t('demo') }}</text>
-    </view>
+      <view class="i18n">
+        <text>{{ t('demo') }}</text>
+      </view>
 
-    <view class="flex items-center gap-5">
-      <button @tap="handleSwitchLanguage('zh')">中文</button>
-      <button @tap="handleSwitchLanguage('en')">English</button>
-    </view>
+      <view class="flex items-center gap-5">
+        <button @tap="handleSwitchLanguage('zh')">中文</button>
+        <button @tap="handleSwitchLanguage('en')">English</button>
+      </view>
 
-    <view class="flex items-center">
-      <button @tap="handleGotoLogin">跳转到登录页</button>
-    </view>
+      <view class="flex items-center">
+        <button @tap="handleGotoLogin">跳转到登录页</button>
+      </view>
 
-    <view class="flex items-center">
-      <button @tap="handleGotoMitt">跳转到mitt示例页面</button>
+      <view class="flex items-center">
+        <button @tap="handleGotoMitt">跳转到mitt示例页面</button>
+      </view>
+      <view>1</view>
+      <view>1</view>
+      <view>1</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
+      <view>1zz</view>
     </view>
-  </view>
+  </scroll-view>
+  <AppTabbar />
 </template>

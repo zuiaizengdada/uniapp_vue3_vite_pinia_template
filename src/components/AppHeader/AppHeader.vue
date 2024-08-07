@@ -31,7 +31,7 @@ const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
 </script>
 
 <template>
-  <view class="w-full app-header" :style="customStyle">
+  <view class="sticky top-0 left-0 w-full z-[1000] top app-header" :style="customStyle">
     <!-- 状态栏头部 -->
     <view v-if="isMiniProgram()" :style="statusBarBoxStyle"></view>
     <!-- 状态栏胶囊 -->
