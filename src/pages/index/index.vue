@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import i18n from '@/locale'
-import { router, selectorQueryClientRect } from '@/utils'
+import { isMiniProgram, router, selectorQueryClientRect } from '@/utils'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/post'
 const { userName, setUserName } = useStore('user')
 
@@ -81,5 +81,7 @@ function handleBack() {
         示例红色背示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景景
       </view>
     </view>
+
+    <view>{{ isMiniProgram() }}</view>
   </view>
 </template>

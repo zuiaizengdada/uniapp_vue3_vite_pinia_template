@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isMiniProgram } from '@/utils'
 import { useAppHeaderStyles } from './hooks'
 
 export interface AppHeaderProps {
@@ -27,7 +28,7 @@ const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
 <template>
   <view class="app-header">
     <!-- 状态栏头部 -->
-    <view :style="statusBarBoxStyle"></view>
+    <view v-if="isMiniProgram()" :style="statusBarBoxStyle"></view>
     <!-- 状态栏胶囊 -->
     <view class="relative flex items-center justify-between" :style="menuButtonBoxStyle">
       <!-- 左边插槽 -->
