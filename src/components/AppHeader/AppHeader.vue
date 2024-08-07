@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { isMiniProgram } from '@/utils'
 import { useAppHeaderStyles } from './hooks'
+import { CSSProperties } from 'vue'
 
 export interface AppHeaderProps {
   backgroundColor?: string
@@ -8,6 +9,7 @@ export interface AppHeaderProps {
   showLeft?: boolean
   showCenter?: boolean
   showRight?: boolean
+  customStyle?: CSSProperties
 }
 
 const props = withDefaults(defineProps<AppHeaderProps>(), {
@@ -15,18 +17,21 @@ const props = withDefaults(defineProps<AppHeaderProps>(), {
   containStatusBar: false,
   showLeft: false,
   showCenter: true,
-  showRight: false
+  showRight: false,
+  customStyle: {} as any
 })
 
 const emits = defineEmits<{
-  back: []
+  leftClick: []
+  centerClick: []
+  rightClick: []
 }>()
 
 const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
 </script>
 
 <template>
-  <view class="app-header">
+  <view class="w-full app-header" :style="customStyle">
     <!-- 状态栏头部 -->
     <view v-if="isMiniProgram()" :style="statusBarBoxStyle"></view>
     <!-- 状态栏胶囊 -->
@@ -34,23 +39,29 @@ const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
       <!-- 左边插槽 -->
       <view v-if="showLeft" class="flex-grow-0 flex-shrink-1 basis-auto">
         <slot name="left">
-          <text @click="emits('back')">返回</text>
+          <text @click="emits('leftClick')">返回</text>
         </slot>
       </view>
 
       <!-- 中间插槽 -->
       <view v-if="showCenter" class="absolute -translate-x-1/2 left-1/2">
         <slot name="center">
-          <text>标题</text>
+          <text @click="emits('centerClick')">标题</text>
         </slot>
       </view>
 
       <!-- 右边插槽 -->
       <view v-if="showRight" class="flex-grow-0 flex-shrink-1 basis-auto">
         <slot name="right">
-          <text>更多</text>
+          <text @click="emits('rightClick')">更多</text>
         </slot>
       </view>
     </view>
   </view>
 </template>
+
+<style lang="scss" scoped>
+.app-header {
+  background-color: v-bind(backgroundColor);
+}
+</style>

@@ -36,19 +36,5 @@
     "custom": {
       "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
     }
-  },
-  "tabBar": {
-    "color": "#909090",
-    "selectedColor": "#333333",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "首页"
-      },
-      {
-        "pagePath": "pages/my/index",
-        "text": "我的"
-      }
-    ]
   }
 }

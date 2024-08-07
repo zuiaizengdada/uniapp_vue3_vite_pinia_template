@@ -38,14 +38,16 @@ function handleGotoLogin() {
 function handleGotoMitt() {
   router.navigateTo('/pages/mitt/index')
 }
-
-function handleBack() {
-  console.log('返回页面')
-}
 </script>
 
 <template>
-  <AppHeader containStatusBar showLeft @back="handleBack" />
+  <AppHeader
+    containStatusBar
+    showLeft
+    :customStyle="{
+      padding: '10px'
+    }"
+  />
   <view class="w-full flex flex-col items-center justify-center gap-[10px]">
     <view class="w-full text-center name">
       <text>

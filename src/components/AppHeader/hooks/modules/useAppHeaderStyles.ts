@@ -1,6 +1,6 @@
 import { useSystemInfo } from '@/hooks'
 import { type CSSProperties } from 'vue'
-import { type AppHeaderProps } from '../AppHeader.vue'
+import { type AppHeaderProps } from '../../AppHeader.vue'
 
 type useAppHeaderStylesProps = Pick<AppHeaderProps, 'containStatusBar' | 'backgroundColor'>
 
@@ -13,10 +13,10 @@ export function useAppHeaderStyles(props: useAppHeaderStylesProps) {
   }))
 
   const menuButtonBoxStyle = computed<CSSProperties>(() => ({
-    height: `${height}px`,
+    height: height ? `${height}px` : '100%',
     backgroundColor: props.backgroundColor,
-    paddingLeft: `${screenWidth - right}px`,
-    paddingRight: `${screenWidth - left}px`
+    paddingLeft: `${right ? screenWidth - right : 0}px`,
+    paddingRight: `${left ? screenWidth - left : 0}px`
   }))
 
   return {
