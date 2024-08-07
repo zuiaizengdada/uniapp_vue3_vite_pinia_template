@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import i18n from '@/locale'
-import { isMiniProgram, router, selectorQueryClientRect } from '@/utils'
+import { router, selectorQueryClientRect } from '@/utils'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/post'
 const { userName, setUserName } = useStore('user')
 
@@ -75,15 +75,5 @@ function handleGotoMitt() {
     <view class="flex items-center">
       <button @tap="handleGotoMitt">跳转到mitt示例页面</button>
     </view>
-
-    <TestComponent />
-
-    <view class="flex-c-c bg-red-500 size-[200px]">
-      <view class="line-clamp-3">
-        示例红色背示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景景
-      </view>
-    </view>
-
-    <view>{{ isMiniProgram() }}</view>
   </view>
 </template>
