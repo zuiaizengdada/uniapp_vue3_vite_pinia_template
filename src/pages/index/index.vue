@@ -39,11 +39,13 @@ function handleGotoMitt() {
   router.navigateTo('/pages/mitt/index')
 }
 
-const containStatusBar = ref(false)
+function handleBack() {
+  console.log('返回页面')
+}
 </script>
 
 <template>
-  <AppHeader :containStatusBar="containStatusBar" />
+  <AppHeader containStatusBar showLeft @back="handleBack" />
   <view class="w-full flex flex-col items-center justify-center gap-[10px]">
     <view class="w-full text-center name">
       <text>
@@ -79,7 +81,5 @@ const containStatusBar = ref(false)
         示例红色背示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景示例红色背景景
       </view>
     </view>
-
-    <button @tap="containStatusBar = true">修改颜色</button>
   </view>
 </template>
