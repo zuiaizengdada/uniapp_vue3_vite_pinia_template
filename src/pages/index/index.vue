@@ -50,12 +50,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <AppHeader keepStatusBarBgColor showLeft :safeAreaInsetTop="isMiniProgram()" />
+  <AppHeader keepStatusBarBgColor showLeft :safeAreaInsetTop="isMiniProgram" />
   <scroll-view
     :scroll-top="scrollTop"
     scroll-y
     scroll-with-animation
-    class="w-full flex flex-col items-center h-[500px] overflow-scroll bg-yellow-400 scroll-wrapper"
+    class="w-full flex flex-col items-center h-[500px] bg-yellow-400 scroll-wrapper"
   >
     <view class="flex flex-col items-center w-full gap-[10px] scroll-content">
       <view class="w-full text-center name">
