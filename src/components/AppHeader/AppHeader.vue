@@ -46,7 +46,7 @@ const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
       <!-- 中间插槽 -->
       <view v-if="showCenter" class="absolute -translate-x-1/2 left-1/2">
         <slot name="center">
-          <text @click="emits('centerClick')">标题</text>
+          <text @click="emits('centerClick')">标题231111111111231232</text>
         </slot>
       </view>
 

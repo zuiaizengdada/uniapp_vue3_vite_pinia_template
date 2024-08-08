@@ -13,6 +13,7 @@ import i18n from '@/locale'
 
 // css初始化
 import 'normalize.css'
+import '@/static/style/reset.scss'
 
 // tailwind初始化
 import '@/static/style/tailwind.scss'

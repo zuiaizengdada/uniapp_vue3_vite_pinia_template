@@ -55,9 +55,9 @@ onMounted(() => {
     :scroll-top="scrollTop"
     scroll-y
     scroll-with-animation
-    class="w-full flex flex-col items-center h-[800px] overflow-scroll bg-yellow-400 gap-[10px] scroll-wrapper"
+    class="w-full flex flex-col items-center h-[500px] overflow-scroll bg-yellow-400 scroll-wrapper"
   >
-    <view class="flex flex-col items-center w-full scroll-content">
+    <view class="flex flex-col items-center w-full gap-[10px] scroll-content">
       <view class="w-full text-center name">
         <text>
           {{ userName }}
@@ -121,5 +121,5 @@ onMounted(() => {
       <view>1zz</view>
     </view>
   </scroll-view>
-  <AppTabbar />
+  <!-- <AppTabbar /> -->
 </template>
