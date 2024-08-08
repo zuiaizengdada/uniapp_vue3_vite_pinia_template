@@ -1,24 +1,25 @@
 <script setup lang="ts">
-import { isMiniProgram } from '@/utils'
 import { useAppHeaderStyles } from './hooks'
 import { CSSProperties } from 'vue'
 
 export interface AppHeaderProps {
   backgroundColor?: string
-  containStatusBar?: boolean
+  keepStatusBarBgColor?: boolean
   showLeft?: boolean
   showCenter?: boolean
   showRight?: boolean
   customStyle?: CSSProperties
+  safeAreaInsetTop?: boolean
 }
 
 const props = withDefaults(defineProps<AppHeaderProps>(), {
   backgroundColor: 'red',
-  containStatusBar: false,
+  keepStatusBarBgColor: false,
   showLeft: false,
   showCenter: true,
   showRight: false,
-  customStyle: {} as any
+  customStyle: {} as any,
+  safeAreaInsetTop: true
 })
 
 const emits = defineEmits<{
@@ -33,7 +34,7 @@ const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
 <template>
   <view class="sticky top-0 left-0 w-full z-[1000] top app-header" :style="customStyle">
     <!-- 状态栏头部 -->
-    <view v-if="isMiniProgram()" :style="statusBarBoxStyle"></view>
+    <view v-if="safeAreaInsetTop" :style="statusBarBoxStyle"></view>
     <!-- 状态栏胶囊 -->
     <view class="relative flex items-center justify-between" :style="menuButtonBoxStyle">
       <!-- 左边插槽 -->
@@ -46,7 +47,7 @@ const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
       <!-- 中间插槽 -->
       <view v-if="showCenter" class="absolute -translate-x-1/2 left-1/2">
         <slot name="center">
-          <text @click="emits('centerClick')">标题231111111111231232</text>
+          <text @click="emits('centerClick')">标题</text>
         </slot>
       </view>
 

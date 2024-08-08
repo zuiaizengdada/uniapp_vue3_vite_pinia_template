@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import i18n from '@/locale'
-import { router, selectorQueryClientRect } from '@/utils'
+import { isMiniProgram, router, selectorQueryClientRect } from '@/utils'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/post'
 import { useScroll } from '@/hooks'
 import { ComponentInternalInstance } from 'vue'
@@ -50,7 +50,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <AppHeader containStatusBar showLeft />
+  <AppHeader keepStatusBarBgColor showLeft :safeAreaInsetTop="isMiniProgram()" />
   <scroll-view
     :scroll-top="scrollTop"
     scroll-y
