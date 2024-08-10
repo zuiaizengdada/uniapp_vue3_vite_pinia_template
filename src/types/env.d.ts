@@ -12,6 +12,7 @@ interface ImportMeta {
 
 interface ImportMetaEnv {
   readonly VITE_APP_BASE_URL: string
+  readonly VITE_WEBSOCKET_URL: string
   readonly VITE_BASE_NAME: string
   readonly VITE_MOCK: string
 }

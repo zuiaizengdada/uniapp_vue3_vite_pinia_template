@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import i18n from '@/locale'
 import { router, selectorQueryClientRect } from '@/utils'
+import { useWebSocket } from '@/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/post'
 const { userName, setUserName } = useStore('user')
 
 const t = i18n.global.t
-
+const { isConnected, sendMessage, connect, onMessage } = useWebSocket({
+  url: import.meta.env.VITE_WEBSOCKET_URL
+})
 onMounted(async () => {
   const res2 = await getPostById(1)
   console.log(res2)
@@ -24,6 +27,17 @@ onMounted(async () => {
 
   const res6 = await selectorQueryClientRect('.name')
   console.log(res6)
+
+  await connect()
+  if (isConnected.value) {
+    sendMessage({
+      msg: 'hello'
+    })
+  }
+
+  onMessage((res) => {
+    console.log(res)
+  })
 })
 
 type Languages = 'zh' | 'en'
