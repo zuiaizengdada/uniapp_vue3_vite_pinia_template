@@ -1,4 +1,3 @@
-// import JSEncrypt from 'jsencrypt/bin/jsencrypt'
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js'
 import CryptoJS from 'crypto-js'
 
