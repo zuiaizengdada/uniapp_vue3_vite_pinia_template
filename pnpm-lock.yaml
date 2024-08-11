@@ -80,6 +80,9 @@ importers:
       svgo:
         specifier: ^3.2.0
         version: 3.2.0
+      tob-use:
+        specifier: ^1.1.1
+        version: 1.1.1(typescript@4.9.4)
       uni-draw:
         specifier: ^1.0.3
         version: 1.0.3
@@ -4926,6 +4929,9 @@ packages:
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
+
+  tob-use@1.1.1:
+    resolution: {integrity: sha512-i4F6ChMbWbmBCyLOvjldDoe6tFq8Gs7HlmvstQnwydySWsVYabGBk4g59Y9orrHI3Dn3uiih1672vHjeepv27g==}
 
   toidentifier@1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
@@ -11387,6 +11393,12 @@ snapshots:
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
+
+  tob-use@1.1.1(typescript@4.9.4):
+    dependencies:
+      vue: 3.4.31(typescript@4.9.4)
+    transitivePeerDependencies:
+      - typescript
 
   toidentifier@1.0.1: {}
 

@@ -16,5 +16,5 @@ declare module 'jsencrypt/bin/jsencrypt.min.js' {
     log?: boolean;
   }
 
-  export default JSEncrypt; // 添加默认导出
+  export default JSEncrypt;
 }
