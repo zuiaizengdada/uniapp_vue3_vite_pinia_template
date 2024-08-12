@@ -10,6 +10,13 @@ export interface AppHeaderProps {
   safeAreaInsetTop?: boolean
 }
 
+export interface AppHeaderEmits {
+  leftClick: []
+  centerClick: []
+  rightClick: []
+  [key: string]: any
+}
+
 export interface AppHeaderSlots {
   left: []
   center: []

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAppHeaderStyles } from './hooks'
-import { AppHeaderSlots, type AppHeaderProps } from './type'
+import type { AppHeaderEmits, AppHeaderSlots, AppHeaderProps } from './type'
 
 const props = withDefaults(defineProps<AppHeaderProps>(), {
   backgroundColor: 'red',
@@ -12,11 +12,7 @@ const props = withDefaults(defineProps<AppHeaderProps>(), {
   safeAreaInsetTop: true
 })
 
-const emits = defineEmits<{
-  leftClick: []
-  centerClick: []
-  rightClick: []
-}>()
+const emits = defineEmits<AppHeaderEmits>()
 
 defineSlots<AppHeaderSlots>()
 
