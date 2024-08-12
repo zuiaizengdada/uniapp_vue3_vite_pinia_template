@@ -2,21 +2,24 @@
 import { useAppHeaderStyles } from './hooks'
 import type { AppHeaderEmits, AppHeaderSlots, AppHeaderProps } from './type'
 
-const props = withDefaults(defineProps<AppHeaderProps>(), {
-  backgroundColor: 'red',
-  keepStatusBarBgColor: false,
-  showLeft: false,
-  showCenter: true,
-  showRight: false,
-  customStyle: {} as any,
-  safeAreaInsetTop: true
-})
+const {
+  backgroundColor = 'red',
+  keepStatusBarBgColor = false,
+  showLeft = false,
+  showCenter = true,
+  showRight = false,
+  customStyle = {} as any,
+  safeAreaInsetTop = true
+} = defineProps<AppHeaderProps>()
 
 const emits = defineEmits<AppHeaderEmits>()
 
 defineSlots<AppHeaderSlots>()
 
-const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
+const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles({
+  backgroundColor,
+  keepStatusBarBgColor
+})
 </script>
 
 <template>
