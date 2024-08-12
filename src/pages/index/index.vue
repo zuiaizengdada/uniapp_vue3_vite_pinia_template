@@ -6,7 +6,7 @@ import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/api
 const { userName, setUserName } = useStore('user')
 
 const t = i18n.global.t
-const { isConnected, sendMessage, connect, onMessage } = useWebSocket({
+const { sendMessage, connect, onMessage } = useWebSocket({
   url: import.meta.env.VITE_WEBSOCKET_URL
 })
 onMounted(async () => {
@@ -28,7 +28,7 @@ onMounted(async () => {
   const res6 = await selectorQueryClientRect('.name')
   console.log(res6)
 
-  await connect()
+  const isConnected = await connect()
   if (isConnected) {
     sendMessage({
       msg: 'hello'
