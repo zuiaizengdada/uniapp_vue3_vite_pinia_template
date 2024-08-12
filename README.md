@@ -242,7 +242,7 @@ export default defineConfig({
 ```html
 <script setup lang="ts">
   // import { ref,watch } form 'vue'
-  const count = ref<number>(0)
+  const count = $ref<number>(0)
   watch(count, (val) => {
     if (val > 3) {
       console.log('val的值大于3')

@@ -9,15 +9,15 @@ const {
   }
 } = getCurrentInstance() as ComponentInternalInstance
 
-const text = ref<string>('组件二的值')
+let text = $ref<string>('组件二的值')
 
 $mitt.on('changeMsg', (e) => {
-  text.value = e.msg
+  text = e.msg
 })
 </script>
 
 <template>
-  <view class="component2 flex flex-col items-center">
+  <view class="flex flex-col items-center component2">
     <text>这是组件二</text>
     <text>{{ text }}</text>
   </view>

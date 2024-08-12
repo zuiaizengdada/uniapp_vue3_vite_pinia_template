@@ -17,9 +17,9 @@ const DEFAULT_OPTIONS: UseWebSocketOptions = {
 }
 
 export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
-  const isConnected = ref<boolean>(false)
-  const message = ref<string | null>(null)
-  const error = ref<string | null>(null)
+  let isConnected = $ref<boolean>(false)
+  let message = $ref<string | null>(null)
+  let error = $ref<string | null>(null)
   const callbacks = { ...DEFAULT_OPTIONS, ...options }
 
   let socket: UniApp.SocketTask | null = null
@@ -50,7 +50,7 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
 
     // 接收到消息处理
     handleMessage(res: any) {
-      message.value = res.data
+      message = res.data
       const parsedMessage = internal.parseMessage(res.data)
       callbacks.onMessage!(parsedMessage)
     },
@@ -69,7 +69,7 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
 
     // 错误处理通用函数
     handleErrorCommon(errMsg: string, reject: any) {
-      error.value = errMsg
+      error = errMsg
       callbacks.onError!(errMsg)
       if (reject) reject(errMsg)
     },
@@ -143,7 +143,7 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
     // 处理URL变化
     handleUrlChange(newValue: string, oldValue: string) {
       if (newValue !== oldValue) {
-        if (isConnected.value) close()
+        if (isConnected) close()
         if (!isConnecting) {
           isConnecting = true
           connect().finally(() => {
@@ -155,14 +155,14 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
 
     // 设置连接状态
     setConnectionState(connected: boolean) {
-      isConnected.value = connected
+      isConnected = connected
       if (!connected) socket = null
     }
   }
 
   // 连接函数
   async function connect(): Promise<boolean> {
-    if (socket) return Promise.resolve(isConnected.value)
+    if (socket) return Promise.resolve(isConnected)
 
     return new Promise((resolve, reject) => {
       console.log('尝试请求连接 WebSocket...')
@@ -175,7 +175,7 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
 
       socket.onOpen(() => {
         internal.handleOpen()
-        resolve(isConnected.value)
+        resolve(isConnected)
       })
       socket.onMessage(internal.handleMessage)
       socket.onError((err) => internal.handleError(err, reject))
@@ -185,7 +185,7 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
 
   // 发送消息
   function sendMessage(message: string | Record<string, any>) {
-    if (isConnected.value && socket) {
+    if (isConnected && socket) {
       const requestMessage = internal.prepareMessage(message)
       socket.send({
         data: requestMessage,

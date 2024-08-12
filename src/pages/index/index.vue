@@ -29,7 +29,7 @@ onMounted(async () => {
   console.log(res6)
 
   await connect()
-  if (isConnected.value) {
+  if (isConnected) {
     sendMessage({
       msg: 'hello'
     })
