@@ -9,7 +9,7 @@ const {
   }
 } = getCurrentInstance() as ComponentInternalInstance
 
-let text = $ref<string>('组件二的值')
+let text = ref<string>('组件二的值')
 
 $mitt.on('changeMsg', (e) => {
   text = e.msg
