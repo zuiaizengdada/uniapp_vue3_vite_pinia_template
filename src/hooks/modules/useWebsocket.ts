@@ -20,7 +20,15 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
   const isConnected = ref<boolean>(false)
   const message = ref<string | null>(null)
   const error = ref<string | null>(null)
-  const callbacks = { ...DEFAULT_OPTIONS, ...options }
+
+  // 逐个提取回调函数，确保类型一致
+  const onOpen = options.onOpen || DEFAULT_OPTIONS.onOpen
+  const onMessage = options.onMessage || DEFAULT_OPTIONS.onMessage
+  const onError = options.onError || DEFAULT_OPTIONS.onError
+  const onClose = options.onClose || DEFAULT_OPTIONS.onClose
+  const onReconnectAttempt = options.onReconnectAttempt || DEFAULT_OPTIONS.onReconnectAttempt
+  const onReconnectSuccess = options.onReconnectSuccess || DEFAULT_OPTIONS.onReconnectSuccess
+  const onReconnectFail = options.onReconnectFail || DEFAULT_OPTIONS.onReconnectFail
 
   let socket: UniApp.SocketTask | null = null
   let reconnectAttempts = 0
@@ -45,14 +53,14 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
     handleOpen() {
       internal.setConnectionState(true)
       console.log('WebSocket 连接已成功建立')
-      callbacks.onOpen!()
+      onOpen!()
     },
 
     // 接收到消息处理
     handleMessage(res: any) {
       message.value = res.data
       const parsedMessage = internal.parseMessage(res.data)
-      callbacks.onMessage!(parsedMessage)
+      onMessage!(parsedMessage)
     },
 
     // 解析消息
@@ -70,7 +78,7 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
     // 错误处理通用函数
     handleErrorCommon(errMsg: string, reject: any) {
       error.value = errMsg
-      callbacks.onError!(errMsg)
+      onError!(errMsg)
       if (reject) reject(errMsg)
     },
 
@@ -85,7 +93,7 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
     handleClose() {
       console.log('WebSocket 连接关闭')
       internal.setConnectionState(false)
-      callbacks.onClose!()
+      onClose!()
       internal.attemptReconnect()
     },
 
@@ -94,10 +102,10 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
       if (internal.shouldReconnect()) {
         reconnectAttempts++
         const interval = internal.calculateReconnectInterval()
-        callbacks.onReconnectAttempt!(reconnectAttempts)
+        onReconnectAttempt!(reconnectAttempts)
         console.log(`尝试重连第 ${reconnectAttempts} 次...`)
         reconnectTimeoutId = setTimeout(() => {
-          connect().then(callbacks.onReconnectSuccess).catch(callbacks.onReconnectFail)
+          connect().then(onReconnectSuccess).catch(onReconnectFail)
         }, interval)
       }
     },
@@ -224,24 +232,12 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
     sendMessage,
     close,
     connect,
-    onOpen: callbacks.onOpen,
-    onMessage: (callback: (message: string) => void) => {
-      callbacks.onMessage = callback
-    },
-    onError: (callback: (error: string) => void) => {
-      callbacks.onError = callback
-    },
-    onClose: (callback: () => void) => {
-      callbacks.onClose = callback
-    },
-    onReconnectAttempt: (callback: (attempt: number) => void) => {
-      callbacks.onReconnectAttempt = callback
-    },
-    onReconnectSuccess: (callback: () => void) => {
-      callbacks.onReconnectSuccess = callback
-    },
-    onReconnectFail: (callback: () => void) => {
-      callbacks.onReconnectFail = callback
-    }
+    onOpen,
+    onMessage,
+    onError,
+    onClose,
+    onReconnectAttempt,
+    onReconnectSuccess,
+    onReconnectFail
   }
 }
