@@ -1,6 +1,6 @@
 import { useSystemInfo } from '@/hooks'
 import { type CSSProperties } from 'vue'
-import { type AppHeaderProps } from '../../AppHeader.vue'
+import { type AppHeaderProps } from '../../type'
 
 type useAppHeaderStylesProps = Pick<AppHeaderProps, 'keepStatusBarBgColor' | 'backgroundColor'>
 

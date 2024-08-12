@@ -1,16 +1,6 @@
 <script setup lang="ts">
 import { useAppHeaderStyles } from './hooks'
-import { CSSProperties } from 'vue'
-
-export interface AppHeaderProps {
-  backgroundColor?: string
-  keepStatusBarBgColor?: boolean
-  showLeft?: boolean
-  showCenter?: boolean
-  showRight?: boolean
-  customStyle?: CSSProperties
-  safeAreaInsetTop?: boolean
-}
+import { AppHeaderSlots, type AppHeaderProps } from './type'
 
 const props = withDefaults(defineProps<AppHeaderProps>(), {
   backgroundColor: 'red',
@@ -27,6 +17,8 @@ const emits = defineEmits<{
   centerClick: []
   rightClick: []
 }>()
+
+defineSlots<AppHeaderSlots>()
 
 const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
 </script>
