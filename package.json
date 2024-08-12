@@ -78,7 +78,7 @@
     "@dcloudio/uni-mp-xhs": "3.0.0-4020420240722002",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4020420240722002",
     "@dcloudio/uni-ui": "^1.4.28",
-    "@esbuild/linux-x64": "^0.20.2",
+    "@rollup/rollup-darwin-x64": "^4.20.0",
     "crypto-js": "^3.3.0",
     "jsencrypt": "^3.3.2",
     "lodash": "^4.17.21",
