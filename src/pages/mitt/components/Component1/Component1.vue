@@ -1,5 +1,9 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { type ComponentInternalInstance } from 'vue'
+
+defineProps<{
+  users: T[]
+}>()
 
 const {
   appContext: {
@@ -14,6 +18,10 @@ const text = $ref<string>('组件一的值')
 function handleSendMsgToComponent2(msg: string) {
   $mitt.emit('changeMsg', { msg })
 }
+
+defineExpose({
+  text
+})
 </script>
 
 <template>
