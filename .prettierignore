@@ -2,6 +2,7 @@
 .local
 .output.js
 /node_modules/**
+/.vscode/** */
 pnpm-lock.yaml
 ​
 **/*.svg
