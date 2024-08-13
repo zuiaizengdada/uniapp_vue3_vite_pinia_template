@@ -1,4 +1,3 @@
-// UniStorage请求方法
 export interface UniStorageMethods {
   get: (key: string) => any
   getSync: (key: string) => any
