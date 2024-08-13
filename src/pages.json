@@ -25,6 +25,22 @@
       }
     }
   ],
+  "mp-weixin": {
+    "optimization": { "subPackages": true }
+  },
+  "subPackages": [
+    {
+      "root": "pagesSubPackage/common",
+      "pages": [
+        {
+          "path": "test/test",
+          "style": {
+            "navigationBarTitleText": ""
+          }
+        }
+      ]
+    }
+  ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
