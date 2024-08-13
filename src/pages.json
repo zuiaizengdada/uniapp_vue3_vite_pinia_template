@@ -3,7 +3,11 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "首页"
+        "navigationBarTitleText": "首页",
+        "enablePullDownRefresh": false,
+        "app-plus": {
+          "bounce": "none"
+        }
       }
     },
     {
