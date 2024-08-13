@@ -21,7 +21,7 @@
     {
       "path": "pages/my/index",
       "style": {
-        "navigationBarTitleText": "my"
+        "navigationBarTitleText": "我的"
       }
     }
   ],
