@@ -1,6 +1,7 @@
 import { type UseWebSocketOptions } from '../type'
 
 const DEFAULT_RECONNECT_INTERVAL = 5000
+const MAX_RECONNECT_INTERVAL = 60000
 const DEFAULT_OPTIONS: UseWebSocketOptions = {
   url: '',
   shouldReconnect: true,
@@ -113,17 +114,26 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
     attemptReconnect() {
       if (internal.shouldReconnect()) {
         reconnectAttempts++
+        const interval = internal.calculateReconnectInterval()
         callbacks.onReconnectAttempt!(reconnectAttempts)
         console.log(`尝试重连第 ${reconnectAttempts} 次...`)
         reconnectTimeoutId = setTimeout(() => {
           connect().then(callbacks.onReconnectSuccess).catch(callbacks.onReconnectFail)
-        }, configOptions.reconnectInterval)
+        }, interval)
       }
     },
 
     // 判断是否需要重连
     shouldReconnect() {
-      return configOptions.shouldReconnect
+      return (
+        configOptions.shouldReconnect !== false &&
+        (configOptions.maxReconnectAttempts === undefined || reconnectAttempts < configOptions.maxReconnectAttempts)
+      )
+    },
+
+    // 计算重连间隔时间
+    calculateReconnectInterval() {
+      return Math.min(configOptions.reconnectInterval! * Math.pow(2, reconnectAttempts), MAX_RECONNECT_INTERVAL)
     },
 
     // 发送消息处理

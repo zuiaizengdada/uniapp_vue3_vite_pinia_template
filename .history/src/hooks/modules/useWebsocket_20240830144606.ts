@@ -1,6 +1,7 @@
 import { type UseWebSocketOptions } from '../type'
 
 const DEFAULT_RECONNECT_INTERVAL = 5000
+const MAX_RECONNECT_INTERVAL = 60000
 const DEFAULT_OPTIONS: UseWebSocketOptions = {
   url: '',
   shouldReconnect: true,
@@ -125,6 +126,7 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
     shouldReconnect() {
       return configOptions.shouldReconnect
     },
+
 
     // 发送消息处理
     prepareMessage(message: string | Record<string, any>) {

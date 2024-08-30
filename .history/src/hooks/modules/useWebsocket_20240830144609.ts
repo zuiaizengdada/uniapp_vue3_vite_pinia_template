@@ -126,6 +126,7 @@ export function useWebSocket(options: UseWebSocketOptions = DEFAULT_OPTIONS) {
       return configOptions.shouldReconnect
     },
 
+
     // 发送消息处理
     prepareMessage(message: string | Record<string, any>) {
       return typeof message === 'string' ? message : JSON.stringify(message)
