@@ -1,25 +1,33 @@
 <script setup lang="ts">
-import { useWebSocket } from '@/hooks'
+import { createWebSocketInstance, WebSocketService } from '@/common/classes'
+
+let websocket: WebSocketService
 
 onMounted(async () => {
-  const { sendMessage, connect, onMessage, onReconnectSuccess } = useWebSocket({
-    shouldReconnect: false,
-    url: import.meta.env.VITE_WEBSOCKET_URL
+  // 创建并管理 WebSocket 实例
+  websocket = createWebSocketInstance('exampleSocket', {
+    url: import.meta.env.VITE_WEBSOCKET_URL,
+    shouldReconnect: true
   })
-  const isConnected = await connect()
+
+  const isConnected = await websocket.connect()
   if (isConnected) {
-    sendMessage({
+    websocket.sendMessage({
       msg: 'hello'
     })
   }
 
-  onMessage((res) => {
+  websocket.onMessage((res) => {
     console.log(res)
   })
 
-  onReconnectSuccess(() => {
+  websocket.onReconnectSuccess(() => {
     console.log('重连成功')
   })
+})
+
+onUnmounted(() => {
+  websocket.close()
 })
 </script>
 <template>
