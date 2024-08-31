@@ -5,7 +5,7 @@ let websocket: WebSocketService
 
 onMounted(async () => {
   // 创建并管理 WebSocket 实例
-  websocket = createWebSocketInstance('exampleSocket', {
+  websocket = createWebSocketInstance('websocket1', {
     url: import.meta.env.VITE_WEBSOCKET_URL,
     shouldReconnect: true
   })
