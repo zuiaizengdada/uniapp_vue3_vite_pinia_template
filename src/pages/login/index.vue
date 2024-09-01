@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { createWebSocketInstance, WebSocketService } from '@/common/classes'
+import { WS_ID } from '@/common/constants'
 
 let websocket: WebSocketService
 
 onMounted(async () => {
   // 创建并管理 WebSocket 实例
-  websocket = createWebSocketInstance('websocket1', {
+  websocket = createWebSocketInstance(WS_ID, {
     url: import.meta.env.VITE_WEBSOCKET_URL,
     shouldReconnect: true
   })

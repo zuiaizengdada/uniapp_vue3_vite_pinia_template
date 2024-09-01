@@ -258,20 +258,20 @@ export class WebSocketService {
   }
 }
 
-const webSocketInstances: Record<string, WebSocketService> = {}
+const webSocketInstances: Record<symbol, WebSocketService> = {}
 
-export function createWebSocketInstance(id: string, options: UseWebSocketOptions): WebSocketService {
+export function createWebSocketInstance(id: symbol, options: UseWebSocketOptions): WebSocketService {
   if (!webSocketInstances[id]) {
     webSocketInstances[id] = new WebSocketService(options)
   }
   return webSocketInstances[id]
 }
 
-export function getWebSocketInstance(id: string): WebSocketService | undefined {
+export function getWebSocketInstance(id: symbol): WebSocketService | undefined {
   return webSocketInstances[id]
 }
 
-export function removeWebSocketInstance(id: string) {
+export function removeWebSocketInstance(id: symbol) {
   if (webSocketInstances[id]) {
     webSocketInstances[id].close()
     delete webSocketInstances[id]
