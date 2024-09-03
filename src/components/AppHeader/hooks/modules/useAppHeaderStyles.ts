@@ -1,4 +1,4 @@
-import { useSystemInfo } from '@/hooks'
+import { useSystemInfo } from '@/common/hooks'
 import { type CSSProperties } from 'vue'
 import { type AppHeaderProps } from '../../type'
 
