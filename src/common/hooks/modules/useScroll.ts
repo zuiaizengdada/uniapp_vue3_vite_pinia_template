@@ -4,9 +4,9 @@ import { selectorQueryClientRect } from '@/utils'
 export function useScroll(instance: ComponentInternalInstance) {
   const scrollTop = ref<number>(0)
 
-  async function scrollToBottom(scrollViewClass: string, scrollContentClass: string) {
+  async function scrollToBottom(scrollViewEl: string, scrollContentEl: string) {
     const [{ height: scrollViewHeight }, { height: scrollContentHeight }] = (await selectorQueryClientRect(
-      [scrollViewClass, scrollContentClass],
+      [scrollViewEl, scrollContentEl],
       instance
     )) as UniApp.NodeInfo[]
 
