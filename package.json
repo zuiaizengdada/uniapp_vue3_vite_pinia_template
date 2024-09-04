@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/jsconfig",
   "name": "uniapp_vue3_vite_pinia_template",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "scripts": {
     "dev:app": "uni -p app",
     "dev:app:test": "uni -p app --mode test",
