@@ -19,7 +19,11 @@
     {
       "path": "pages/mitt/index",
       "style": {
-        "navigationBarTitleText": "mitt"
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false,
+        "app-plus": {
+          "bounce": "none"
+        }
       }
     },
     {

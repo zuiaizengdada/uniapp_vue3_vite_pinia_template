@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useAppHeaderStyles } from './hooks'
+import { type CSSProperties } from 'vue'
 import type { AppHeaderEmits, AppHeaderSlots, AppHeaderProps } from './type'
 
 const {
@@ -8,7 +9,7 @@ const {
   showLeft = false,
   showCenter = true,
   showRight = false,
-  customStyle = {} as any,
+  customStyle = {} as CSSProperties,
   safeAreaInsetTop = true
 } = defineProps<AppHeaderProps>()
 
@@ -23,9 +24,10 @@ const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles({
 </script>
 
 <template>
-  <view class="sticky top-0 left-0 w-full z-[1000] top app-header" :style="customStyle">
+  <view class="w-full z-[1000] top app-header" :style="customStyle">
     <!-- 状态栏头部 -->
     <view v-if="safeAreaInsetTop" :style="statusBarBoxStyle"></view>
+
     <!-- 状态栏胶囊 -->
     <view class="relative flex items-center justify-between" :style="menuButtonBoxStyle">
       <!-- 左边插槽 -->

@@ -5,10 +5,10 @@ import { type AppHeaderProps } from '../../type'
 type useAppHeaderStylesProps = Pick<AppHeaderProps, 'keepStatusBarBgColor' | 'backgroundColor'>
 
 export function useAppHeaderStyles(props: useAppHeaderStylesProps) {
-  const { screenWidth, right, height, top, left } = useSystemInfo()
+  const { screenWidth, right, height, top, left, safeArea } = useSystemInfo()
 
   const statusBarBoxStyle = computed<CSSProperties>(() => ({
-    height: `${top ?? 0}px`,
+    height: `${(top || safeArea!.top) ?? 0}px`,
     backgroundColor: props.keepStatusBarBgColor ? props.backgroundColor : 'transparent'
   }))
 
