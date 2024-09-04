@@ -14,8 +14,8 @@
       "@/*": ["./src/*"]
     },
     "types": [
-      "@dcloudio/types", // uni-app API 类型
-      "miniprogram-api-typings", // 原生微信小程序类型
+      "@dcloudio/types",
+      "miniprogram-api-typings",
       "@vue-macros/reactivity-transform/macros-global"
     ]
   },
