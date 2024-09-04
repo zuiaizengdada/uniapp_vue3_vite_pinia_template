@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/jsconfig",
-  "name": "love",
+  "name": "uniapp_vue3_vite_pinia_template",
   "version": "0.0.0",
   "scripts": {
     "dev:app": "uni -p app",
