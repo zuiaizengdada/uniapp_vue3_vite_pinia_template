@@ -14,15 +14,15 @@ onMounted(() => {
   <view class="my">
     <!-- 列表 -->
     <scroll-view :scroll-top scroll-y scroll-with-animation class="list">
-      <view class="content"
-        ><view class="item" v-for="item in 20" :key="item">
+      <view class="content">
+        <view class="item" v-for="item in 20" :key="item">
           <text class="iconfont icon-dingdan"></text>
           <text>我的订单</text>
           <text class="iconfont icon-you"></text>
 
           <view class="badge"> 2 </view>
-        </view></view
-      >
+        </view>
+      </view>
     </scroll-view>
   </view>
 </template>
