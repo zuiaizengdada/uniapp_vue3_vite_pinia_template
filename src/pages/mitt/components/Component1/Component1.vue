@@ -28,7 +28,6 @@ defineExpose({
   <view class="flex flex-col items-center component1">
     <text>这是组件一</text>
     <text>{{ text }}</text>
-    {{ users }}
     <button @tap="handleSendMsgToComponent2('组件一改变了组件二的值')">向组件二发送消息</button>
   </view>
 </template>
