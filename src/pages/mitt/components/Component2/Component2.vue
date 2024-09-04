@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { type ComponentInternalInstance } from 'vue'
-
-const {
-  appContext: {
-    config: {
-      globalProperties: { $mitt }
-    }
-  }
-} = getCurrentInstance() as ComponentInternalInstance
+import { useGlobalProperties } from '@/common/hooks'
+const { $mitt } = useGlobalProperties()
 
 const text = ref<string>('组件二的值')
 

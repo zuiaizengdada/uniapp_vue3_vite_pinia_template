@@ -1,17 +1,11 @@
 <script setup lang="ts" generic="T">
-import { type ComponentInternalInstance } from 'vue'
+import { useGlobalProperties } from '@/common/hooks'
 
 defineProps<{
   users: T[]
 }>()
 
-const {
-  appContext: {
-    config: {
-      globalProperties: { $mitt }
-    }
-  }
-} = getCurrentInstance() as ComponentInternalInstance
+const { $mitt } = useGlobalProperties()
 
 const text = ref<string>('组件一的值')
 
