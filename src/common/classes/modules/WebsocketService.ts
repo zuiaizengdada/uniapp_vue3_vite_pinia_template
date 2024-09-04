@@ -1,5 +1,5 @@
 import { ref, reactive, watch } from 'vue'
-import { type UseWebSocketOptions } from '../../hooks/type'
+import { type UseWebSocketOptions } from '../type'
 
 const DEFAULT_OPTIONS: UseWebSocketOptions = {
   url: '',
