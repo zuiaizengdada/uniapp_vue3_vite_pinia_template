@@ -13,7 +13,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["@dcloudio/types", "miniprogram-api-typings", "@vue-macros/reactivity-transform/macros-global", "vitest/globals"]
+    "types": [
+      "@dcloudio/types",
+      "miniprogram-api-typings",
+      "@vue-macros/reactivity-transform/macros-global",
+      "vitest/globals"
+    ]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "*.ts", "*.d.ts", "vite.config.mjs"]
 }
