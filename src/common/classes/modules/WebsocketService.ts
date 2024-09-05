@@ -110,7 +110,7 @@ export class WebSocketService {
   }
 
   private handleClose() {
-    console.log('WebSocket 连接关闭', event)
+    console.log('WebSocket 连接关闭')
     this.setConnectionState(false)
 
     // 判断是否是主动断开连接
