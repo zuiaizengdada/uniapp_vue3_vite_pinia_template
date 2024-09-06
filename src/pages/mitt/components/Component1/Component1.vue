@@ -10,7 +10,7 @@ const { $mitt } = useGlobalProperties()
 const text = ref<string>('组件一的值')
 
 function handleSendMsgToComponent2(msg: string) {
-  $mitt.emit('changeMsg', { msg })
+  $mitt.emit('changeMsg', msg)
 }
 
 defineExpose({

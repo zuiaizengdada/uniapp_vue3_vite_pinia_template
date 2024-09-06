@@ -1,6 +1,8 @@
-import type { EventType, Emitter } from 'mitt'
+import { Events } from '@/common/register/type'
+import type { Emitter } from 'mitt'
 import { Composer } from 'vue-i18n'
 export {}
+
 
 declare module 'vue' {
   type Hooks = App.AppInstance & Page.PageInstance
@@ -9,7 +11,7 @@ declare module 'vue' {
   }
 
   export interface ComponentCustomProperties {
-    $mitt: Emitter<Record<EventType, any>>
+    $mitt: Emitter<Events>
     $changeLocale: (locale: 'zh' | 'en') => void
   }
 }

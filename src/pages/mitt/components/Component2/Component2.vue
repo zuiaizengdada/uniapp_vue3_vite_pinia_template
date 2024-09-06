@@ -4,8 +4,8 @@ const { $mitt } = useGlobalProperties()
 
 const text = ref<string>('组件二的值')
 
-$mitt.on('changeMsg', (e: any) => {
-  text.value = e.msg
+$mitt.on('changeMsg', (msg: string) => {
+  text.value = msg
 })
 </script>
 
