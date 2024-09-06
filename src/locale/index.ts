@@ -9,6 +9,7 @@ const messages = {
 }
 
 const i18n = createI18n({
+  legacy: false,
   // 设置默认语言
   locale: 'zh',
   // 设置备用语言

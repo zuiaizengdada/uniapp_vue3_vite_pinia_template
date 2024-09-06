@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import i18n from '@/locale'
 import { router, selectorQueryClientRect } from '@/utils'
+import { useGlobalProperties } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/post'
 const { userName, setUserName } = useStore('user')
-
-const t = i18n.global.t
 
 onMounted(async () => {
   const res2 = await getPostById(1)
@@ -27,8 +25,9 @@ onMounted(async () => {
 })
 
 type Languages = 'zh' | 'en'
+const { $t, $changeLocale } = useGlobalProperties()
 function handleSwitchLanguage(language: Languages) {
-  i18n.global.locale = language
+  $changeLocale(language)
 }
 
 function handleGotoLogin() {
@@ -53,7 +52,7 @@ function handleGotoMitt() {
     </view>
 
     <view class="i18n">
-      <text>{{ t('demo') }}</text>
+      <text>{{ $t('demo') }}</text>
     </view>
 
     <view class="flex items-center gap-5">
