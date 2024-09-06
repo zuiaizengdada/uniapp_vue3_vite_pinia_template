@@ -9,6 +9,7 @@ declare module 'vue' {
   }
 
   export interface ComponentCustomProperties {
-    $mitt: Emitter<Record<EventType,any>>
+    $mitt: Emitter<Record<EventType, any>>
+    $changeLocale: (locale: 'zh' | 'en') => void
   }
 }
