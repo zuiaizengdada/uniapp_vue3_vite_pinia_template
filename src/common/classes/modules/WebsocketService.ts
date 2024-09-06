@@ -113,6 +113,8 @@ export class WebSocketService {
     console.log('WebSocket 连接关闭')
     this.setConnectionState(false)
 
+    this.callbacks.onClose!()
+
     // 判断是否是主动断开连接
     if (this.isClosedManually) {
       this.isClosedManually = false
@@ -120,7 +122,6 @@ export class WebSocketService {
     }
 
     // 如果不是主动断开连接，则尝试重连
-    this.callbacks.onClose!()
     this.attemptReconnect()
   }
 

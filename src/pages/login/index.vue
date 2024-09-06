@@ -1,30 +1,31 @@
 <script setup lang="ts">
-import { useWebSocket } from '@vueuse/core'
+import { createWebSocketInstance, WebSocketService } from '@/common/classes'
+import { WS_ID } from '@/common/constants'
 
-const { status, send, close } = useWebSocket(import.meta.env.VITE_WEBSOCKET_URL, {
-  onConnected: () => {
-    console.log('onConnected')
-  },
-  onDisconnected: () => {
-    console.log('onDisconnected')
-  },
-  onMessage: (_, { data }: MessageEvent) => {
-    console.log(data)
-  },
-  autoReconnect: {
-    delay: 1000,
-    retries: 10
-  }
-})
+let websocket: WebSocketService
 
-onMounted(() => {
-  if (status.value === 'CONNECTING') {
-    send('hello')
+onMounted(async () => {
+  websocket = createWebSocketInstance(WS_ID, {
+    url: import.meta.env.VITE_WEBSOCKET_URL,
+    shouldReconnect: true,
+    onMessage(message) {
+      console.log(message)
+    },
+    onClose() {
+      console.log('关闭')
+    }
+  })
+
+  const isConnected = await websocket.connect()
+  if (isConnected) {
+    websocket.sendMessage({
+      msg: 'hello'
+    })
   }
 })
 
 onUnmounted(() => {
-  close()
+  websocket.close()
 })
 </script>
 <template>
