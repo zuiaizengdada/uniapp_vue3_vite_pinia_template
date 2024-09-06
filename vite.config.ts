@@ -29,7 +29,8 @@ export default defineConfig({
         {
           '@/utils/modules/pinia-auto-refs': ['useStore']
         },
-        uniuseAutoImports()
+        uniuseAutoImports(),
+        '@vueuse/core'
       ],
       dts: 'src/types/auto-import.d.ts'
     }),
