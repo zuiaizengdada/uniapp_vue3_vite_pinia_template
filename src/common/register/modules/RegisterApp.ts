@@ -1,5 +1,5 @@
-import '@/common/register/RegisterImport'
-import registerProperties from './RegisterProperties'
+import '@/common/register/modules/RegisterImport'
+import { RegisterProperties } from './RegisterProperties'
 import { App } from 'vue'
 // 国际化
 import i18n from '@/locale'
@@ -7,8 +7,8 @@ import i18n from '@/locale'
 // pinia
 import store, { Pinia } from '@/store'
 
-function registerApp(app: App) {
-  registerProperties(app)
+export function RegisterApp(app: App) {
+  RegisterProperties(app)
 
   app.use(store)
   app.use(i18n)
@@ -18,5 +18,3 @@ function registerApp(app: App) {
     Pinia
   }
 }
-
-export default registerApp

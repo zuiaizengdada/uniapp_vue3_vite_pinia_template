@@ -2,7 +2,7 @@ import mitt from 'mitt'
 import i18n from '@/locale'
 import { App } from 'vue'
 
-export default function registerProperties(app: App): void {
+export function RegisterProperties(app: App): void {
   app.config.globalProperties.$mitt = mitt()
   app.config.globalProperties.$changeLocale = (locale: 'zh' | 'en') => {
     i18n.global.locale.value = locale

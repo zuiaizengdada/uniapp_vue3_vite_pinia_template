@@ -1,11 +1,11 @@
 import { createSSRApp } from 'vue'
 import App from './App.vue'
-import registerApp from '@/common/register/RegisterApp'
+import { RegisterApp } from '@/common/register'
 
 export function createApp() {
   const app = createSSRApp(App)
 
-  const registeredItems = registerApp(app)
+  const registeredItems = RegisterApp(app)
 
   return {
     ...registeredItems
