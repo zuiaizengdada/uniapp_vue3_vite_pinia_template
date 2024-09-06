@@ -1,1 +1,1 @@
-export const WS_ID = Symbol('websocket1')
+export const EXAMPLE_SYMBOL = Symbol('example')
