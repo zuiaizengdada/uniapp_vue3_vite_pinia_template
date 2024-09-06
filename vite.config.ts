@@ -1,5 +1,3 @@
-/// <reference types="vitest" />
-
 import { defineConfig } from 'vite'
 import uni from '@dcloudio/vite-plugin-uni'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -26,7 +24,6 @@ export default defineConfig({
         'vue',
         'pinia',
         'uni-app',
-        'vitest',
         {
           '@/utils/modules/pinia-auto-refs': ['useStore']
         }

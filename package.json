@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/jsconfig",
   "name": "uniapp_vue3_vite_pinia_template",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "dev:app": "uni -p app",
     "dev:app:test": "uni -p app --mode test",
@@ -60,8 +60,7 @@
     "prepare": "husky install",
     "lint": "eslint src --fix --ext .js,.ts,.jsx,.tsx,.vue && prettier . --write",
     "commit": "cz",
-    "svgicon": "node ./src/uni_modules/zui-svg-icon/tools/generate-svg-icon.js",
-    "test": "vitest"
+    "svgicon": "node ./src/uni_modules/zui-svg-icon/tools/generate-svg-icon.js"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-4020420240722002",
@@ -97,8 +96,7 @@
     "uni-draw": "^1.0.3",
     "vue": "^3.4.37",
     "vue-component-type-helpers": "^2.0.29",
-    "vue-i18n": "^9.13.1",
-    "vuex": "^4.1.0"
+    "vue-i18n": "^9.13.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.3.0",
@@ -128,7 +126,6 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-vue": "^9.27.0",
-    "happy-dom": "^15.7.3",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.9",
     "miniprogram-api-typings": "^3.12.3",
@@ -138,8 +135,7 @@
     "tailwindcss": "^3.4.10",
     "typescript": "^4.9.5",
     "unplugin-auto-import": "^0.16.7",
-    "vite": "^5.4.3",
-    "vitest": "^2.0.5",
+    "vite": "^5.4.0",
     "vue-tsc": "^1.8.27"
   },
   "lint-staged": {
