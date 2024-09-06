@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import { uniPolyfill } from './src/common/plugins'
 import uni from '@dcloudio/vite-plugin-uni'
 import AutoImport from 'unplugin-auto-import/vite'
 import PiniaAutoRefs from 'pinia-auto-refs'
@@ -29,15 +30,16 @@ export default defineConfig({
         {
           '@/utils/modules/pinia-auto-refs': ['useStore']
         },
-        uniuseAutoImports(),
-        '@vueuse/core'
+        '@vueuse/core',
+        uniuseAutoImports()
       ],
       dts: 'src/types/auto-import.d.ts'
     }),
     ReactivityTransform(),
     PiniaAutoRefs({
       outputFile: 'src/utils/modules/pinia-auto-refs.ts'
-    })
+    }),
+    uniPolyfill()
   ],
   css: {
     postcss: {

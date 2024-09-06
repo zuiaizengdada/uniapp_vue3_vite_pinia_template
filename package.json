@@ -83,7 +83,7 @@
     "@intlify/message-compiler": "^9.13.1",
     "@rollup/rollup-darwin-x64": "^4.20.0",
     "@uni-helper/uni-use": "^0.19.14",
-    "@vueuse/core": "^9.13.0",
+    "@vueuse/core": "^11.0.3",
     "crypto-js": "^3.3.0",
     "gsap": "^3.12.5",
     "jsencrypt": "^3.3.2",
