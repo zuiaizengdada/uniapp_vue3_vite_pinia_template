@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { router, selectorQueryClientRect } from '@/utils'
+import { router } from '@/utils'
 import { useGlobalProperties } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/post'
 const { userName, setUserName } = useStore('user')
 
 onMounted(async () => {
+  const { getBoundingClientRect } = useSelectorQuery()
+  const rect = await getBoundingClientRect('.scroll-content')
+  console.log(rect)
+
+  const res = await getPosts()
+  console.log(res)
+
   const res2 = await getPostById(1)
   console.log(res2)
 
@@ -16,12 +23,6 @@ onMounted(async () => {
 
   const res5 = await createPost('测试文章', '测试文章内容')
   console.log(res5)
-
-  const res = await getPosts()
-  console.log(res)
-
-  const res6 = await selectorQueryClientRect('.name')
-  console.log(res6)
 })
 
 type Languages = 'zh' | 'en'
