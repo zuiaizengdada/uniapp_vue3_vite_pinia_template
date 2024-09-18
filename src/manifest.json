@@ -4,7 +4,6 @@
   "description": "",
   "versionName": "1.0.0",
   "versionCode": "100",
-  "transformPx": false,
   "networkTimeout": {
     "request": 15000
   },
@@ -16,8 +15,7 @@
     "splashscreen": {
       "alwaysShowBeforeRender": true,
       "waiting": true,
-      "autoclose": true,
-      "delay": 0
+      "autoclose": true
     },
     /* 模块配置 */
     "modules": {},
