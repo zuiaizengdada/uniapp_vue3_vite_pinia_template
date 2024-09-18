@@ -17,9 +17,9 @@ UNI_TEMPLATE
 │   ├── apis
 │   ├── common
 │   ├── components
-│   ├── hooks
 │   ├── locale
 │   ├── pages
+│   ├── pagesSubPages
 │   ├── static
 │   ├── store
 │   ├── types
@@ -63,7 +63,8 @@ UNI_TEMPLATE
 | `.editorconfig`        | 定义代码格式的配置文件，统一不同编辑器的编码风格。   |
 | `.env*`                | 环境变量配置文件，分别对应不同的环境。               |
 | `.eslintrc.js`         | ESLint 的配置文件，用于定义代码规范和检查规则。      |
-| `.gitignore`           | 指定不需要纳入版本控制的文件和目录。                 |
+| `.eslintignore`        | eslint指定不需要纳入版本控制的文件和目录。      |
+| `.gitignore`           | git指定不需要纳入版本控制的文件和目录。                 |
 | `.prettierignore`      | 指定不需要 Prettier 格式化的文件和目录。             |
 | `.prettierrc`          | Prettier 的配置文件，用于定义代码格式化规则。        |
 | `commitlint.config.js` | Commitlint 的配置文件，用于规范 Git 提交信息。       |
