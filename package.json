@@ -115,7 +115,6 @@
     "@uni-helper/uni-ui-types": "^0.5.15",
     "@uni-helper/vite-plugin-uni-tailwind": "^0.15.0",
     "@vitejs/plugin-vue": "^4.6.2",
-    "@vue-macros/reactivity-transform": "^1.0.4",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^12.0.0",
     "@vue/runtime-core": "^3.5.4",
