@@ -73,7 +73,7 @@ export class WebSocketService {
     console.log('WebSocket 连接已成功建立')
 
     if (this.options.heartBeat) {
-      this.startHeartBeat() // 如果启用心跳，则启动心跳机制
+      this.startHeartBeat()
     }
 
     this.callbacks.onOpen!()
@@ -122,7 +122,6 @@ export class WebSocketService {
       return
     }
 
-    // 如果不是主动断开连接，则尝试重连
     this.attemptReconnect()
   }
 
