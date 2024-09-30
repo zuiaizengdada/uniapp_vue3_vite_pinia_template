@@ -1,9 +1,6 @@
 import { type ComponentInternalInstance } from 'vue'
 
-export function selectorQueryClientRect(
-  selector: string | string[],
-  instance?: ComponentInternalInstance
-): Promise<UniApp.NodeInfo | UniApp.NodeInfo[]> {
+export function selectorQueryClientRect(selector: string | string[], instance?: ComponentInternalInstance): Promise<UniApp.NodeInfo | UniApp.NodeInfo[]> {
   return new Promise((resolve) => {
     const query = instance ? uni.createSelectorQuery().in(instance) : uni.createSelectorQuery()
 

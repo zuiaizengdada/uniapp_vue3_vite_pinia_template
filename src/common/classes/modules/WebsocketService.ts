@@ -45,16 +45,7 @@ export class WebSocketService {
   }
 
   private updateOptions(options: UseWebSocketOptions) {
-    const {
-      onOpen,
-      onMessage,
-      onError,
-      onClose,
-      onReconnectAttempt,
-      onReconnectSuccess,
-      onReconnectFail,
-      ...configOptions
-    } = { ...DEFAULT_OPTIONS, ...options }
+    const { onOpen, onMessage, onError, onClose, onReconnectAttempt, onReconnectSuccess, onReconnectFail, ...configOptions } = { ...DEFAULT_OPTIONS, ...options }
 
     this.callbacks.onOpen = onOpen || DEFAULT_OPTIONS.onOpen
     this.callbacks.onMessage = onMessage || DEFAULT_OPTIONS.onMessage

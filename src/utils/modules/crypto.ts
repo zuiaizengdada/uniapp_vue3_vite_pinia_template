@@ -16,10 +16,7 @@ export function generatRandomKey() {
 }
 
 // 对请求体进行动态对称加密，并返回加密后的请求体和加密后的对称密钥
-export function encryptRequestBody(
-  requestBody: CryptoJS.lib.WordArray | string,
-  randomKey: CryptoJS.lib.WordArray | string
-) {
+export function encryptRequestBody(requestBody: CryptoJS.lib.WordArray | string, randomKey: CryptoJS.lib.WordArray | string) {
   // 对请求体进行AES加密  目前采用ECB模式性能更高，如需更高安全级别后续可以调整为CBC模式
   const encryptedRequestBody = CryptoJS.AES.encrypt(requestBody, randomKey, {
     mode: CryptoJS.mode.ECB,
@@ -41,14 +38,10 @@ export function decryptResponseBody(responseBody: any, symmetricKey: string) {
   const encryptedBytes = CryptoJS.enc.Base64.parse(responseBody)
   // 需要将16进制转byte数组
   const keyBytes = CryptoJS.enc.Hex.parse(symmetricKey)
-  const decrypted = CryptoJS.AES.decrypt(
-    { ciphertext: encryptedBytes } as CryptoJS.lib.CipherParams | string,
-    keyBytes,
-    {
-      mode: CryptoJS.mode.ECB,
-      padding: CryptoJS.pad.Pkcs7
-    }
-  )
+  const decrypted = CryptoJS.AES.decrypt({ ciphertext: encryptedBytes } as CryptoJS.lib.CipherParams | string, keyBytes, {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.Pkcs7
+  })
   const decryptedResponseBody = decrypted.toString(CryptoJS.enc.Utf8)
   // 返回解密后的数据
   return JSON.parse(decryptedResponseBody)

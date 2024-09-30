@@ -3,13 +3,7 @@ module.exports = {
   env: {
     node: true
   },
-  extends: [
-    'plugin:vue/vue3-essential',
-    'eslint:recommended',
-    '@vue/prettier',
-    'plugin:prettier/recommended',
-    '@vue/typescript/recommended'
-  ],
+  extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/prettier', 'plugin:prettier/recommended', '@vue/typescript/recommended'],
   parserOptions: {
     ecmaVersion: 2020
   },
@@ -20,6 +14,15 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'no-undef': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    'prettier/prettier': [
+      'error',
+      {
+        printWidth: 200, // 确保与 .prettierrc 保持一致
+        singleQuote: true,
+        semi: false,
+        trailingComma: 'none'
+      }
+    ]
   }
 }
