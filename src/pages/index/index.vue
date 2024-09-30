@@ -25,6 +25,23 @@ onMounted(async () => {
   console.log(res5)
 })
 
+const { count, dec, reset } = useCounter(60, { min: 0, max: 60 })
+let timer: number | null | NodeJS.Timeout = null
+
+function handleGetCode() {
+  if (timer) return
+
+  reset()
+
+  timer = setInterval(() => {
+    dec()
+    if (!count.value) {
+      clearInterval(timer!)
+      timer = null
+    }
+  }, 1000)
+}
+
 type Languages = 'zh' | 'en'
 const { $t, $changeLocale } = useGlobalProperties()
 function handleSwitchLanguage(language: Languages) {
@@ -42,6 +59,14 @@ function handleGotoMitt() {
 
 <template>
   <view class="flex flex-col items-center w-full gap-[10px] scroll-content">
+    <view>
+      <text>倒计时{{ count }}</text>
+    </view>
+
+    <view class="flex items-center gap-5">
+      <button @click="handleGetCode">获取验证码</button>
+    </view>
+
     <view class="w-full text-center name">
       <text>
         {{ userName }}
@@ -52,7 +77,7 @@ function handleGotoMitt() {
       <button @tap="setUserName('zengdada1')">修改名字 pinia 数据持久化</button>
     </view>
 
-    <view class="i18n">
+    <view>
       <text>{{ $t('demo') }}</text>
     </view>
 
