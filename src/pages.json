@@ -11,9 +11,9 @@
       }
     },
     {
-      "path": "pages/login/index",
+      "path": "pages/websocket/index",
       "style": {
-        "navigationBarTitleText": "登录"
+        "navigationBarTitleText": "websocket演示"
       }
     },
     {

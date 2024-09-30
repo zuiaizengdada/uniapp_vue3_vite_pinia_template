@@ -31,8 +31,8 @@ function handleSwitchLanguage(language: Languages) {
   $changeLocale(language)
 }
 
-function handleGotoLogin() {
-  router.navigateTo('/pages/login/index')
+function handleGotoWebsocket() {
+  router.navigateTo('/pages/websocket/index')
 }
 
 function handleGotoMitt() {
@@ -62,11 +62,11 @@ function handleGotoMitt() {
     </view>
 
     <view class="flex items-center">
-      <button @tap="handleGotoLogin">跳转到登录页</button>
+      <button @tap="handleGotoWebsocket">websocket演示</button>
     </view>
 
     <view class="flex items-center">
-      <button @tap="handleGotoMitt">跳转到mitt示例页面</button>
+      <button @tap="handleGotoMitt">mitt库演示</button>
     </view>
   </view>
 </template>

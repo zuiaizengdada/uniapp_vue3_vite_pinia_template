@@ -62,9 +62,17 @@ export function decryptAES(encrypted: CryptoJS.lib.CipherParams | string, key: s
   return decrypted.toString(CryptoJS.enc.Utf8)
 }
 
+const { randomKey, symmetricKey } = generatRandomKey()
+const { id: userId = 1 } = { id: '1828638307847184385' }
+const handshakeCode = encryptRequestBody(`1,${userId}`, randomKey)
+const secretKey = encryptSymmetricKey(symmetricKey)
+
 export default {
   encryptRequestBody,
   encryptSymmetricKey,
   decryptResponseBody,
-  generatRandomKey
+  generatRandomKey,
+  decryptAES,
+  handshakeCode,
+  secretKey
 }

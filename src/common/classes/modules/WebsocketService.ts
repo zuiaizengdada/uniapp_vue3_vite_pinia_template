@@ -1,11 +1,13 @@
 import { ref, reactive, watch } from 'vue'
-import { type UseWebSocketOptions } from '../type'
+import { WebSocketHeartBeatConfig, type UseWebSocketOptions } from '../type'
 
 const DEFAULT_OPTIONS: UseWebSocketOptions = {
   url: '',
   shouldReconnect: true,
   reconnectInterval: 10,
   maxReconnectAttempts: 10,
+  heartBeat: false,
+  autoConnect: true,
   onOpen: () => {},
   onMessage: () => {},
   onError: () => {},
@@ -19,6 +21,7 @@ export class WebSocketService {
   private socket: UniApp.SocketTask | null = null
   private reconnectAttempts = 0
   private reconnectTimeoutId: number | NodeJS.Timeout | null = null
+  private heartBeatIntervalId: number | NodeJS.Timeout | null = null
   private isConnecting = false
   private isClosedManually = false
 
@@ -77,6 +80,11 @@ export class WebSocketService {
   private handleOpen() {
     this.setConnectionState(true)
     console.log('WebSocket 连接已成功建立')
+
+    if (this.options.heartBeat) {
+      this.startHeartBeat() // 如果启用心跳，则启动心跳机制
+    }
+
     this.callbacks.onOpen!()
   }
 
@@ -112,6 +120,8 @@ export class WebSocketService {
   private handleClose() {
     console.log('WebSocket 连接关闭')
     this.setConnectionState(false)
+
+    this.stopHeartBeat()
 
     this.callbacks.onClose!()
 
@@ -161,9 +171,44 @@ export class WebSocketService {
     }
   }
 
+  private startHeartBeat() {
+    if (this.heartBeatIntervalId !== null) return
+
+    const heartBeatConfig: WebSocketHeartBeatConfig =
+      typeof this.options.heartBeat === 'object'
+        ? this.options.heartBeat
+        : {
+            interval: 10000,
+            message: {
+              user: 'check',
+              scene_id: -1,
+              llm_type: -1,
+              qa_mode: 'check',
+              chat_template: null
+            }
+          }
+
+    this.heartBeatIntervalId = setInterval(() => {
+      if (this.isConnected.value && this.socket) {
+        this.sendMessage(heartBeatConfig.message)
+      }
+    }, heartBeatConfig.interval)
+  }
+
+  // 停止心跳机制
+  private stopHeartBeat() {
+    if (this.heartBeatIntervalId !== null) {
+      clearInterval(this.heartBeatIntervalId)
+      this.heartBeatIntervalId = null
+    }
+  }
+
   private setConnectionState(connected: boolean) {
     this.isConnected.value = connected
-    if (!connected) this.socket = null
+    if (!connected) {
+      this.socket = null
+      this.stopHeartBeat()
+    }
   }
 
   private setupAutoReconnect() {
@@ -226,6 +271,7 @@ export class WebSocketService {
         fail: this.handleCloseFailure.bind(this)
       })
       this.clearReconnectTimeout()
+      this.stopHeartBeat()
     }
   }
 
@@ -261,9 +307,12 @@ export class WebSocketService {
 
 const webSocketInstances: Record<symbol, WebSocketService> = {}
 
-export function createWebSocketInstance(id: symbol, options: UseWebSocketOptions): WebSocketService {
+export async function createWebSocketInstance(id: symbol, options: UseWebSocketOptions): Promise<WebSocketService> {
   if (!webSocketInstances[id]) {
     webSocketInstances[id] = new WebSocketService(options)
+    if (options.autoConnect) {
+      await getWebSocketInstance(id)?.connect()
+    }
   }
   return webSocketInstances[id]
 }
