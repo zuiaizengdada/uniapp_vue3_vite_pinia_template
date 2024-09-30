@@ -1,6 +1,9 @@
-import apiService from '@/apis'
-import { type Data } from '@/apis/request/type'
+import ApiService from '../request'
+import { BASE_URL } from '../request/config'
+import { type Data } from '../request/type'
 import { type Post } from './type'
+
+const apiService = new ApiService({ baseURL: BASE_URL })
 
 // 获取所有文章数据
 export function getPosts(): Promise<Data<Post>> {

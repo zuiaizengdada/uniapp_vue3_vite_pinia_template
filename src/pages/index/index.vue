@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { router } from '@/utils'
 import { useGlobalProperties } from '@/common/hooks'
-import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis/modules/post'
+import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
 const { userName, setUserName } = useStore('user')
 
 onMounted(async () => {
