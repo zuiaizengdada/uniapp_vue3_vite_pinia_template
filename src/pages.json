@@ -27,9 +27,9 @@
       }
     },
     {
-      "path": "pages/my/index",
+      "path": "pages/scroll/index",
       "style": {
-        "navigationBarTitleText": "我的"
+        "navigationBarTitleText": "滚动演示"
       }
     }
   ],

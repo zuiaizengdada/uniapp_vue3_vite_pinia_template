@@ -55,6 +55,10 @@ function handleGotoWebsocket() {
 function handleGotoMitt() {
   router.navigateTo('/pages/mitt/index')
 }
+
+function handleGotoScrollPage() {
+  router.navigateTo('/pages/scroll/index')
+}
 </script>
 
 <template>
@@ -92,6 +96,10 @@ function handleGotoMitt() {
 
     <view class="flex items-center">
       <button @tap="handleGotoMitt">mitt库演示</button>
+    </view>
+
+    <view class="flex items-center">
+      <button @tap="handleGotoScrollPage">滚动列表演示</button>
     </view>
   </view>
 </template>
