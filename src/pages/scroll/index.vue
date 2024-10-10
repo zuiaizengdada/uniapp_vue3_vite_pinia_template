@@ -21,7 +21,7 @@ function handleScrollToLower() {
   console.log('滚动到底部了')
 }
 
-function handleScroll(e: Event) {
+function handleScroll(e: any) {
   console.log(e)
 }
 
