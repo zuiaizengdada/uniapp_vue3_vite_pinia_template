@@ -38,7 +38,7 @@ function handleRefresherRefresh() {
   setTimeout(() => {
     triggered.value = false
     console.log('自定义下拉刷新被完成')
-  }, 1000)
+  }, 1500)
 }
 
 function handleRefresherrestore() {
