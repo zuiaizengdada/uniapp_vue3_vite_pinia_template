@@ -57,8 +57,8 @@ importers:
         specifier: ^1.5.6
         version: 1.5.6
       '@esbuild/darwin-x64':
-        specifier: ^0.21.5
-        version: 0.21.5
+        specifier: ^0.20.2
+        version: 0.20.2
       '@intlify/message-compiler':
         specifier: ^9.14.0
         version: 9.14.0
@@ -1091,11 +1091,6 @@ packages:
     resolution: {integrity: sha512-tBcXp9KNphnNH0dfhv8KYkZhjc+H3XBkF5DKtswJblV7KlT9EI2+jeA8DgBjp908WEuYll6pF+UStUCfEpdysA==}
     engines: {node: '>=12'}
     cpu: [x64]
-    os: [darwin]
-
-  '@esbuild/darwin-x64@0.21.5':
-    resolution: {integrity: sha512-se/JjF8NlmKVG4kNIuyWMV/22ZaerB+qaSi5MdrXtd6R08kvs2qCN4C09miupktDitvh8jRFflwGFBQcxZRjbw==}
-    engines: {node: '>=12'}
     os: [darwin]
 
   '@esbuild/freebsd-arm64@0.20.2':
@@ -6981,10 +6976,7 @@ snapshots:
   '@esbuild/darwin-arm64@0.20.2':
     optional: true
 
-  '@esbuild/darwin-x64@0.20.2':
-    optional: true
-
-  '@esbuild/darwin-x64@0.21.5': {}
+  '@esbuild/darwin-x64@0.20.2': {}
 
   '@esbuild/freebsd-arm64@0.20.2':
     optional: true
