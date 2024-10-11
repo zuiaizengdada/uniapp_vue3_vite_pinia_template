@@ -3,13 +3,13 @@ import { useScroll } from '@/common/hooks'
 import { ComponentInternalInstance } from 'vue'
 
 const instance = getCurrentInstance() as ComponentInternalInstance
-const { scrollTop, scrollToBottom } = useScroll(instance)
+const { scrollTop, scrollToBottom, scrollToTop, scrollWithAnimation, setScrollWithAnimation, setScrollTop, targetElementId } = useScroll(instance)
 
 scrollToBottom('.scroll-container', '.scroll-content')
 
-const targetElementId = ref<string>('')
-
-const scrollToElement = (id: string) => {
+async function scrollToElement(id: string, scrollAnimation: boolean = true) {
+  setScrollWithAnimation(scrollAnimation)
+  await scrollToTop()
   targetElementId.value = id
 }
 
@@ -21,8 +21,10 @@ function handleScrollToLower() {
   console.log('滚动到底部了')
 }
 
-function handleScroll(e: any) {
+function handleScroll(e: any, scrollAnimation: boolean = false) {
   console.log(e)
+  setScrollTop(e.detail.scrollTop)
+  setScrollWithAnimation(scrollAnimation)
 }
 
 const triggered = ref<boolean>(false)
@@ -54,8 +56,10 @@ function handleRefresherabort() {
   <scroll-view
     class="scroll-container h-[400px] bg-red-500"
     :scrollTop="scrollTop"
-    scroll-with-animation
+    :upper-threshold="0"
+    :lower-threshold="0"
     :scroll-into-view="targetElementId"
+    :scroll-with-animation="scrollWithAnimation"
     scroll-y
     refresher-enabled
     :refresher-triggered="triggered"
@@ -73,8 +77,9 @@ function handleRefresherabort() {
       </template>
     </view>
   </scroll-view>
-
+  <view class="absolute right-0 bottom-[20%]" @click="scrollToTop"><text>回到顶部</text></view>
   <view class="button-container">
+    <text>scrollTop: {{ scrollTop }}</text>
     <button @click="scrollToElement('id10')">Scroll to Item 10</button>
     <button @click="scrollToElement('id50')">Scroll to Item 50</button>
     <button @click="scrollToElement('id99')">Scroll to Item 99</button>

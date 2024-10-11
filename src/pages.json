@@ -29,7 +29,11 @@
     {
       "path": "pages/scroll/index",
       "style": {
-        "navigationBarTitleText": "滚动演示"
+        "navigationBarTitleText": "滚动演示",
+        "enablePullDownRefresh": false,
+        "app-plus": {
+          "bounce": "none"
+        }
       }
     }
   ],
