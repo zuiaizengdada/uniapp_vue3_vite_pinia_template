@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import { router } from '@/utils'
-import { useGlobalProperties } from '@/common/hooks'
+import { useGlobalProperties, useSystemInfo } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
 const { userName, setUserName } = useStore('user')
 
 onMounted(async () => {
   const { getBoundingClientRect } = useSelectorQuery()
-  const rect = await getBoundingClientRect('.scroll-content')
+  const rect = await getBoundingClientRect('.container')
   console.log(rect)
+
+  const { windowHeight, windowWidth, screenWidth, screenHeight } = useSystemInfo()
+  console.log(`屏幕宽度：${windowWidth}`)
+  console.log(`屏幕高度：${windowHeight}`)
+  console.log(`可使用窗口宽度：${screenWidth}`)
+  console.log(`可使用窗口高度：${screenHeight}`)
 
   const res = await getPosts()
   console.log(res)
@@ -62,7 +68,7 @@ function handleGotoScrollPage() {
 </script>
 
 <template>
-  <view class="flex flex-col items-center w-full gap-[10px] scroll-content">
+  <view class="flex flex-col items-center w-full gap-[10px] container">
     <view>
       <text>倒计时{{ count }}</text>
     </view>
