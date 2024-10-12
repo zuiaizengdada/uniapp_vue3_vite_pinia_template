@@ -6,12 +6,12 @@ const apiService = new ApiService()
 
 // 获取所有文章数据
 export function getPosts(): Promise<Data<Post>> {
-  return apiService.get('/posts', {})
+  return apiService.get('/posts')
 }
 
 // 根据文章id获取文章数据
 export function getPostById(id: number): Promise<Data<Post>> {
-  return apiService.get(`/post/${id}`, {})
+  return apiService.get(`/post/${id}`)
 }
 
 // 更新文章
@@ -21,7 +21,7 @@ export function updatePost(id: number, title: string, body: string): Promise<Dat
 
 // 删除文章
 export function deletePost(id: number): Promise<Data<Post>> {
-  return apiService.delete(`/post/${id}`, {})
+  return apiService.delete(`/post/${id}`)
 }
 
 // 创建文章

@@ -21,10 +21,10 @@ function handleScrollToLower() {
   console.log('滚动到底部了')
 }
 
-function handleScroll(e: any, scrollAnimation: boolean = false) {
+function handleScroll(e: any) {
   console.log(e)
   setScrollTop(e.detail.scrollTop)
-  setScrollWithAnimation(scrollAnimation)
+  setScrollWithAnimation(false)
 }
 
 const triggered = ref<boolean>(false)
