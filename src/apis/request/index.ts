@@ -1,35 +1,39 @@
 import { HttpStatusCode } from '@/common/constants'
+import { BASE_URL, TIME_OUT } from '../request/config'
 import { router } from '@/utils'
-import { uniStorage } from '@/utils'
 import i18n from '@/locale'
-import type { RequestConfig, Data, CustomConfig } from './type'
+import type { RequestConfig, Data, CustomConfig, TokenConfig } from './type'
 
 const t = i18n.global.t
 
 class ApiService {
   constructor(
-    private config: RequestConfig,
-    private needToken: boolean = false,
-    private mock: boolean = false
-  ) {}
+    private requestConfig: RequestConfig = { baseURL: BASE_URL, timeout: TIME_OUT },
+    private tokenConfig: TokenConfig = { enabled: false, AccessTokenKey: 'Authorization', tokenStoragePath: 'user.AccessToken' },
+    private mock: boolean | undefined = undefined
+  ) {
+    this.requestConfig = Object.assign({ baseURL: BASE_URL, timeout: TIME_OUT }, requestConfig)
+    this.tokenConfig = Object.assign({ enabled: false, AccessTokenKey: 'Authorization', tokenStoragePath: 'user.accessToken' }, tokenConfig)
+  }
 
   private setupInterceptors(options: Partial<UniApp.RequestOptions & CustomConfig>) {
-    if (!options.url!.startsWith('http') && !this.mock && !options.mock) {
-      options.url = this.config.baseURL + options.url
+    const useMock = options.mock ?? this.mock ?? import.meta.env.VITE_MOCK === 'true'
+
+    if (!options.url!.startsWith('http') && !useMock) {
+      options.url = this.requestConfig.baseURL + options.url
     }
 
-    options.timeout = this.config.timeout || 15000
+    options.timeout = this.requestConfig.timeout || 15000
     options.header = {
       'source-client': 'miniapp',
       ...options.header
     }
 
-    if (this.needToken) {
-      const AccessTokenKey = 'Authorization'
-      const AccessToken = uniStorage.getSync('user.AccessToken')
+    if (this.tokenConfig.enabled) {
+      const AccessToken = this.tokenConfig.tokenStoragePath
 
-      if (AccessToken) {
-        options.header[AccessTokenKey] = AccessToken
+      if (this.tokenConfig.AccessTokenKey) {
+        options.header[this.tokenConfig.AccessTokenKey] = AccessToken
       }
     }
   }
