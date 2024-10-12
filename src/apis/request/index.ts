@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '@/common/constants'
+import { HttpMethods, HttpStatusCode } from '@/common/constants'
 import { BASE_URL, TIME_OUT } from '../request/config'
 import { router } from '@/utils'
 import i18n from '@/locale'
@@ -87,7 +87,7 @@ class ApiService {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
-      method: 'GET',
+      method: HttpMethods.GET,
       data: params
     }
     this.setupInterceptors(requestOptions)
@@ -98,7 +98,7 @@ class ApiService {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
-      method: 'POST',
+      method: HttpMethods.POST,
       data
     }
     this.setupInterceptors(requestOptions)
@@ -109,7 +109,7 @@ class ApiService {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
-      method: 'PUT',
+      method: HttpMethods.PUT,
       data
     }
     this.setupInterceptors(requestOptions)
@@ -120,7 +120,7 @@ class ApiService {
     const requestOptions: UniApp.RequestOptions = {
       ...options,
       url,
-      method: 'DELETE',
+      method: HttpMethods.DELETE,
       data: params
     }
     this.setupInterceptors(requestOptions)

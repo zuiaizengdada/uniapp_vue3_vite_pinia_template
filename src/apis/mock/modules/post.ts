@@ -1,5 +1,6 @@
 import { mock } from 'better-mock/dist/mock.mp'
 import { type Post } from '@/apis/modules/type'
+import { HttpMethods } from '@/common/constants'
 
 const posts = mock({
   'data|10': [
@@ -12,6 +13,13 @@ const posts = mock({
   ]
 }).data as Post[]
 
+interface Response {
+  body: Record<string, any> | null
+  headers: any
+  type: HttpMethods
+  url: string
+}
+
 // 获取所有文章数据
 mock('/posts', 'GET', {
   code: 1,
@@ -20,8 +28,8 @@ mock('/posts', 'GET', {
 })
 
 // 根据文章id获取文章数据
-mock('/post/:id', 'GET', (req: any) => {
-  const id = parseInt(req.url.match(/\/post\/(\d+)/)[1])
+mock('/post/:id', 'GET', (res: Response) => {
+  const id = parseInt(res.url.match(/\/post\/(\d+)/)![1])
   const post = posts.find((post) => post.id === id)
   if (post) {
     return {
@@ -38,11 +46,11 @@ mock('/post/:id', 'GET', (req: any) => {
 })
 
 // 更新文章
-mock('/post/:id', 'PUT', (req: any) => {
-  const id = parseInt(req.url.match(/\/post\/(\d+)/)[1])
+mock('/post/:id', 'PUT', (res: Response) => {
+  const id = parseInt(res.url.match(/\/post\/(\d+)/)![1])
   const post = posts.find((post) => post.id === id)
   if (post) {
-    const { title, body } = req.body
+    const { title, body } = res.body!
     post.title = title
     post.body = body
     return {
@@ -59,8 +67,8 @@ mock('/post/:id', 'PUT', (req: any) => {
 })
 
 // 删除文章
-mock('/post/:id', 'DELETE', (req: any) => {
-  const id = parseInt(req.url.match(/\/post\/(\d+)/)[1])
+mock('/post/:id', 'DELETE', (res: Response) => {
+  const id = parseInt(res.url.match(/\/post\/(\d+)/)![1])
   const post = posts.find((post) => post.id === id)
   if (post) {
     posts.splice(posts.indexOf(post), 1)
@@ -78,8 +86,8 @@ mock('/post/:id', 'DELETE', (req: any) => {
 })
 
 // 创建文章
-mock('/post', 'POST', (req: any) => {
-  const { title, body } = req.body
+mock('/post', 'POST', (res: Response) => {
+  const { title, body } = res.body!
   const post = {
     id: posts.length + 1,
     userId: 1,
