@@ -6,7 +6,7 @@ const { userName, setUserName } = useStore('user')
 
 onMounted(async () => {
   const { getBoundingClientRect } = useSelectorQuery()
-  const rect = await getBoundingClientRect('.container')
+  const rect = await getBoundingClientRect('.page-container')
   console.log(rect)
 
   const { windowHeight, windowWidth, screenWidth, screenHeight } = useSystemInfo()
@@ -68,7 +68,7 @@ function handleGotoScrollPage() {
 </script>
 
 <template>
-  <view class="flex flex-col items-center w-full gap-[10px] container">
+  <view class="flex flex-col items-center w-full gap-[10px] page-container">
     <view>
       <text>倒计时{{ count }}</text>
     </view>
