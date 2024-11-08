@@ -6,14 +6,25 @@ import type { RequestConfig, Data, CustomConfig, TokenConfig } from './type'
 
 const t = i18n.global.t
 
+const defaultRequestConfig: RequestConfig = {
+  baseURL: BASE_URL,
+  timeout: TIME_OUT
+}
+
+const defaultTokenConfig: TokenConfig = {
+  enabled: false,
+  AccessTokenKey: 'Authorization',
+  tokenStoragePath: 'user.AccessToken'
+}
+
 class ApiService {
   constructor(
-    private requestConfig: RequestConfig = { baseURL: BASE_URL, timeout: TIME_OUT },
-    private tokenConfig: TokenConfig = { enabled: false, AccessTokenKey: 'Authorization', tokenStoragePath: 'user.AccessToken' },
+    private requestConfig: RequestConfig = defaultRequestConfig,
+    private tokenConfig: TokenConfig = defaultTokenConfig,
     private mock: boolean | undefined = undefined
   ) {
-    this.requestConfig = Object.assign({ baseURL: BASE_URL, timeout: TIME_OUT }, requestConfig)
-    this.tokenConfig = Object.assign({ enabled: false, AccessTokenKey: 'Authorization', tokenStoragePath: 'user.accessToken' }, tokenConfig)
+    this.requestConfig = { ...defaultRequestConfig, ...requestConfig }
+    this.tokenConfig = { ...defaultTokenConfig, ...tokenConfig }
   }
 
   private setupInterceptors(options: Partial<UniApp.RequestOptions & CustomConfig>) {
