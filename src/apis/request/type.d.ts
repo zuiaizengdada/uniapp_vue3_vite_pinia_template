@@ -9,18 +9,21 @@ export interface RequestConfig {
 // token配置
 export interface TokenConfig {
   // 是否需要token
-  enabled: boolean
+  enabled?: boolean
   // token key
-  AccessTokenKey: string
+  AccessTokenKey?: string
   // token path
-  tokenStoragePath: string
+  tokenStoragePath?: string
 }
 
-// 自定义配置参数
-export interface CustomConfig {
+// mock配置参数
+export interface MockConfig {
   // 是否开启mock
   mock: boolean | undefined
 }
+
+// 自定义配置参数
+export interface CustomConfig extends TokenConfig, MockConfig {}
 
 // 网络请求返回格式
 export interface Data<T> {

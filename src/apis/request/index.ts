@@ -1,6 +1,6 @@
 import { HttpMethods, HttpStatusCode } from '@/common/constants'
 import { BASE_URL, TIME_OUT } from '../request/config'
-import { router } from '@/utils'
+import { router, uniStorage } from '@/utils'
 import i18n from '@/locale'
 import type { RequestConfig, Data, CustomConfig, TokenConfig } from './type'
 
@@ -40,11 +40,9 @@ class ApiService {
       ...options.header
     }
 
-    if (this.tokenConfig.enabled) {
-      const AccessToken = this.tokenConfig.tokenStoragePath
-
-      if (this.tokenConfig.AccessTokenKey) {
-        options.header[this.tokenConfig.AccessTokenKey] = AccessToken
+    if (options.enabled) {
+      if (options.AccessTokenKey) {
+        options.header[options.AccessTokenKey] = uniStorage.getSync(options.tokenStoragePath!)
       }
     }
   }
@@ -96,6 +94,8 @@ class ApiService {
 
   public get<T>(url: string, params?: Record<string, any>, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
+      ...this.requestConfig,
+      ...this.tokenConfig,
       ...options,
       url,
       method: HttpMethods.GET,
@@ -107,6 +107,8 @@ class ApiService {
 
   public post<T>(url: string, data?: Record<string, any>, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
+      ...this.requestConfig,
+      ...this.tokenConfig,
       ...options,
       url,
       method: HttpMethods.POST,
@@ -118,6 +120,8 @@ class ApiService {
 
   public put<T>(url: string, data?: Record<string, any>, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
+      ...this.requestConfig,
+      ...this.tokenConfig,
       ...options,
       url,
       method: HttpMethods.PUT,
@@ -129,6 +133,8 @@ class ApiService {
 
   public delete<T>(url: string, params?: Record<string, any>, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
+      ...this.requestConfig,
+      ...this.tokenConfig,
       ...options,
       url,
       method: HttpMethods.DELETE,
