@@ -42,6 +42,11 @@ export default defineConfig({
   css: {
     postcss: {
       plugins: [tailwindcss()]
+    },
+    preprocessorOptions: {
+      scss: {
+        api: 'modern'
+      }
     }
   }
 })
