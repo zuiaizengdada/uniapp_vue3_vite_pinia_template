@@ -2,7 +2,7 @@ import { HttpMethods, HttpStatusCode } from '@/common/constants'
 import { BASE_URL, TIME_OUT } from '../request/config'
 import { router, uniStorage } from '@/utils'
 import i18n from '@/locale'
-import type { RequestConfig, Data, CustomConfig, TokenConfig } from './type'
+import type { RequestConfig, Data, CustomConfig } from './type'
 
 const t = i18n.global.t
 
@@ -11,7 +11,8 @@ const defaultRequestConfig: RequestConfig = {
   timeout: TIME_OUT
 }
 
-const defaultTokenConfig: TokenConfig = {
+const defaultCustomConfig: CustomConfig = {
+  mock: true,
   enabled: false,
   AccessTokenKey: 'Authorization',
   tokenStoragePath: 'user.AccessToken'
@@ -20,15 +21,14 @@ const defaultTokenConfig: TokenConfig = {
 class ApiService {
   constructor(
     private requestConfig: RequestConfig = defaultRequestConfig,
-    private tokenConfig: TokenConfig = defaultTokenConfig,
-    private mock: boolean | undefined = undefined
+    private customConfig: CustomConfig = defaultCustomConfig
   ) {
     this.requestConfig = { ...defaultRequestConfig, ...requestConfig }
-    this.tokenConfig = { ...defaultTokenConfig, ...tokenConfig }
+    this.customConfig = { ...defaultCustomConfig, ...customConfig }
   }
 
   private setupInterceptors(options: Partial<UniApp.RequestOptions & CustomConfig>) {
-    const useMock = options.mock ?? this.mock ?? import.meta.env.VITE_MOCK === 'true'
+    const useMock = options.mock ?? this.customConfig.mock ?? import.meta.env.VITE_MOCK === 'true'
 
     if (!options.url!.startsWith('http') && !useMock) {
       options.url = this.requestConfig.baseURL + options.url
@@ -95,7 +95,7 @@ class ApiService {
   public get<T>(url: string, params?: Record<string, any>, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...this.requestConfig,
-      ...this.tokenConfig,
+      ...this.customConfig,
       ...options,
       url,
       method: HttpMethods.GET,
@@ -108,7 +108,7 @@ class ApiService {
   public post<T>(url: string, data?: Record<string, any>, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...this.requestConfig,
-      ...this.tokenConfig,
+      ...this.customConfig,
       ...options,
       url,
       method: HttpMethods.POST,
@@ -121,7 +121,7 @@ class ApiService {
   public put<T>(url: string, data?: Record<string, any>, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...this.requestConfig,
-      ...this.tokenConfig,
+      ...this.customConfig,
       ...options,
       url,
       method: HttpMethods.PUT,
@@ -134,7 +134,7 @@ class ApiService {
   public delete<T>(url: string, params?: Record<string, any>, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<T>> {
     const requestOptions: UniApp.RequestOptions = {
       ...this.requestConfig,
-      ...this.tokenConfig,
+      ...this.customConfig,
       ...options,
       url,
       method: HttpMethods.DELETE,
