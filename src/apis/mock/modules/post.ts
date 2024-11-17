@@ -1,6 +1,14 @@
-import { mock } from 'better-mock/dist/mock.mp'
+// #ifdef H5
+import { mock as mockBrowser } from 'better-mock/dist/mock.browser.min'
+// #endif
+// #ifdef MP-WEIXIN ||MP-TOUTIAO
+import { mock as mockMP } from 'better-mock/dist/mock.mp'
+// #endif
 import { type Post } from '@/apis/modules/type'
 import { HttpMethods } from '@/common/constants'
+import { isH5 } from '@/utils'
+
+const mock = isH5 ? mockBrowser : mockMP
 
 const posts = mock({
   'data|10': [

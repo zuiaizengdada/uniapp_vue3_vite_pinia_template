@@ -1,8 +1,9 @@
 import ApiService from '../request'
+import { BASE_URL, TIME_OUT } from '../request/config'
 import { type Data } from '../request/type'
 import { type Post } from './type'
 
-const apiService = new ApiService()
+const apiService = new ApiService({ baseURL: BASE_URL, timeout: TIME_OUT }, { mock: true })
 
 // 获取所有文章数据
 export function getPosts(): Promise<Data<Post>> {

@@ -1,6 +1,6 @@
 import { HttpMethods, HttpStatusCode } from '@/common/constants'
 import { BASE_URL, TIME_OUT } from '../request/config'
-import { router, uniStorage } from '@/utils'
+import { isProduction, router, uniStorage } from '@/utils'
 import i18n from '@/locale'
 import type { RequestConfig, Data, CustomConfig } from './type'
 
@@ -12,12 +12,11 @@ const defaultRequestConfig: RequestConfig = {
 }
 
 const defaultCustomConfig: CustomConfig = {
-  mock: true,
+  mock: false,
   enabled: false,
   AccessTokenKey: 'Authorization',
   tokenStoragePath: 'user.AccessToken'
 }
-
 class ApiService {
   constructor(
     private requestConfig: RequestConfig = defaultRequestConfig,
@@ -28,7 +27,7 @@ class ApiService {
   }
 
   private setupInterceptors(options: Partial<UniApp.RequestOptions & CustomConfig>) {
-    const useMock = options.mock ?? this.customConfig.mock ?? import.meta.env.VITE_MOCK === 'true'
+    const useMock = !isProduction && (options.mock ?? this.customConfig.mock ?? import.meta.env.VITE_MOCK === 'true')
 
     if (!options.url!.startsWith('http') && !useMock) {
       options.url = this.requestConfig.baseURL + options.url
