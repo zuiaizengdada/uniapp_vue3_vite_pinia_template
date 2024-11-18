@@ -19,7 +19,7 @@
     {
       "path": "pages/mitt/index",
       "style": {
-        "navigationStyle": "custom",
+        "navigationBarTitleText": "mitt库演示",
         "enablePullDownRefresh": false,
         "app-plus": {
           "bounce": "none"

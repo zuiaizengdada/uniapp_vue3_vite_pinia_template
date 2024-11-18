@@ -7,7 +7,6 @@
   "networkTimeout": {
     "request": 15000
   },
-  /* 5+App特有相关 */
   "app-plus": {
     "usingComponents": true,
     "nvueStyleCompiler": "uni-app",
@@ -17,11 +16,8 @@
       "waiting": true,
       "autoclose": true
     },
-    /* 模块配置 */
     "modules": {},
-    /* 应用发布信息 */
     "distribute": {
-      /* android打包配置 */
       "android": {
         "permissions": [
           "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
@@ -41,20 +37,17 @@
           "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
         ]
       },
-      /* ios打包配置 */
       "ios": {},
-      /* SDK配置 */
       "sdkConfigs": {}
     }
   },
-  /* 快应用特有相关 */
   "quickapp": {},
-  /* 小程序特有相关 */
   "mp-weixin": {
     "appid": "",
     "setting": {
       "urlCheck": false
     },
+    "lazyCodeLoading": "requiredComponents",
     "usingComponents": true,
     "optimization": {
       "subPackages": true
