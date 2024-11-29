@@ -30,7 +30,7 @@ class ApiService {
     const useMock = !isProduction && (options.mock ?? this.customConfig.mock ?? import.meta.env.VITE_MOCK === 'true')
 
     if (!options.url!.startsWith('http') && !useMock) {
-      options.url = this.requestConfig.baseURL + options.url
+      options.url = this.requestConfig.baseURL! + options.url
     }
 
     options.timeout = this.requestConfig.timeout || 15000

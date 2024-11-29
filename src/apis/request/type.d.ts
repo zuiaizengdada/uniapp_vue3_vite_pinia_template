@@ -1,7 +1,7 @@
 // 请求配置
 export interface RequestConfig {
   // 请求地址
-  baseURL: string
+  baseURL?: string
   // 请求超时时间
   timeout?: number
 }
