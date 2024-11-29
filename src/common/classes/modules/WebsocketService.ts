@@ -1,4 +1,3 @@
-import { ref, reactive, watch } from 'vue'
 import { WebSocketHeartBeatConfig, type UseWebSocketOptions } from '../type'
 
 const DEFAULT_OPTIONS: UseWebSocketOptions = {
