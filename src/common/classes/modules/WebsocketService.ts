@@ -1,4 +1,4 @@
-import { WebSocketHeartBeatConfig, type UseWebSocketOptions } from '../type'
+import type { WebSocketHeartBeatConfig, UseWebSocketOptions } from '../type'
 
 const DEFAULT_OPTIONS: UseWebSocketOptions = {
   url: '',
