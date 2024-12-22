@@ -60,7 +60,8 @@
     "prepare": "husky install",
     "lint": "eslint src --fix --ext .js,.ts,.jsx,.tsx,.vue && prettier . --write",
     "commit": "cz",
-    "svgicon": "node ./src/uni_modules/zui-svg-icon/tools/generate-svg-icon.js"
+    "svgicon": "node ./src/uni_modules/zui-svg-icon/tools/generate-svg-icon.js",
+    "test": "vitest"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-4020920240930001",
@@ -139,6 +140,7 @@
     "typescript": "^5.6.3",
     "unplugin-auto-import": "^0.18.3",
     "vite": "^5.4.10",
+    "vitest": "^2.1.8",
     "vue-tsc": "^2.1.10"
   },
   "lint-staged": {

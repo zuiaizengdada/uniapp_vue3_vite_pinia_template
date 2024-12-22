@@ -26,6 +26,7 @@ export default defineConfig({
         'vue',
         'pinia',
         'uni-app',
+        'vitest',
         {
           '@/utils/modules/pinia-auto-refs': ['useStore']
         },
