@@ -9,11 +9,11 @@ setTimeout(() => {
 }, 2000)
 </script>
 <template>
-  <view class="mitt w-full h-screen flex flex-col items-center justify-center gap-2.5">
-    <view class="w-full bg-red-300 flex flex-col items-center justify-center gap-2.5">
+  <view class="flex flex-col gap-2.5 justify-center items-center w-full h-screen mitt">
+    <view class="flex flex-col gap-2.5 justify-center items-center w-full bg-red-300">
       <Component1 ref="component1Ref" :users="users" />
     </view>
-    <view class="w-full bg-blue-300 flex flex-col items-center justify-center gap-2.5">
+    <view class="flex flex-col gap-2.5 justify-center items-center w-full bg-blue-300">
       <Component2 />
     </view>
   </view>
