@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { router } from '@/utils'
 import { useGlobalProperties, useSystemInfo } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
+import { tabBarList } from '@/common/constants'
+
 const { userName, setUserName } = useStore('user')
 
 onMounted(async () => {
@@ -53,18 +54,6 @@ const { $t, $changeLocale } = useGlobalProperties()
 function handleSwitchLanguage(language: Languages) {
   $changeLocale(language)
 }
-
-function handleGotoWebsocket() {
-  router.navigateTo('/pages/websocket/index')
-}
-
-function handleGotoMitt() {
-  router.navigateTo('/pages/mitt/index')
-}
-
-function handleGotoScrollPage() {
-  router.navigateTo('/pages/scroll/index')
-}
 </script>
 
 <template>
@@ -73,7 +62,7 @@ function handleGotoScrollPage() {
       <text>倒计时{{ count }}</text>
     </view>
 
-    <view class="flex items-center gap-5">
+    <view class="flex gap-5 items-center">
       <button @click="handleGetCode">获取验证码</button>
     </view>
 
@@ -91,21 +80,20 @@ function handleGotoScrollPage() {
       <text>{{ $t('demo') }}</text>
     </view>
 
-    <view class="flex items-center gap-5">
+    <view class="flex gap-5 items-center">
       <button @tap="handleSwitchLanguage('zh')">中文</button>
       <button @tap="handleSwitchLanguage('en')">English</button>
     </view>
-
-    <view class="flex items-center">
-      <button @tap="handleGotoWebsocket">websocket演示</button>
-    </view>
-
-    <view class="flex items-center">
-      <button @tap="handleGotoMitt">mitt库演示</button>
-    </view>
-
-    <view class="flex items-center">
-      <button @tap="handleGotoScrollPage">滚动列表演示</button>
-    </view>
   </view>
+
+  <AppTabbar
+    :selected="0"
+    :tabBarList="tabBarList"
+    :styles="{
+      background: 'linear-gradient(to right, #4A90E2, #67B26F)',
+      color: 'rgba(255,255,255,0.7)',
+      selectedColor: '#ffffff',
+      fontSize: '26rpx'
+    }"
+  />
 </template>

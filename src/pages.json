@@ -37,6 +37,31 @@
       }
     }
   ],
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#000000",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "height": 0,
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/websocket/index",
+        "text": "websocket"
+      },
+      {
+        "pagePath": "pages/mitt/index",
+        "text": "mitt"
+      },
+      {
+        "pagePath": "pages/scroll/index",
+        "text": "滚动"
+      }
+    ]
+  },
   "mp-weixin": {
     "optimization": { "subPackages": true }
   },
