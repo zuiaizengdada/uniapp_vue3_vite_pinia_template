@@ -1,0 +1,30 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      lottie-miniprogram:
+        specifier: ^1.0.12
+        version: 1.0.12
+      lottie-web:
+        specifier: ^5.10.2
+        version: 5.12.2
+
+packages:
+
+  lottie-miniprogram@1.0.12:
+    resolution: {integrity: sha512-2ITtXAyeDXbftvYYe5w0ayl8jTV8laylWMCdJofpka1q205NkjRNj7kX+iIZZ/YjKh1f8plWxb9gSFHkC7BLUQ==}
+
+  lottie-web@5.12.2:
+    resolution: {integrity: sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==}
+
+snapshots:
+
+  lottie-miniprogram@1.0.12: {}
+
+  lottie-web@5.12.2: {}
