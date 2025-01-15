@@ -20,8 +20,4 @@ export interface TabBarStyles {
   itemHeight?: string
   activeScale?: number
   spacing?: string
-  sliderColor?: string
-  sliderHeight?: string
-  sliderRadius?: string
-  sliderBlur?: string
 }
