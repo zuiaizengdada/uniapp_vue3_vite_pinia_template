@@ -3,7 +3,7 @@ import type { TabBarItem, TabBarStyles } from './type'
 import { computed } from 'vue'
 import { useSystemInfo } from '@/common/hooks'
 
-const props = defineProps<{
+const { selected, tabBarList, styles } = defineProps<{
   selected: number
   tabBarList: TabBarItem[]
   styles: TabBarStyles
@@ -14,7 +14,7 @@ const { safeAreaInsets } = useSystemInfo()
 // 默认样式
 const defaultStyles: TabBarStyles = {
   background: 'rgba(255, 255, 255, 0.95)',
-  height: '120rpx',
+  height: '100rpx',
   fontSize: '24rpx',
   iconSize: '40rpx',
   color: '#666',
@@ -25,7 +25,7 @@ const defaultStyles: TabBarStyles = {
 
 // 计算最终的样式
 const computedTabBarStyles = computed<TabBarStyles>(() => {
-  const mergedStyles = { ...defaultStyles, ...props.styles }
+  const mergedStyles = { ...defaultStyles, ...styles }
   return {
     background: mergedStyles.background,
     backgroundImage: mergedStyles.backgroundImage,
@@ -58,7 +58,7 @@ uni.hideTabBar()
     class="fixed left-[15rpx] right-[15rpx] p-[10rpx] flex justify-between items-center"
     :style="{
       ...computedTabBarStyles,
-      bottom: `${15 + (safeAreaInsets?.bottom || 0)}rpx`
+      bottom: `${30 + (safeAreaInsets?.bottom || 0)}rpx`
     }"
   >
     <view
@@ -76,8 +76,10 @@ uni.hideTabBar()
           fontSize: styles.fontSize
         }"
       >
-        <image v-if="item.iconPath" class="mb-[5rpx]" :style="{ width: styles.iconSize, height: styles.iconSize }" :src="selected == index ? item.selectedIconPath : item.iconPath" />
-        <view v-if="item.text" class="text-center">{{ item.text }}</view>
+        <image v-if="selected == index && item.selectedIconPath" class="mb-[5rpx] relative z-2" :style="{ width: styles.iconSize, height: styles.iconSize }" :src="item.selectedIconPath" />
+        <view v-if="selected != index && item.text" class="relative text-center z-2">
+          {{ item.text }}
+        </view>
       </view>
     </view>
   </view>

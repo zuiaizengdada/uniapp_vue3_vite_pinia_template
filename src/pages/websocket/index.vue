@@ -50,10 +50,11 @@ onHide(() => {
     :selected="1"
     :tabBarList="tabBarList"
     :styles="{
-      background: 'linear-gradient(to right, #4A90E2, #67B26F)',
+      background: '#3d3d3d',
       color: 'rgba(255,255,255,0.7)',
       selectedColor: '#ffffff',
-      fontSize: '26rpx'
+      fontSize: '26rpx',
+      iconSize: '50rpx'
     }"
   />
 </template>
