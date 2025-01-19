@@ -11,7 +11,6 @@ const { selected, tabBarList, styles } = defineProps<{
 
 const { safeAreaInsets } = useSystemInfo()
 
-// 默认样式
 const defaultStyles: TabBarStyles = {
   background: 'rgba(255, 255, 255, 0.95)',
   height: '100rpx',
@@ -23,7 +22,6 @@ const defaultStyles: TabBarStyles = {
   borderRadius: '30rpx'
 }
 
-// 计算最终的样式
 const computedTabBarStyles = computed<TabBarStyles>(() => {
   const mergedStyles = { ...defaultStyles, ...styles }
   return {
@@ -36,12 +34,10 @@ const computedTabBarStyles = computed<TabBarStyles>(() => {
   }
 })
 
-// 发出点击事件
 const emit = defineEmits<{
   change: [index: number]
 }>()
 
-// 修改 switchTab 函数
 const switchTab = (item: TabBarItem, index: number) => {
   emit('change', index)
   const url = item.pagePath
