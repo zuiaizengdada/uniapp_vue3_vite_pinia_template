@@ -1,3 +1,13 @@
+export interface AppTabbarProps {
+  selected: number
+  tabBarList: TabBarItem[]
+  styles: TabBarStyles
+}
+
+export interface AppTabbarEmits {
+  (event: 'change', index: number): void
+}
+
 export interface TabBarItem {
   id: number
   pagePath: string
