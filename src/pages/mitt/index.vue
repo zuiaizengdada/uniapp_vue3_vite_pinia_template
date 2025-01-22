@@ -19,15 +19,5 @@ setTimeout(() => {
     </view>
   </view>
 
-  <AppTabbar
-    :selected="2"
-    :tabBarList="tabBarList"
-    :styles="{
-      background: '#3d3d3d',
-      color: 'rgba(255,255,255,0.7)',
-      selectedColor: '#ffffff',
-      fontSize: '26rpx',
-      iconSize: '50rpx'
-    }"
-  />
+  <AppTabbar :selected="2" :tabBarList="tabBarList" />
 </template>

@@ -9,6 +9,7 @@ export function useAppTabbarStyles(customStyles: TabBarStyles, safeAreaInsets: U
     background: mergedStyles.background,
     height: mergedStyles.height,
     fontSize: mergedStyles.fontSize,
+    fontWeight: mergedStyles.fontWeight,
     iconSize: mergedStyles.iconSize,
     color: mergedStyles.color,
     selectedColor: mergedStyles.selectedColor,

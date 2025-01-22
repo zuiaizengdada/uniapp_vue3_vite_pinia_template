@@ -21,6 +21,7 @@ export interface TabBarStyles {
   backgroundImage?: string
   height?: string
   fontSize?: string
+  fontWeight?: string
   iconSize?: string
   color?: string
   selectedColor?: string

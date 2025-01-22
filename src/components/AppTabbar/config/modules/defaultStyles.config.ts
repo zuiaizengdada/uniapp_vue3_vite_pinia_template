@@ -1,11 +1,12 @@
 import { TabBarStyles } from '../../type'
 
 const defaultStyles: TabBarStyles = {
-  background: 'rgba(255, 255, 255, 0.95)',
   height: '100rpx',
-  fontSize: '24rpx',
-  iconSize: '40rpx',
-  color: '#666',
+  fontWeight: 'normal',
+  background: '#3d3d3d',
+  color: 'rgba(255,255,255,0.7)',
+  fontSize: '26rpx',
+  iconSize: '50rpx',
   selectedColor: '#333',
   boxShadow: '0 4px 15px rgba(165, 168, 171, 0.83)',
   borderRadius: '30rpx'

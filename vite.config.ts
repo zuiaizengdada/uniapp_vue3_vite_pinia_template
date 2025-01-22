@@ -51,8 +51,17 @@ export default defineConfig({
     }
   },
   build: {
-    rollupOptions: {
-      external: ['expect-type', '@vitest/runner', 'chai', '@vitest/utils', '@vitest/snapshot', '@vitest/spy']
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
     }
+  },
+  optimizeDeps: {
+    exclude: ['better-mock']
+  },
+  esbuild: {
+    drop: ['console', 'debugger']
   }
 })

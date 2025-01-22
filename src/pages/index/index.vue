@@ -86,15 +86,5 @@ function handleSwitchLanguage(language: Languages) {
     </view>
   </view>
 
-  <AppTabbar
-    :selected="0"
-    :tabBarList="tabBarList"
-    :styles="{
-      background: '#3d3d3d',
-      color: 'rgba(255,255,255,0.7)',
-      selectedColor: '#ffffff',
-      fontSize: '26rpx',
-      iconSize: '50rpx'
-    }"
-  />
+  <AppTabbar :selected="0" :tabBarList="tabBarList" />
 </template>
