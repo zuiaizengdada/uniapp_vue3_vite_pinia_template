@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useScroll } from '@/common/hooks'
 import { ComponentInternalInstance } from 'vue'
-import { tabBarList } from '@/common/constants'
 const instance = getCurrentInstance() as ComponentInternalInstance
 const { scrollTop, scrollToBottom, scrollToTop, scrollWithAnimation, setScrollWithAnimation, setScrollTop, targetElementId } = useScroll(instance)
 
@@ -9,7 +8,6 @@ scrollToBottom('.scroll-container', '.scroll-content')
 
 async function scrollToElement(id: string, scrollAnimation: boolean = true) {
   setScrollWithAnimation(scrollAnimation)
-  await scrollToTop()
   targetElementId.value = id
 }
 
@@ -84,6 +82,4 @@ function handleRefresherabort() {
     <button @click="scrollToElement('id50')">Scroll to Item 50</button>
     <button @click="scrollToElement('id99')">Scroll to Item 99</button>
   </view>
-
-  <AppTabbar :selected="3" :tabBarList="tabBarList" />
 </template>

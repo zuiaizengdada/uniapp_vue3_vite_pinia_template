@@ -19,7 +19,7 @@ const { tabBarStyles, getTabItemStyles, getTabContentStyles, getTabIconStyles, s
       :style="getTabItemStyles(index)"
       @click="switchTab(item, index)"
     >
-      <view class="flex flex-col items-center transition-transform duration-300 ease-in-out" :class="{ 'font-medium scale-105': props.selected == index }" :style="getTabContentStyles(index)">
+      <view class="flex flex-col items-center" :class="{ 'font-medium scale-105': props.selected == index }" :style="getTabContentStyles(index)">
         <image v-if="props.selected == index && item.selectedIconPath" class="mb-[5rpx] relative z-2" :style="getTabIconStyles()" :src="item.selectedIconPath" />
         <view v-if="props.selected != index && item.text" class="relative text-center z-2">
           {{ item.text }}

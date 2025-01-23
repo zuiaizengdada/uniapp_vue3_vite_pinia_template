@@ -7,7 +7,7 @@ const defaultStyles: TabBarStyles = {
   color: 'rgba(255,255,255,0.7)',
   fontSize: '26rpx',
   iconSize: '50rpx',
-  selectedColor: '#333',
+  selectedColor: 'rgba(255,255,255,0.7)',
   boxShadow: '0 4px 15px rgba(165, 168, 171, 0.83)',
   borderRadius: '30rpx'
 } as const

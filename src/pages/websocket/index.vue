@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { createWebSocketInstance, WebSocketService } from '@/common/classes'
-import { tabBarList } from '@/common/constants'
 import { WS_ID } from '@/common/constants'
 import { crypto } from '@/utils'
 
 let websocket: WebSocketService
 
-onShow(async () => {
+const tabIndex = defineModel<number>('tabIndex')
+
+watchEffect(async () => {
+  if (tabIndex.value !== 1) {
+    websocket?.close()
+    return
+  }
+
   websocket = await createWebSocketInstance(WS_ID, {
     url: 'wss://dev.cloud.hokkj.cn/cloud/hok-ai/ws/chat/',
     protocols: [encodeURIComponent(crypto.secretKey), encodeURIComponent(crypto.handshakeCode)],
@@ -34,17 +40,12 @@ onShow(async () => {
     from_product: 'guzi'
   })
 })
-
-onHide(() => {
-  websocket.close()
-})
 </script>
+
 <template>
   <view class="flex justify-center items-center w-full h-screen login">
     <view class="text-center title">
       <text class="text-red-500">登录页面</text>
     </view>
   </view>
-
-  <AppTabbar :selected="1" :tabBarList="tabBarList" />
 </template>

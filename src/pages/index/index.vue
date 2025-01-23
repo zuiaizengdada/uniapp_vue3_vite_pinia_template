@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { useGlobalProperties, useSystemInfo } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
-import { tabBarList } from '@/common/constants'
 
 const { userName, setUserName } = useStore('user')
+const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets } = useSystemInfo()
 
 onMounted(async () => {
   const { getBoundingClientRect } = useSelectorQuery()
   const rect = await getBoundingClientRect('.page-container')
   console.log(rect)
 
-  const { windowHeight, windowWidth, screenWidth, screenHeight } = useSystemInfo()
   console.log(`屏幕宽度：${windowWidth}`)
   console.log(`屏幕高度：${windowHeight}`)
   console.log(`可使用窗口宽度：${screenWidth}`)
@@ -54,10 +53,16 @@ const { $t, $changeLocale } = useGlobalProperties()
 function handleSwitchLanguage(language: Languages) {
   $changeLocale(language)
 }
+
+function handleJumpToSubPackage() {
+  uni.navigateTo({
+    url: '/pagesSubPackage/common/test/test'
+  })
+}
 </script>
 
 <template>
-  <view class="flex flex-col items-center w-full gap-[10px] page-container">
+  <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ paddingBottom: `${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
     <view>
       <text>倒计时{{ count }}</text>
     </view>
@@ -80,11 +85,17 @@ function handleSwitchLanguage(language: Languages) {
       <text>{{ $t('demo') }}</text>
     </view>
 
+    <view>
+      <button @tap="handleJumpToSubPackage">跳转到分包页面</button>
+    </view>
+
     <view class="flex gap-5 items-center">
       <button @tap="handleSwitchLanguage('zh')">中文</button>
       <button @tap="handleSwitchLanguage('en')">English</button>
     </view>
-  </view>
 
-  <AppTabbar :selected="0" :tabBarList="tabBarList" />
+    <view v-for="(item, index) in 100" :key="index">
+      <text>{{ item }}</text>
+    </view>
+  </view>
 </template>

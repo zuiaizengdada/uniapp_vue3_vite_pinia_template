@@ -5,7 +5,7 @@ export interface AppTabbarProps {
 }
 
 export interface AppTabbarEmits {
-  (event: 'change', index: number): void
+  (event: 'change', item: TabBarItem, index: number): void
 }
 
 export interface TabBarItem {
