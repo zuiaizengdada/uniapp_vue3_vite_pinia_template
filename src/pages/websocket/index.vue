@@ -37,9 +37,6 @@ watchEffect(async () => {
     }
   })
 
-  const isConnected = websocket.isConnected
-  console.log(isConnected, 'isConnected')
-
   websocket.sendMessage({
     user: '你好世界',
     scene_id: 1,
