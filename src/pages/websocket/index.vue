@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { createWebSocketInstance, WebSocketService } from '@/common/classes'
+import { createWebSocketInstance, WebSocketService, removeWebSocketInstance } from '@/common/classes'
 import { WS_ID } from '@/common/constants'
 import { crypto } from '@/utils'
 
 let websocket: WebSocketService
 
-const tabIndex = defineModel<number>('tabIndex')
+const props = defineProps<{
+  tabIndex: number
+}>()
 
 watchEffect(async () => {
-  if (tabIndex.value !== 1) {
+  if (props.tabIndex !== 1) {
     websocket?.close()
+    removeWebSocketInstance(WS_ID)
     return
   }
 
@@ -28,8 +31,14 @@ watchEffect(async () => {
     },
     onMessage(message) {
       console.log(message)
+    },
+    onOpen() {
+      console.log('open')
     }
   })
+
+  const isConnected = websocket.isConnected
+  console.log(isConnected, 'isConnected')
 
   websocket.sendMessage({
     user: '你好世界',

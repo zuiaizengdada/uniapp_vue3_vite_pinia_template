@@ -2,6 +2,10 @@
 import Component1 from './components/Component1/Component1.vue'
 import Component2 from './components/Component2/Component2.vue'
 
+defineProps<{
+  tabIndex: number
+}>()
+
 const users = ref([{ name: 'John' }])
 
 setTimeout(() => {
@@ -10,6 +14,8 @@ setTimeout(() => {
 </script>
 <template>
   <view class="flex flex-col gap-2.5 justify-center items-center w-full h-screen mitt">
+    {{ users }}
+    111
     <view class="flex flex-col gap-2.5 justify-center items-center w-full bg-red-300">
       <Component1 ref="component1Ref" :users="users" />
     </view>

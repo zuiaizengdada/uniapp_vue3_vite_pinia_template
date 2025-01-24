@@ -6,6 +6,10 @@ const { scrollTop, scrollToBottom, scrollToTop, scrollWithAnimation, setScrollWi
 
 scrollToBottom('.scroll-container', '.scroll-content')
 
+defineProps<{
+  tabIndex: number
+}>()
+
 async function scrollToElement(id: string, scrollAnimation: boolean = true) {
   setScrollWithAnimation(scrollAnimation)
   targetElementId.value = id

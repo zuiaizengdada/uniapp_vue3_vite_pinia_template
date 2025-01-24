@@ -5,7 +5,13 @@ import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/api
 const { userName, setUserName } = useStore('user')
 const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets } = useSystemInfo()
 
+const props = defineProps<{
+  tabIndex: number
+}>()
+
 onMounted(async () => {
+  if (props.tabIndex !== 0) return
+
   const { getBoundingClientRect } = useSelectorQuery()
   const rect = await getBoundingClientRect('.page-container')
   console.log(rect)
