@@ -9,6 +9,7 @@ export function useAppTabbar(props: AppTabbarProps, emit: AppTabbarEmits, safeAr
   }
 
   return {
+    ...toRefs(props),
     tabBarStyles,
     getTabItemStyles,
     getTabContentStyles,

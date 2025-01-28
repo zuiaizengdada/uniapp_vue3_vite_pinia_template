@@ -14,8 +14,6 @@ setTimeout(() => {
 </script>
 <template>
   <view class="flex flex-col gap-2.5 justify-center items-center w-full h-screen mitt">
-    {{ users }}
-    111
     <view class="flex flex-col gap-2.5 justify-center items-center w-full bg-red-300">
       <Component1 ref="component1Ref" :users="users" />
     </view>
