@@ -16,46 +16,10 @@ export default {
             opacity: '1',
             transform: 'scale(1)'
           }
-        },
-        slideInRight: {
-          from: {
-            transform: 'translateX(100%)'
-          },
-          to: {
-            transform: 'translateX(0)'
-          }
-        },
-        slideInLeft: {
-          from: {
-            transform: 'translateX(-100%)'
-          },
-          to: {
-            transform: 'translateX(0)'
-          }
-        },
-        slideOutRight: {
-          from: {
-            transform: 'translateX(0)'
-          },
-          to: {
-            transform: 'translateX(100%)'
-          }
-        },
-        slideOutLeft: {
-          from: {
-            transform: 'translateX(0)'
-          },
-          to: {
-            transform: 'translateX(-100%)'
-          }
         }
       },
       animation: {
-        fadeIn: 'fadeIn 0.3s ease',
-        slideInRight: 'slideInRight 0.3s ease-in-out',
-        slideInLeft: 'slideInLeft 0.3s ease-in-out',
-        slideOutRight: 'slideOutRight 0.3s ease-in-out',
-        slideOutLeft: 'slideOutLeft 0.3s ease-in-out'
+        fadeIn: 'fadeIn 0.3s ease'
       }
     }
   }

@@ -38,11 +38,13 @@ export function useAppTabbarStyles(customStyles: TabBarStyles, safeAreaInsets: U
   }
 
   const getAnimationStyles = (animationPosition: { x: number; y: number }, isMoving: boolean, targetImage: string | null) => {
+    const processedImage = targetImage ? `/${targetImage.replace(/^\//, '')}` : null
+
     return {
       top: animationPosition.y,
       left: animationPosition.x,
       transform: `translate(-50%, -50%) ${isMoving ? 'scale(1)' : 'scale(0)'}`,
-      backgroundImage: targetImage ? `url(${targetImage})` : 'none'
+      backgroundImage: processedImage ? `url(${processedImage})` : 'none'
     }
   }
 
