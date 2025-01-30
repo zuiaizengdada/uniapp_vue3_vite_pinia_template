@@ -24,7 +24,7 @@ export class WebSocketService {
   private isConnecting = false
   private isClosedManually = false
 
-  public isConnected = ref(false)
+  public isConnected = ref<boolean>(false)
   public message = ref<string | null>(null)
   public error = ref<string | null>(null)
 

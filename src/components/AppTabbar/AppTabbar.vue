@@ -12,18 +12,39 @@ const props = withDefaults(defineProps<AppTabbarProps>(), {
 const emit = defineEmits<AppTabbarEmits>()
 
 const { safeAreaInsets } = useSystemInfo()
-const { tabBarStyles, getTabItemStyles, getTabContentStyles, getTabIconStyles, switchTab, tabBarList, animation, selected } = useAppTabbar(props, emit, safeAreaInsets)
+const {
+  tabBarStyles,
+  getTabItemStyles,
+  getTabContentStyles,
+  getTabIconStyles,
+  getAnimationStyles,
+  getTabBarContainerStyles,
+  switchTab,
+  tabBarList,
+  animation,
+  selected,
+  isMoving,
+  targetImage,
+  animationPosition
+} = useAppTabbar(props, emit, safeAreaInsets)
 </script>
 
 <template>
-  <view class="fixed left-[15rpx] right-[15rpx] p-[10rpx] flex justify-between items-center" :style="tabBarStyles">
+  <view class="fixed left-[15rpx] right-[15rpx] p-[10rpx] flex justify-between items-center" :style="getTabBarContainerStyles(tabBarStyles, tabBarList, selected)">
+    <!-- 动画圆点，只在启用动画时显示 -->
+    <view
+      v-if="animation"
+      class="absolute w-[25px] h-[25px] bg-center bg-contain bg-no-repeat"
+      :class="[{ invisible: !isMoving, visible: isMoving }, 'transition-all duration-300 ease-in-out']"
+      :style="getAnimationStyles(animationPosition, isMoving, targetImage)"
+    />
     <view
       v-for="(item, index) in tabBarList"
       :key="index"
       :class="[
         'relative z-2 text-center flex justify-center items-center flex-col py-[15rpx] bg-transparent',
         animation ? 'transition-transform duration-300 ease-in-out' : '',
-        { 'translate-y-[-5rpx]': selected === index }
+        { 'translate-y-[-5rpx]': selected === index && animation }
       ]"
       :style="getTabItemStyles(index)"
       @click="switchTab(item, index)"

@@ -38,10 +38,31 @@ export function useAppTabbarStyles(customStyles: TabBarStyles, safeAreaInsets: U
     }
   }
 
+  const getAnimationStyles = (animationPosition: { x: number; y: number }, isMoving: boolean, targetImage: string | null) => {
+    return {
+      top: animationPosition.y,
+      left: animationPosition.x,
+      transform: `translate(-50%, -50%) ${isMoving ? 'scale(1)' : 'scale(0)'}`,
+      backgroundImage: targetImage ? `url(${targetImage})` : 'none'
+    }
+  }
+
+  const getTabBarContainerStyles = (tabBarStyles: Record<string, any>, tabBarList: TabBarItem[], selected: number) => {
+    return [
+      tabBarStyles,
+      {
+        '--tab-count': tabBarList.length,
+        '--selected-index': selected
+      }
+    ]
+  }
+
   return {
     tabBarStyles,
     getTabItemStyles,
     getTabContentStyles,
-    getTabIconStyles
+    getTabIconStyles,
+    getAnimationStyles,
+    getTabBarContainerStyles
   }
 }

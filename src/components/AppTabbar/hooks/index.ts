@@ -1,8 +1,18 @@
 import { useAppTabbarStyles } from './modules/useAppTabbarStyles'
+import { useAppTabbarAnimation } from './modules/useAppTabbarAnimation'
 import type { AppTabbarProps, AppTabbarEmits, TabBarItem } from '../type'
+import { toRefs } from 'vue'
 
 export function useAppTabbar(props: AppTabbarProps, emit: AppTabbarEmits, safeAreaInsets: UniApp.SafeAreaInsets | undefined) {
-  const { tabBarStyles, getTabItemStyles, getTabContentStyles, getTabIconStyles } = useAppTabbarStyles(props.styles, safeAreaInsets, props.selected, props.tabBarList)
+  const { tabBarStyles, getTabItemStyles, getTabContentStyles, getTabIconStyles, getAnimationStyles, getTabBarContainerStyles } = useAppTabbarStyles(
+    props.styles!,
+    safeAreaInsets,
+    props.selected,
+    props.tabBarList
+  )
+
+  const { selected, animation, tabBarList } = toRefs(props)
+  const { isMoving, targetImage, animationPosition } = useAppTabbarAnimation(selected, animation!, tabBarList)
 
   const switchTab = (item: TabBarItem, index: number) => {
     emit('change', item, index)
@@ -14,6 +24,11 @@ export function useAppTabbar(props: AppTabbarProps, emit: AppTabbarEmits, safeAr
     getTabItemStyles,
     getTabContentStyles,
     getTabIconStyles,
-    switchTab
+    getAnimationStyles,
+    getTabBarContainerStyles,
+    switchTab,
+    isMoving,
+    targetImage,
+    animationPosition
   }
 }

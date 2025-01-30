@@ -6,9 +6,9 @@ const props = defineProps<{
   tabIndex: number
 }>()
 
-const isShow = ref(true)
+const isShow = ref<boolean>(true)
 let timer: any
-const users = ref([{ name: 'John' }])
+const users = ref<{ name: string }[]>([{ name: 'John' }])
 
 watchEffect(() => {
   if (props.tabIndex === 2) {
