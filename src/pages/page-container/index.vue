@@ -6,12 +6,12 @@ import PageWebsocketComponent from '@/pages/websocket/index.vue'
 import { tabBarList } from '@/common/constants'
 import { usePageContainer } from './index'
 
-const { tabIndex, getPageAnimationClass, getPageShowCondition, handleTabChange } = usePageContainer()
+const { tabIndex, getPageAnimationClass, getPageShowCondition, handleTabChange, handleTouchStart, handleTouchEnd } = usePageContainer()
 </script>
 
 <template>
   <view class="flex relative flex-col h-screen">
-    <view class="overflow-hidden relative flex-1 pointer-events-none">
+    <view class="overflow-hidden relative flex-1 pointer-events-none" @touchstart="handleTouchStart" @touchend="handleTouchEnd">
       <scroll-view class="absolute inset-0 h-full" :class="getPageAnimationClass(0)" scroll-y v-show="getPageShowCondition(0)">
         <PageIndexComponent :tab-index="tabIndex" />
       </scroll-view>
@@ -29,6 +29,6 @@ const { tabIndex, getPageAnimationClass, getPageShowCondition, handleTabChange }
       </scroll-view>
     </view>
 
-    <AppTabbar class="z-50" :selected="tabIndex" :tabBarList="tabBarList" @change="handleTabChange" />
+    <AppTabbar class="z-50" :selected="tabIndex" :animation="true" :tabBarList="tabBarList" @change="handleTabChange" />
   </view>
 </template>

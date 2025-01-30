@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { defaultStyles } from '../../config'
 import type { TabBarStyles, TabBarItem } from '../../type'
 
