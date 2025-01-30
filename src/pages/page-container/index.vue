@@ -15,19 +15,19 @@ function handleTabChange(_: TabBarItem, index: number) {
 
 <template>
   <view class="flex relative flex-col h-screen">
-    <scroll-view class="flex-1 h-0" scroll-y v-show="tabIndex === 0">
+    <scroll-view class="flex-1 h-0 animate-fadeIn" scroll-y v-show="tabIndex === 0">
       <PageIndexComponent :tab-index="tabIndex" />
     </scroll-view>
 
-    <scroll-view class="flex-1 h-0" scroll-y v-show="tabIndex === 1">
+    <scroll-view class="flex-1 h-0 animate-fadeIn" scroll-y v-show="tabIndex === 1">
       <PageWebsocketComponent :tab-index="tabIndex" />
     </scroll-view>
 
-    <scroll-view class="flex-1 h-0" scroll-y v-show="tabIndex === 2">
+    <scroll-view class="flex-1 h-0 animate-fadeIn" scroll-y v-show="tabIndex === 2">
       <PageMittComponent :tab-index="tabIndex" />
     </scroll-view>
 
-    <scroll-view class="flex-1 h-0" scroll-y v-show="tabIndex === 3">
+    <scroll-view class="flex-1 h-0 animate-fadeIn" scroll-y v-show="tabIndex === 3">
       <PageScrollComponent :tab-index="tabIndex" />
     </scroll-view>
 

@@ -2,18 +2,30 @@
 import Component1 from './components/Component1/Component1.vue'
 import Component2 from './components/Component2/Component2.vue'
 
-defineProps<{
+const props = defineProps<{
   tabIndex: number
 }>()
 
+const isShow = ref(true)
+let timer: any
 const users = ref([{ name: 'John' }])
 
-setTimeout(() => {
-  users.value.push({ name: 'joy' })
-}, 2000)
+watchEffect(() => {
+  if (props.tabIndex === 2) {
+    timer = setTimeout(() => {
+      isShow.value = false
+      users.value.push({ name: 'joy' })
+    }, 2000)
+  } else {
+    isShow.value = true
+    users.value = [{ name: 'John' }]
+    clearTimeout(timer)
+  }
+})
 </script>
 <template>
-  <view class="flex flex-col gap-2.5 justify-center items-center w-full h-screen mitt">
+  <AppSkeleton v-if="isShow" />
+  <view v-else class="flex flex-col gap-2.5 justify-center items-center w-full h-screen mitt">
     <view class="flex flex-col gap-2.5 justify-center items-center w-full bg-red-300">
       <Component1 ref="component1Ref" :users="users" />
     </view>
