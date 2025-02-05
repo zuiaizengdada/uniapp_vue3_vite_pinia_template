@@ -16,9 +16,12 @@ export function useAppTabbarAnimation(selected: Ref<number>, animation: Ref<bool
   watch(selected, (newVal) => {
     if (!animation.value) return
 
-    if (tabBarList.value[newVal]?.selectedIconPath) {
-      targetImage.value = tabBarList.value[newVal].selectedIconPath
+    const iconPath = tabBarList.value[newVal].selectedIconPath
+    if (!iconPath) {
+      console.warn(`Tab ${newVal} 缺少 selectedIconPath`)
+      return
     }
+    targetImage.value = iconPath
 
     isMoving.value = true
     setTimeout(() => {
