@@ -67,43 +67,53 @@ function handleJumpToSubPackage() {
     url: '/pagesSubPackage/common/test/test'
   })
 }
+
+function handleScrollToUpper() {
+  console.log('滚动到顶部了')
+}
+
+function handleScrollToLower() {
+  console.log('滚动到底部了')
+}
 </script>
 
 <template>
-  <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ padding: `${menuButtomBottom}px 0 ${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
-    <view>
-      <text>倒计时{{ count }}</text>
-    </view>
+  <scroll-view class="h-full" scroll-y @scrolltolower="handleScrollToLower" @scrolltoupper="handleScrollToUpper" :upper-threshold="0" :lower-threshold="0">
+    <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ padding: `${menuButtomBottom}px 0 ${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
+      <view>
+        <text>倒计时{{ count }}</text>
+      </view>
 
-    <view class="flex gap-5 items-center">
-      <button @click="handleGetCode">获取验证码</button>
-    </view>
+      <view class="flex gap-5 items-center">
+        <button @click="handleGetCode">获取验证码</button>
+      </view>
 
-    <view class="w-full text-center name">
-      <text>
-        {{ userName }}
-      </text>
-    </view>
+      <view class="w-full text-center name">
+        <text>
+          {{ userName }}
+        </text>
+      </view>
 
-    <view>
-      <button @tap="setUserName('zengdada1')">修改名字 pinia 数据持久化</button>
-    </view>
+      <view>
+        <button @tap="setUserName('zengdada1')">修改名字 pinia 数据持久化</button>
+      </view>
 
-    <view>
-      <text>{{ $t('demo') }}</text>
-    </view>
+      <view>
+        <text>{{ $t('demo') }}</text>
+      </view>
 
-    <view>
-      <button @tap="handleJumpToSubPackage">跳转到分包页面</button>
-    </view>
+      <view>
+        <button @tap="handleJumpToSubPackage">跳转到分包页面</button>
+      </view>
 
-    <view class="flex gap-5 items-center">
-      <button @tap="handleSwitchLanguage('zh')">中文</button>
-      <button @tap="handleSwitchLanguage('en')">English</button>
-    </view>
+      <view class="flex gap-5 items-center">
+        <button @tap="handleSwitchLanguage('zh')">中文</button>
+        <button @tap="handleSwitchLanguage('en')">English</button>
+      </view>
 
-    <view v-for="(item, index) in 100" :key="index">
-      <text>{{ item }}</text>
+      <view v-for="(item, index) in 100" :key="index">
+        <text>{{ item }}</text>
+      </view>
     </view>
-  </view>
+  </scroll-view>
 </template>

@@ -51,9 +51,11 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <view class="flex justify-center items-center w-full h-screen login">
-    <view class="text-center title">
-      <text class="text-red-500">登录页面</text>
+  <scroll-view class="h-full" scroll-y>
+    <view class="flex flex-col items-center justify-center w-full h-full gap-[10px]" :style="{ padding: '0 0 150rpx' }">
+      <view class="text-center title">
+        <text class="text-red-500">这是websocket页面 请查看控制台</text>
+      </view>
     </view>
-  </view>
+  </scroll-view>
 </template>
