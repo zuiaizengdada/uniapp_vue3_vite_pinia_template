@@ -38,6 +38,7 @@ const {
       :class="[{ invisible: !isMoving, visible: isMoving }, 'transition-all duration-300 ease-in-out']"
       :style="getAnimationStyles(animationPosition, isMoving, targetImage)"
     />
+
     <view
       v-for="(item, index) in tabBarList"
       :key="index"

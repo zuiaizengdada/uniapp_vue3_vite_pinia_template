@@ -6,12 +6,14 @@ const props = defineProps<{
   tabIndex: number
 }>()
 
+const { tabIndex } = toRefs(props)
+
 const isShow = ref<boolean>(true)
 let timer: any
 const users = ref<{ name: string }[]>([{ name: 'John' }])
 
 watchEffect(() => {
-  if (props.tabIndex === 2) {
+  if (tabIndex.value === 2) {
     timer = setTimeout(() => {
       isShow.value = false
       users.value.push({ name: 'joy' })

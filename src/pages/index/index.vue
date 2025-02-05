@@ -3,14 +3,16 @@ import { useGlobalProperties, useSystemInfo } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
 
 const { userName, setUserName } = useStore('user')
-const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets } = useSystemInfo()
+const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets, bottom: menuButtomBottom } = useSystemInfo()
 
 const props = defineProps<{
   tabIndex: number
 }>()
 
+const { tabIndex } = toRefs(props)
+
 onMounted(async () => {
-  if (props.tabIndex !== 0) return
+  if (tabIndex.value !== 0) return
 
   const { getBoundingClientRect } = useSelectorQuery()
   const rect = await getBoundingClientRect('.page-container')
@@ -68,7 +70,7 @@ function handleJumpToSubPackage() {
 </script>
 
 <template>
-  <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ paddingBottom: `${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
+  <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ padding: `${menuButtomBottom}px 0 ${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
     <view>
       <text>倒计时{{ count }}</text>
     </view>

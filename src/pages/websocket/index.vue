@@ -9,8 +9,10 @@ const props = defineProps<{
   tabIndex: number
 }>()
 
+const { tabIndex } = toRefs(props)
+
 watchEffect(async () => {
-  if (props.tabIndex !== 1) {
+  if (tabIndex.value !== 1) {
     websocket?.close()
     removeWebSocketInstance(WS_ID)
     return

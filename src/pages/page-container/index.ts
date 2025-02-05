@@ -44,18 +44,21 @@ export function usePageContainer() {
     return isDragging.value ? Math.abs(index - tabIndex.value) <= 1 : tabIndex.value === index || (isAnimating.value && previousIndex.value === index)
   }
 
-  function handleTabChange(_: TabBarItem, index: number) {
+  function handleTabChange(_: TabBarItem, index: number, fromSwipe: boolean = false) {
     if (isAnimating.value) return
     if (index === tabIndex.value) return
 
-    isAnimating.value = true
     previousIndex.value = tabIndex.value
     tabIndex.value = index
     translateX.value = 0 // 在这里重置位移
 
-    setTimeout(() => {
-      isAnimating.value = false
-    }, 300)
+    // 只有在滑动触发时才添加动画
+    if (fromSwipe) {
+      isAnimating.value = true
+      setTimeout(() => {
+        isAnimating.value = false
+      }, 300)
+    }
   }
 
   function handleTouchStart(event: TouchEvent) {
@@ -92,11 +95,11 @@ export function usePageContainer() {
     if (shouldSwitch) {
       // 向左滑动，切换到下一个标签
       if (distance < 0 && tabIndex.value < tabBarList.length - 1) {
-        handleTabChange(tabBarList[tabIndex.value + 1], tabIndex.value + 1)
+        handleTabChange(tabBarList[tabIndex.value + 1], tabIndex.value + 1, true) // 传入 true 表示是滑动触发
       }
       // 向右滑动，切换到上一个标签
       else if (distance > 0 && tabIndex.value > 0) {
-        handleTabChange(tabBarList[tabIndex.value - 1], tabIndex.value - 1)
+        handleTabChange(tabBarList[tabIndex.value - 1], tabIndex.value - 1, true) // 传入 true 表示是滑动触发
       }
     } else {
       // 如果不切换，添加回弹动画
