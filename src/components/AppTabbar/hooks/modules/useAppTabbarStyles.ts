@@ -37,16 +37,14 @@ export function useAppTabbarStyles(customStyles: TabBarStyles, safeAreaInsets: U
     }
   }
 
-  const getAnimationStyles = (animationPosition: { x: number; y: number }, isMoving: boolean, targetImage: string | null) => {
-    const processedImage = targetImage ? `/${targetImage.replace(/^\//, '')}` : null
-
+  const getAnimationStyles = (animationPosition: { x: number; y: number }, isMoving: boolean) => {
     return {
       top: animationPosition.y,
       left: animationPosition.x,
       transform: `translate(-50%, -50%)`,
       opacity: isMoving ? 1 : 0,
       transition: isMoving ? 'left 0.3s, top 0.3s' : 'none',
-      backgroundImage: processedImage ? `url(${processedImage})` : 'none'
+      objectFit: 'contain'
     }
   }
 

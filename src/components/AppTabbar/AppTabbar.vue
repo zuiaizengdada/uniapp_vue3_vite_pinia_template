@@ -32,11 +32,12 @@ const {
 <template>
   <view class="fixed left-[15rpx] right-[15rpx] p-[10rpx] flex justify-between items-center" :style="getTabBarContainerStyles(tabBarStyles, tabBarList, selected)">
     <!-- 动画圆点，只在启用动画时显示 -->
-    <view
+    <image
       v-if="animation"
-      class="absolute w-[25px] h-[25px] bg-center bg-contain bg-no-repeat"
+      class="absolute w-[25px] h-[25px]"
       :class="[{ invisible: !isMoving, visible: isMoving }, 'transition-all duration-300 ease-in-out']"
-      :style="getAnimationStyles(animationPosition, isMoving, targetImage)"
+      :style="getAnimationStyles(animationPosition, isMoving)"
+      :src="targetImage"
     />
 
     <view
