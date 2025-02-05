@@ -1,5 +1,5 @@
-import { type TabBarItem } from '@/components/AppTabbar/type'
 import { tabBarList } from '@/common/constants'
+import { type TabBarItem } from '@/components/AppTabbar/type'
 
 export function usePageContainer() {
   const tabIndex = ref<number>(0)
@@ -11,38 +11,39 @@ export function usePageContainer() {
   const isDragging = ref<boolean>(false)
   const screenWidth = ref(uni.getSystemInfoSync().windowWidth)
 
-  // 获取页面动画类
-  function getPageAnimationClass(index: number) {
-    const style = {
-      transform: `translateX(${getTranslateX(index)}px)`,
-      transition: isAnimating.value ? 'transform 0.3s ease-out' : 'none'
-    }
-
-    return {
-      'z-20': tabIndex.value === index || isDragging.value,
-      'pointer-events-auto': tabIndex.value === index,
-      style
-    }
-  }
-
   // 计算页面的位移
-  function getTranslateX(index: number): number {
-    const baseOffset = (index - tabIndex.value) * screenWidth.value
+  const getTranslateX = computed(() => {
+    return (index: number): number => {
+      const baseOffset = (index - tabIndex.value) * screenWidth.value
 
-    if (isDragging.value || isAnimating.value) {
-      // 在拖动或动画时，基于当前页面位置计算偏移
-      return baseOffset + translateX.value
+      if (isDragging.value || isAnimating.value) {
+        return baseOffset + translateX.value
+      }
+
+      return baseOffset
     }
+  })
 
-    // 静止状态下，直接返回基础偏移
-    return baseOffset
-  }
+  // 获取页面样式类
+  const getPageClass = computed(() => {
+    return (index: number) => ({
+      'z-20': tabIndex.value === index || isDragging.value,
+      'pointer-events-auto': tabIndex.value === index
+    })
+  })
+
+  // 获取页面样式
+  const getPageStyle = computed(() => {
+    return (index: number) => ({
+      transform: `translateX(${getTranslateX.value(index)}px)`,
+      transition: isAnimating.value ? 'transform 0.3s ease-out' : 'none'
+    })
+  })
 
   // 获取页面显示条件
-  function getPageShowCondition(index: number) {
-    // 显示当前页面和相邻页面
-    return isDragging.value ? Math.abs(index - tabIndex.value) <= 1 : tabIndex.value === index || (isAnimating.value && previousIndex.value === index)
-  }
+  const getPageShowCondition = computed(() => {
+    return (index: number) => (isDragging.value ? Math.abs(index - tabIndex.value) <= 1 : tabIndex.value === index || (isAnimating.value && previousIndex.value === index))
+  })
 
   function handleTabChange(_: TabBarItem, index: number, fromSwipe: boolean = false) {
     if (isAnimating.value) return
@@ -113,7 +114,8 @@ export function usePageContainer() {
 
   return {
     tabIndex,
-    getPageAnimationClass,
+    getPageClass,
+    getPageStyle,
     getPageShowCondition,
     handleTabChange,
     handleTouchStart,
