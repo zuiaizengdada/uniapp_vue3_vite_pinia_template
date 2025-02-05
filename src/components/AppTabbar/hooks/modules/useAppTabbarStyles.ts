@@ -43,7 +43,9 @@ export function useAppTabbarStyles(customStyles: TabBarStyles, safeAreaInsets: U
     return {
       top: animationPosition.y,
       left: animationPosition.x,
-      transform: `translate(-50%, -50%) ${isMoving ? 'scale(1)' : 'scale(0)'}`,
+      transform: `translate(-50%, -50%)`,
+      opacity: isMoving ? 1 : 0,
+      transition: isMoving ? 'left 0.3s, top 0.3s' : 'none',
       backgroundImage: processedImage ? `url(${processedImage})` : 'none'
     }
   }

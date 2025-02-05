@@ -1,7 +1,7 @@
 <template name="skeleton">
   <view class="sk-container">
     <view class="flex relative flex-col h-screen">
-      <scroll-view scroll-y="true" class="flex-1 h-0 animate-fadeIn">
+      <scroll-view scroll-y="true" class="flex-1 h-0">
         <view class="pages/mitt/index">
           <view
             class="flex flex-col justify-center items-center w-full h-screen mitt-index--flex mitt-index--flex-col gap-2-d-5 mitt-index--gap-2-d-5 mitt-index--justify-center mitt-index--items-center mitt-index--w-full mitt-index--h-screen mitt mitt-index--mitt"
