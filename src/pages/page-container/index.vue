@@ -5,7 +5,6 @@ import PageScrollComponent from '@/pages/scroll/index.vue'
 import PageWebsocketComponent from '@/pages/websocket/index.vue'
 import { tabBarList } from '@/common/constants'
 import { usePageContainer } from './index'
-import { type TabBarItem } from '@/components/AppTabbar/type'
 
 const { tabIndex, getPageAnimationClass, getPageShowCondition, handleTabChange, handleTouchStart, handleTouchMove, handleTouchEnd } = usePageContainer()
 </script>
@@ -30,6 +29,6 @@ const { tabIndex, getPageAnimationClass, getPageShowCondition, handleTabChange, 
       </scroll-view>
     </view>
 
-    <AppTabbar class="z-50" :selected="tabIndex" :animation="true" :tabBarList="tabBarList" @change="(item: TabBarItem, index: number) => handleTabChange(item, index, false)" />
+    <AppTabbar :selected="tabIndex" :tabBarList="tabBarList" @change="handleTabChange" />
   </view>
 </template>
