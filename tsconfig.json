@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "skipLibCheck": true,
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -15,5 +16,6 @@
     },
     "types": ["@dcloudio/types", "miniprogram-api-typings"]
   },
+  "exclude": ["node_modules/**/*", "node_modules", "dist", "build"],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "*.ts", "*.d.ts", "vite.config.mjs"]
 }

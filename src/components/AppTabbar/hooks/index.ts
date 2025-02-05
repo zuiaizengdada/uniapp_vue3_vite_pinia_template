@@ -1,7 +1,6 @@
 import { useAppTabbarStyles } from './modules/useAppTabbarStyles'
 import { useAppTabbarAnimation } from './modules/useAppTabbarAnimation'
 import type { AppTabbarProps, AppTabbarEmits, TabBarItem } from '../type'
-import { toRefs } from 'vue'
 
 export function useAppTabbar(props: AppTabbarProps, emit: AppTabbarEmits, safeAreaInsets: UniApp.SafeAreaInsets | undefined) {
   const { tabBarStyles, getTabItemStyles, getTabContentStyles, getTabIconStyles, getAnimationStyles, getTabBarContainerStyles } = useAppTabbarStyles(
