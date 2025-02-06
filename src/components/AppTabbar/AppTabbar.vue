@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useAppTabbar } from './hooks'
 import { useSystemInfo } from '@/common/hooks'
+import { tabBarList } from './config'
 import type { AppTabbarProps, AppTabbarEmits } from './type'
 
 const props = withDefaults(defineProps<AppTabbarProps>(), {
   selected: 0,
-  tabBarList: () => [],
   styles: () => ({}),
   animation: true
 })
@@ -20,7 +20,6 @@ const {
   getAnimationStyles,
   getTabBarContainerStyles,
   switchTab,
-  tabBarList,
   animation,
   selected,
   isMoving,
@@ -30,7 +29,7 @@ const {
 </script>
 
 <template>
-  <view class="fixed left-[15rpx] right-[15rpx] p-[10rpx] flex justify-between items-center z-50" :style="getTabBarContainerStyles(tabBarStyles, tabBarList, selected)">
+  <view class="fixed left-[15rpx] right-[15rpx] p-[10rpx] flex justify-between items-center z-50" :style="getTabBarContainerStyles(tabBarStyles, selected)">
     <!-- 动画圆点，只在启用动画时显示 -->
     <image
       v-if="animation"

@@ -1,4 +1,4 @@
-import { tabBarList } from '@/common/constants'
+import { tabBarList } from '@/components/AppTabbar/config'
 import { type TabBarItem } from '@/components/AppTabbar/type'
 
 export function usePageContainer() {

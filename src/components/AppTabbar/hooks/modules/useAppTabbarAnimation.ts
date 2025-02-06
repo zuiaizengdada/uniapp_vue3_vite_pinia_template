@@ -1,6 +1,6 @@
 import type { TabBarItem } from '../../type'
 
-export function useAppTabbarAnimation(selected: Ref<number>, animation: Ref<boolean | undefined>, tabBarList: Ref<TabBarItem[]>) {
+export function useAppTabbarAnimation(selected: Ref<number>, animation: Ref<boolean | undefined>, tabBarList: TabBarItem[]) {
   const isMoving = ref<boolean>(false)
   const targetImage = ref<string>('')
 
@@ -8,7 +8,7 @@ export function useAppTabbarAnimation(selected: Ref<number>, animation: Ref<bool
   const animationPosition = computed(() => {
     const index = selected.value
     return {
-      x: `calc(10rpx + (100% - 20rpx) / ${tabBarList.value.length} * ${index} + (100% - 20rpx) / ${tabBarList.value.length * 2})`,
+      x: `calc(10rpx + (100% - 20rpx) / ${tabBarList.length} * ${index} + (100% - 20rpx) / ${tabBarList.length * 2})`,
       y: '50%'
     }
   })
@@ -16,7 +16,7 @@ export function useAppTabbarAnimation(selected: Ref<number>, animation: Ref<bool
   watch(selected, (newVal) => {
     if (!animation.value) return
 
-    const iconPath = tabBarList.value[newVal].selectedIconPath
+    const iconPath = tabBarList[newVal].selectedIconPath
     if (!iconPath) {
       console.warn(`Tab ${newVal} 缺少 selectedIconPath`)
       return

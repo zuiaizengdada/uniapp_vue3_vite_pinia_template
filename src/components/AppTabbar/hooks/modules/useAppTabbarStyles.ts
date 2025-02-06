@@ -1,7 +1,7 @@
-import { defaultStyles } from '../../config'
-import type { TabBarStyles, TabBarItem } from '../../type'
+import { defaultStyles, tabBarList } from '../../config'
+import type { TabBarStyles } from '../../type'
 
-export function useAppTabbarStyles(customStyles: TabBarStyles, safeAreaInsets: UniApp.SafeAreaInsets | undefined, selected: number, tabBarList: TabBarItem[]) {
+export function useAppTabbarStyles(customStyles: TabBarStyles, safeAreaInsets: UniApp.SafeAreaInsets | undefined, selected: number) {
   const mergedStyles = { ...defaultStyles, ...customStyles }
 
   const tabBarStyles = computed<TabBarStyles>(() => ({
@@ -48,7 +48,7 @@ export function useAppTabbarStyles(customStyles: TabBarStyles, safeAreaInsets: U
     }
   }
 
-  const getTabBarContainerStyles = (tabBarStyles: Record<string, any>, tabBarList: TabBarItem[], selected: number) => {
+  const getTabBarContainerStyles = (tabBarStyles: Record<string, any>, selected: number) => {
     return [
       tabBarStyles,
       {

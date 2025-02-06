@@ -3,7 +3,6 @@ import PageIndexComponent from '@/pages/index/index.vue'
 import PageMittComponent from '@/pages/mitt/index.vue'
 import PageScrollComponent from '@/pages/scroll/index.vue'
 import PageWebsocketComponent from '@/pages/websocket/index.vue'
-import { tabBarList } from '@/common/constants'
 import { usePageContainer } from './index'
 
 const { tabIndex, getPageClass, getPageStyle, getPageShowCondition, handleTabChange, handleTouchStart, handleTouchMove, handleTouchEnd } = usePageContainer()
@@ -21,6 +20,6 @@ const { tabIndex, getPageClass, getPageStyle, getPageShowCondition, handleTabCha
       <PageScrollComponent class="absolute inset-0" :class="getPageClass(3)" :style="getPageStyle(3)" v-show="getPageShowCondition(3)" :tab-index="tabIndex" />
     </view>
 
-    <AppTabbar :selected="tabIndex" :tabBarList="tabBarList" @change="handleTabChange" />
+    <AppTabbar :selected="tabIndex" @change="handleTabChange" />
   </view>
 </template>
