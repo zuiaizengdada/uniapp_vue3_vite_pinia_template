@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useScroll } from '@/common/hooks'
 import { ComponentInternalInstance } from 'vue'
+import { useDebounceFn } from '@vueuse/core'
 const instance = getCurrentInstance() as ComponentInternalInstance
 const { scrollTop, scrollToBottom, scrollToTop, scrollWithAnimation, setScrollWithAnimation, setScrollTop, targetElementId } = useScroll(instance)
 
@@ -45,10 +46,15 @@ function handleScrollToLower() {
   console.log('滚动到底部了')
 }
 
+// 创建防抖处理函数
+const debouncedScrollHandler = useDebounceFn((scrollTop: number) => {
+  setScrollTop(scrollTop)
+  setScrollWithAnimation(false)
+}, 100)
+
 function handleScroll(e: any) {
   console.log(e)
-  setScrollTop(e.detail.scrollTop)
-  setScrollWithAnimation(false)
+  debouncedScrollHandler(e.detail.scrollTop)
 }
 
 const triggered = ref<boolean>(false)

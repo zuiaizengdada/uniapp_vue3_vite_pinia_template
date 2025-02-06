@@ -1,5 +1,5 @@
 import { defaultStyles, tabBarList } from '../../config'
-import type { TabBarStyles } from '../../type'
+import { type TabBarStyles } from '../../type'
 
 export function useAppTabbarStyles(customStyles: TabBarStyles, safeAreaInsets: UniApp.SafeAreaInsets | undefined, selected: number) {
   const mergedStyles = { ...defaultStyles, ...customStyles }
