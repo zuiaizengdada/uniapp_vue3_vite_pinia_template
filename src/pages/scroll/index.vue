@@ -50,7 +50,7 @@ function handleScrollToLower() {
 const debouncedScrollHandler = useDebounceFn((scrollTop: number) => {
   setScrollTop(scrollTop)
   setScrollWithAnimation(false)
-}, 100)
+}, 50)
 
 function handleScroll(e: any) {
   console.log(e)

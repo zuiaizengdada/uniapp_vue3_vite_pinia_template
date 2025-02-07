@@ -6,6 +6,8 @@ export function usePageContainer() {
   const previousIndex = ref<number>(0)
   const isAnimating = ref<boolean>(false)
   const touchStartX = ref<number>(0)
+  const touchStartY = ref<number>(0)
+  const isVerticalScroll = ref<boolean>(false)
   const minSwipeDistance = 50 // 最小滑动距离
   const translateX = ref<number>(0)
   const isDragging = ref<boolean>(false)
@@ -66,23 +68,37 @@ export function usePageContainer() {
     if (isAnimating.value) return
     isDragging.value = true
     touchStartX.value = event.touches[0].clientX
+    touchStartY.value = event.touches[0].clientY
+    isVerticalScroll.value = false
   }
 
   function handleTouchMove(event: TouchEvent) {
     if (!isDragging.value) return
     const currentX = event.touches[0].clientX
-    const diff = currentX - touchStartX.value
+    const currentY = event.touches[0].clientY
+    const diffX = currentX - touchStartX.value
+    const diffY = currentY - touchStartY.value
 
-    // 限制第一页向右滑动和最后一页向左滑动
-    if ((tabIndex.value === 0 && diff > 0) || (tabIndex.value === tabBarList.length - 1 && diff < 0)) {
-      translateX.value = 0 // 禁止滑动
+    if (!isVerticalScroll.value) {
+      if (Math.abs(diffY) > Math.abs(diffX)) {
+        isVerticalScroll.value = true
+        isDragging.value = false
+        translateX.value = 0
+        return
+      }
+    }
+
+    if (isVerticalScroll.value) return
+
+    if ((tabIndex.value === 0 && diffX > 0) || (tabIndex.value === tabBarList.length - 1 && diffX < 0)) {
+      translateX.value = 0
     } else {
-      translateX.value = diff
+      translateX.value = diffX
     }
   }
 
   function handleTouchEnd(event: TouchEvent) {
-    if (!isDragging.value) return
+    if (!isDragging.value || isVerticalScroll.value) return
 
     const touchEndX = event.changedTouches[0].clientX
     const distance = touchEndX - touchStartX.value
