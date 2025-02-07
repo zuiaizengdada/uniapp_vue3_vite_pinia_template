@@ -4,12 +4,19 @@ import PageMittComponent from '@/pages/mitt/index.vue'
 import PageScrollComponent from '@/pages/scroll/index.vue'
 import PageWebsocketComponent from '@/pages/websocket/index.vue'
 import { usePageContainer } from './index'
+import { useAppHeaderStyles } from '@/components/AppHeader/hooks'
 
 const { tabIndex, getPageClass, getPageStyle, getPageShowCondition, handleTabChange, handleTouchStart, handleTouchMove, handleTouchEnd } = usePageContainer()
+const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles({
+  backgroundColor: 'red',
+  keepStatusBarBgColor: false
+})
 </script>
 
 <template>
-  <view class="flex relative flex-col h-screen">
+  <AppHeader />
+
+  <view class="flex relative flex-col" :style="`height: calc(100vh - ${menuButtonBoxStyle.height} - ${statusBarBoxStyle.height})`">
     <view class="overflow-hidden relative flex-1 pointer-events-none" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
       <PageIndexComponent class="absolute inset-0" :class="getPageClass(0)" :style="getPageStyle(0)" v-show="getPageShowCondition(0)" :tab-index="tabIndex" />
 
@@ -19,7 +26,7 @@ const { tabIndex, getPageClass, getPageStyle, getPageShowCondition, handleTabCha
 
       <PageScrollComponent class="absolute inset-0" :class="getPageClass(3)" :style="getPageStyle(3)" v-show="getPageShowCondition(3)" :tab-index="tabIndex" />
     </view>
-
-    <AppTabbar :selected="tabIndex" @change="handleTabChange" />
   </view>
+
+  <AppTabbar :selected="tabIndex" @change="handleTabChange" />
 </template>

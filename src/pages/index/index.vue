@@ -3,7 +3,7 @@ import { useGlobalProperties, useSystemInfo } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
 
 const { userName, setUserName } = useStore('user')
-const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets, bottom: menuButtomBottom } = useSystemInfo()
+const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets } = useSystemInfo()
 
 const props = defineProps<{
   tabIndex: number
@@ -79,7 +79,7 @@ function handleScrollToLower() {
 
 <template>
   <scroll-view class="h-full" scroll-y @scrolltolower="handleScrollToLower" @scrolltoupper="handleScrollToUpper" :upper-threshold="0" :lower-threshold="0">
-    <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ padding: `${menuButtomBottom}px 0 ${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
+    <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ paddingBottom: `${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
       <view>
         <text>倒计时{{ count }}</text>
       </view>
