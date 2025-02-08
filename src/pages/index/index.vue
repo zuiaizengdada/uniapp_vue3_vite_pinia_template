@@ -3,7 +3,7 @@ import { useGlobalProperties, useSystemInfo } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
 
 const { userName, setUserName } = useStore('user')
-const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets } = useSystemInfo()
+const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets, height, top, safeArea } = useSystemInfo()
 
 const props = defineProps<{
   tabIndex: number
@@ -75,10 +75,52 @@ function handleScrollToUpper() {
 function handleScrollToLower() {
   console.log('滚动到底部了')
 }
+
+const triggered = ref<boolean>(false)
+
+function handleRefresherPulling() {
+  console.log('自定义下拉刷新控件被下拉')
+  triggered.value = true
+}
+
+function handleRefresherRefresh() {
+  console.log('自定义下拉刷新被触发')
+  triggered.value = true
+  setTimeout(() => {
+    triggered.value = false
+    console.log('自定义下拉刷新被完成')
+  }, 1500)
+}
+
+function handleRefresherrestore() {
+  console.log('自定义下拉刷新被复位')
+}
+
+function handleRefresherabort() {
+  console.log('自定义下拉刷新被中止')
+}
 </script>
 
 <template>
-  <scroll-view class="h-full" scroll-y @scrolltolower="handleScrollToLower" @scrolltoupper="handleScrollToUpper" :upper-threshold="0" :lower-threshold="0">
+  <AppHeader backgroundColor="transparent" keepStatusBarBgColor />
+
+  <scroll-view
+    class="h-full"
+    scroll-y
+    @scrolltolower="handleScrollToLower"
+    @scrolltoupper="handleScrollToUpper"
+    refresher-enabled
+    :refresher-triggered="triggered"
+    @refresherpulling="handleRefresherPulling"
+    @refresherrefresh="handleRefresherRefresh"
+    @refresherrestore="handleRefresherrestore"
+    @refresherabort="handleRefresherabort"
+    :upper-threshold="0"
+    :lower-threshold="0"
+  >
+    <!-- 占位盒子 -->
+    <view class="w-full bg-transparent" :style="{ height: `${height + top || safeArea!.top}px` }" />
+
     <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ paddingBottom: `${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
       <view>
         <text>倒计时{{ count }}</text>

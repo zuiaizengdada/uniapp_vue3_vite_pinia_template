@@ -8,7 +8,8 @@ const props = withDefaults(defineProps<AppHeaderProps>(), {
   showLeft: false,
   showCenter: true,
   showRight: false,
-  safeAreaInsetTop: true
+  safeAreaInsetTop: true,
+  customStyle: () => ({})
 })
 
 const emits = defineEmits<AppHeaderEmits>()
@@ -22,7 +23,7 @@ const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles({
 </script>
 
 <template>
-  <view class="w-full z-[1000] top app-header" :style="customStyle">
+  <view class="w-full z-[1000] fixed top-0 left-0 right-0" :style="{ backgroundColor, ...customStyle }">
     <!-- 状态栏头部 -->
     <view v-if="safeAreaInsetTop" :style="statusBarBoxStyle"></view>
 
@@ -51,9 +52,3 @@ const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles({
     </view>
   </view>
 </template>
-
-<style lang="scss" scoped>
-.app-header {
-  background-color: v-bind(backgroundColor);
-}
-</style>

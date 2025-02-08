@@ -5,15 +5,11 @@ import PageScrollComponent from '@/pages/scroll/index.vue'
 import PageWebsocketComponent from '@/pages/websocket/index.vue'
 import { usePageContainer } from './index'
 
-const { tabIndex, getPageClass, getPageStyle, getPageContainerStyle, getPageShowCondition, handleTabChange, handleTouchStart, handleTouchMove, handleTouchEnd } = usePageContainer()
-
-console.log(getPageContainerStyle.value)
+const { tabIndex, getPageClass, getPageStyle, getPageShowCondition, handleTabChange, handleTouchStart, handleTouchMove, handleTouchEnd } = usePageContainer()
 </script>
 
 <template>
-  <AppHeader />
-
-  <view class="flex relative flex-col" :style="getPageContainerStyle">
+  <view class="flex relative flex-col h-screen">
     <view class="overflow-hidden relative flex-1 pointer-events-none" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
       <PageIndexComponent class="absolute inset-0" :class="getPageClass(0)" :style="getPageStyle(0)" v-show="getPageShowCondition(0)" :tab-index="tabIndex" />
 
