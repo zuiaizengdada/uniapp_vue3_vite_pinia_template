@@ -1,3 +1,4 @@
+import { useAppHeaderStyles } from '@/components/AppHeader/hooks'
 import { tabBarList } from '@/components/AppTabbar/config'
 import { type TabBarItem } from '@/components/AppTabbar/type'
 
@@ -26,12 +27,24 @@ export function usePageContainer() {
     }
   })
 
+  const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles({
+    backgroundColor: 'red',
+    keepStatusBarBgColor: false
+  })
+
   // 获取页面样式类
   const getPageClass = computed(() => {
     return (index: number) => ({
       'z-20': tabIndex.value === index || isDragging.value,
       'pointer-events-auto': tabIndex.value === index
     })
+  })
+
+  // 获取页面容器样式
+  const getPageContainerStyle = computed(() => {
+    return {
+      height: `calc(100vh - ${menuButtonBoxStyle.value.height} - ${statusBarBoxStyle.value.height})`
+    }
   })
 
   // 获取页面样式
@@ -132,6 +145,7 @@ export function usePageContainer() {
     tabIndex,
     getPageClass,
     getPageStyle,
+    getPageContainerStyle,
     getPageShowCondition,
     handleTabChange,
     handleTouchStart,
