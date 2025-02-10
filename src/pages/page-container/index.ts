@@ -14,38 +14,32 @@ export function usePageContainer() {
   const screenWidth = ref(uni.getSystemInfoSync().windowWidth)
 
   // 计算页面的位移
-  const getTranslateX = computed(() => {
-    return (index: number): number => {
-      const baseOffset = (index - tabIndex.value) * screenWidth.value
+  const getTranslateX = computed<(index: number) => number>(() => (index: number): number => {
+    const baseOffset = (index - tabIndex.value) * screenWidth.value
 
-      if (isDragging.value || isAnimating.value) {
-        return baseOffset + translateX.value
-      }
-
-      return baseOffset
+    if (isDragging.value || isAnimating.value) {
+      return baseOffset + translateX.value
     }
+
+    return baseOffset
   })
 
   // 获取页面样式类
-  const getPageClass = computed(() => {
-    return (index: number) => ({
-      'z-20': tabIndex.value === index || isDragging.value,
-      'pointer-events-auto': tabIndex.value === index
-    })
-  })
+  const getPageClass = computed<(index: number) => Record<string, boolean>>(() => (index: number) => ({
+    'z-20': tabIndex.value === index || isDragging.value,
+    'pointer-events-auto': tabIndex.value === index
+  }))
 
   // 获取页面样式
-  const getPageStyle = computed(() => {
-    return (index: number) => ({
-      transform: `translateX(${getTranslateX.value(index)}px)`,
-      transition: isAnimating.value ? 'transform 0.3s ease-out' : 'none'
-    })
-  })
+  const getPageStyle = computed<(index: number) => Record<string, string>>(() => (index: number) => ({
+    transform: `translateX(${getTranslateX.value(index)}px)`,
+    transition: isAnimating.value ? 'transform 0.3s ease-out' : 'none'
+  }))
 
   // 获取页面显示条件
-  const getPageShowCondition = computed(() => {
-    return (index: number) => (isDragging.value ? Math.abs(index - tabIndex.value) <= 1 : tabIndex.value === index || (isAnimating.value && previousIndex.value === index))
-  })
+  const getPageShowCondition = computed<(index: number) => boolean>(
+    () => (index: number) => (isDragging.value ? Math.abs(index - tabIndex.value) <= 1 : tabIndex.value === index || (isAnimating.value && previousIndex.value === index))
+  )
 
   function handleTabChange(_: TabBarItem, index: number, fromSwipe: boolean = false) {
     if (isAnimating.value) return
