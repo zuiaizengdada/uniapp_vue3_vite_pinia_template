@@ -1,9 +1,9 @@
 import mitt from 'mitt'
 import i18n from '@/locale'
-import { App } from 'vue'
-import { Events } from '../type'
+import { type App } from 'vue'
+import { type Events } from '../type'
 
-export function RegisterProperties(app: App): void {
+export function RegisterProperties(app: App) {
   app.config.globalProperties.$mitt = mitt<Events>()
   app.config.globalProperties.$changeLocale = (locale: 'zh' | 'en') => {
     i18n.global.locale.value = locale
