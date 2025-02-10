@@ -4,9 +4,9 @@ import { mock as mockBrowser } from 'better-mock/dist/mock.browser.min'
 // #ifdef MP-WEIXIN ||MP-TOUTIAO
 import { mock as mockMP } from 'better-mock/dist/mock.mp'
 // #endif
-import { type Post } from '@/apis/modules/type'
 import { HttpMethods } from '@/common/constants'
 import { isH5 } from '@/utils'
+import { type Post } from '@/apis/modules/type'
 
 const mock = isH5 ? mockBrowser : mockMP
 
