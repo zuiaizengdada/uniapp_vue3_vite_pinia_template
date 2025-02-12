@@ -7,7 +7,8 @@ import type { AppTabbarProps, AppTabbarEmits } from './type'
 const props = withDefaults(defineProps<AppTabbarProps>(), {
   selected: 0,
   styles: () => ({}),
-  animation: true
+  animation: true,
+  tabBarList: () => []
 })
 const emit = defineEmits<AppTabbarEmits>()
 
@@ -53,7 +54,7 @@ const {
       <view class="flex flex-col items-center" :class="{ 'font-medium': selected === index }" :style="getTabContentStyles(index)">
         <image
           v-if="selected === index && item.selectedIconPath"
-          :class="['mb-[5rpx] relative z-2', animation ? 'transition-all duration-300 ease-in-out animate-fadeIn' : '']"
+          :class="['relative z-2', animation ? 'transition-all duration-300 ease-in-out animate-fadeIn' : '']"
           :style="getTabIconStyles()"
           :src="item.selectedIconPath"
         />

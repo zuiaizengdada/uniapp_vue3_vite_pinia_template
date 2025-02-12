@@ -59,8 +59,7 @@
     "prepare": "husky install",
     "lint": "vue-tsc --noEmit && eslint src --fix --ext .js,.ts,.jsx,.tsx,.vue && prettier . --write",
     "commit": "cz",
-    "svgicon": "node ./src/uni_modules/zui-svg-icon/tools/generate-svg-icon.js",
-    "test": "vitest"
+    "svgicon": "node ./src/uni_modules/zui-svg-icon/tools/generate-svg-icon.js"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-4040520250104002",
@@ -80,7 +79,7 @@
     "@dcloudio/uni-quickapp-webview": "3.0.0-4040520250104002",
     "@dcloudio/uni-ui": "^1.5.7",
     "@esbuild/darwin-x64": "^0.20.2",
-    "@intlify/message-compiler": "^11.0.1",
+    "@intlify/message-compiler": "^9.14.2",
     "@intlify/shared": "^10.0.5",
     "@rollup/rollup-darwin-x64": "^4.31.0",
     "@uni-helper/uni-use": "^0.19.14",

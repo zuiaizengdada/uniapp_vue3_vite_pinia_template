@@ -1,1 +1,1 @@
-declare module 'better-mock/dist/mock.browser.min'
+declare const Mock: Mock

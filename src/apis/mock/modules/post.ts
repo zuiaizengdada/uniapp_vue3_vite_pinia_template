@@ -1,5 +1,6 @@
 // #ifdef H5
-import { mock as mockBrowser } from 'better-mock/dist/mock.browser.min'
+import 'better-mock/dist/mock.browser'
+const mockBrowser = Mock.mock
 // #endif
 // #ifdef MP-WEIXIN ||MP-TOUTIAO
 import { mock as mockMP } from 'better-mock/dist/mock.mp'

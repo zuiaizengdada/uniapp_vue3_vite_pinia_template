@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useGlobalProperties, useSystemInfo } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
+import { useAppHeaderStyles } from '@/components/AppHeader/hooks'
+import { isH5 } from '@/utils'
 
 const { userName, setUserName } = useStore('user')
 const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets, height, top, safeArea } = useSystemInfo()
@@ -99,63 +101,71 @@ function handleRefresherrestore() {
 function handleRefresherabort() {
   console.log('自定义下拉刷新被中止')
 }
+
+const { menuButtonBoxStyle } = useAppHeaderStyles({
+  backgroundColor: 'transparent',
+  keepStatusBarBgColor: true
+})
+console.log(menuButtonBoxStyle.value)
 </script>
 
 <template>
-  <AppHeader backgroundColor="transparent" keepStatusBarBgColor />
+  <view>
+    <AppHeader backgroundColor="transparent" keepStatusBarBgColor />
 
-  <scroll-view
-    class="h-full"
-    scroll-y
-    @scrolltolower="handleScrollToLower"
-    @scrolltoupper="handleScrollToUpper"
-    refresher-enabled
-    :refresher-triggered="triggered"
-    @refresherpulling="handleRefresherPulling"
-    @refresherrefresh="handleRefresherRefresh"
-    @refresherrestore="handleRefresherrestore"
-    @refresherabort="handleRefresherabort"
-    :upper-threshold="0"
-    :lower-threshold="0"
-  >
-    <!-- 占位盒子 -->
-    <view class="w-full bg-transparent" :style="{ height: `${height + top || safeArea!.top}px` }" />
+    <scroll-view
+      class="h-full"
+      scroll-y
+      @scrolltolower="handleScrollToLower"
+      @scrolltoupper="handleScrollToUpper"
+      refresher-enabled
+      :refresher-triggered="triggered"
+      @refresherpulling="handleRefresherPulling"
+      @refresherrefresh="handleRefresherRefresh"
+      @refresherrestore="handleRefresherrestore"
+      @refresherabort="handleRefresherabort"
+      :upper-threshold="0"
+      :lower-threshold="0"
+    >
+      <!-- 占位盒子 -->
+      <view class="w-full bg-transparent" :style="{ height: isH5 ? menuButtonBoxStyle.height : `${height + top || safeArea!.top}px` }" />
 
-    <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ paddingBottom: `${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
-      <view>
-        <text>倒计时{{ count }}</text>
+      <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ paddingBottom: `${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
+        <view>
+          <text>倒计时{{ count }}</text>
+        </view>
+
+        <view class="flex gap-5 items-center">
+          <button @click="handleGetCode">获取验证码</button>
+        </view>
+
+        <view class="w-full text-center name">
+          <text>
+            {{ userName }}
+          </text>
+        </view>
+
+        <view>
+          <button @tap="setUserName('zengdada1')">修改名字 pinia 数据持久化</button>
+        </view>
+
+        <view>
+          <text>{{ $t('demo') }}</text>
+        </view>
+
+        <view>
+          <button @tap="handleJumpToSubPackage">跳转到分包页面</button>
+        </view>
+
+        <view class="flex gap-5 items-center">
+          <button @tap="handleSwitchLanguage('zh')">中文</button>
+          <button @tap="handleSwitchLanguage('en')">English</button>
+        </view>
+
+        <view v-for="(item, index) in 100" :key="index">
+          <text>{{ item }}</text>
+        </view>
       </view>
-
-      <view class="flex gap-5 items-center">
-        <button @click="handleGetCode">获取验证码</button>
-      </view>
-
-      <view class="w-full text-center name">
-        <text>
-          {{ userName }}
-        </text>
-      </view>
-
-      <view>
-        <button @tap="setUserName('zengdada1')">修改名字 pinia 数据持久化</button>
-      </view>
-
-      <view>
-        <text>{{ $t('demo') }}</text>
-      </view>
-
-      <view>
-        <button @tap="handleJumpToSubPackage">跳转到分包页面</button>
-      </view>
-
-      <view class="flex gap-5 items-center">
-        <button @tap="handleSwitchLanguage('zh')">中文</button>
-        <button @tap="handleSwitchLanguage('en')">English</button>
-      </view>
-
-      <view v-for="(item, index) in 100" :key="index">
-        <text>{{ item }}</text>
-      </view>
-    </view>
-  </scroll-view>
+    </scroll-view>
+  </view>
 </template>
