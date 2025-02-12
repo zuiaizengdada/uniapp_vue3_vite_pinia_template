@@ -1,16 +1,6 @@
 {
   "pages": [
     {
-      "path": "pages/guide-page/index",
-      "style": {
-        "navigationStyle": "custom",
-        "enablePullDownRefresh": false,
-        "app-plus": {
-          "bounce": "none"
-        }
-      }
-    },
-    {
       "path": "pages/page-container/index",
       "style": {
         "navigationStyle": "custom",

@@ -1,16 +1,7 @@
 <script setup lang="ts">
-import { router } from '@/utils'
-function handleSkip() {
-  router.redirectTo('/pages/page-container/index')
-}
+import { useWelcomVideo } from './hooks'
 
-onMounted(() => {
-  // 设置页面全屏
-  uni.setNavigationBarColor({
-    frontColor: '#ffffff',
-    backgroundColor: '#000000'
-  })
-})
+const { handleSkip } = useWelcomVideo()
 </script>
 
 <template>

@@ -5,6 +5,7 @@
 import type { ToRef, UnwrapRef } from 'vue'
 import { storeToRefs } from 'pinia'
 
+import systemStore from '@/store/system'
 import userStore from '@/store/user'
 
 import store from '@/store'
@@ -16,6 +17,7 @@ type StoreToRefs<T extends StoreDefinition> = {
 }
 
 const storeExports = {
+  system: systemStore,
   user: userStore,
 }
 
