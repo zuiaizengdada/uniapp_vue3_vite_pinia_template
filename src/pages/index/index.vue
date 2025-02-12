@@ -106,7 +106,6 @@ const { menuButtonBoxStyle } = useAppHeaderStyles({
   backgroundColor: 'transparent',
   keepStatusBarBgColor: true
 })
-console.log(menuButtonBoxStyle.value)
 </script>
 
 <template>
