@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<AppTabbarProps>(), {
   selected: 0,
   styles: () => ({}),
   animation: true,
-  tabBarList: () => []
+  tabBarList: () => tabBarList
 })
 const emit = defineEmits<AppTabbarEmits>()
 

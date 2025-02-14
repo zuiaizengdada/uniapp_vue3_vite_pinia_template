@@ -78,7 +78,7 @@
     "@dcloudio/uni-mp-xhs": "3.0.0-4040520250104002",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4040520250104002",
     "@dcloudio/uni-ui": "^1.5.7",
-    "@esbuild/darwin-x64": "^0.20.2",
+    "@esbuild/darwin-x64": "^0.21.5",
     "@intlify/message-compiler": "^9.14.2",
     "@intlify/shared": "^10.0.5",
     "@rollup/rollup-darwin-x64": "^4.31.0",

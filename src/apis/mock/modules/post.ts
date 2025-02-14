@@ -2,7 +2,7 @@
 import 'better-mock/dist/mock.browser'
 const mockBrowser = Mock.mock
 // #endif
-// #ifdef MP-WEIXIN ||MP-TOUTIAO
+// #ifdef MP-WEIXIN || MP-TOUTIAO || APP || APP-PLUS
 import { mock as mockMP } from 'better-mock/dist/mock.mp'
 // #endif
 import { HttpMethods } from '@/common/constants'
