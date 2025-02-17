@@ -16,7 +16,6 @@ const systemStore = defineStore(
     }
   },
   {
-    persist: true,
     unistorage: true
   }
 )
