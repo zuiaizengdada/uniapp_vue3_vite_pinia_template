@@ -1,22 +1,23 @@
-import { uniStorage } from '@/utils'
+// import { uniStorage } from '@/utils'
 
 const systemStore = defineStore(
   'system',
   () => {
     // 是否是首次进入
-    const isFirstEnter = ref<boolean>(uniStorage.getSync('system.isFirstEnter') || true)
+    const isFirstEnterApp = ref<boolean>(true)
 
     function setIsFirstEnter(value: boolean) {
-      isFirstEnter.value = value
+      isFirstEnterApp.value = value
     }
 
     return {
-      isFirstEnter,
+      isFirstEnterApp,
       setIsFirstEnter
     }
   },
   {
-    unistorage: true
+    unistorage: true,
+    persist: true
   }
 )
 

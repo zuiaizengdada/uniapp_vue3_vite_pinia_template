@@ -7,11 +7,11 @@ import WelcomVideoComponent from './components/WelcomVideo/index.vue'
 import { usePageContainer } from './index'
 
 const { tabIndex, getPageClass, getPageStyle, getPageShowCondition, handleTabChange, handleTouchStart, handleTouchMove, handleTouchEnd } = usePageContainer()
-const { isFirstEnter } = useStore('system')
+const { isFirstEnterApp } = useStore('system')
 </script>
 
 <template>
-  <WelcomVideoComponent v-if="isFirstEnter" />
+  <WelcomVideoComponent v-if="isFirstEnterApp" />
 
   <template v-else>
     <view class="flex relative flex-col h-screen">
