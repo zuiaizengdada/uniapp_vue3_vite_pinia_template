@@ -1,5 +1,5 @@
 export interface AppTabbarProps {
-  selected?: number
+  selected: number
   tabBarList?: TabBarItem[]
   styles?: TabBarStyles
   animation?: boolean
