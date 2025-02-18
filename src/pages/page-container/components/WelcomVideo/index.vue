@@ -8,6 +8,7 @@ const { handleSkip } = useWelcomVideo()
   <view class="relative w-screen h-screen bg-black">
     <!-- 视频背景 -->
     <video
+      id="welcomeVideo"
       class="object-cover absolute top-0 left-0 w-full h-full z-1"
       src="https://hok-one-oss.oss-accelerate.aliyuncs.com/hok_web/video/7jo2otk120g000051.mov"
       autoplay
