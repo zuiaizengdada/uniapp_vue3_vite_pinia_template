@@ -1,5 +1,3 @@
-// import { uniStorage } from '@/utils'
-
 const systemStore = defineStore(
   'system',
   () => {
