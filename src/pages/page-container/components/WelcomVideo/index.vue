@@ -20,6 +20,13 @@ const { handleSkip } = useWelcomVideo()
       :show-fullscreen-btn="false"
       :show-center-play-btn="false"
       object-fit="cover"
+      @click.stop
+      @touchstart.stop
+      @touchmove.stop
+      @touchend.stop
+      :enable-play-gesture="false"
+      :vslide-gesture="false"
+      :vslide-gesture-in-fullscreen="false"
     />
 
     <!-- Logo区域 -->
