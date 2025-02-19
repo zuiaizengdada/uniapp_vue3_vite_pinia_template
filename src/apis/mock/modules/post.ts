@@ -7,12 +7,12 @@ import { mock as mockMP } from 'better-mock/dist/mock.mp'
 // #endif
 import { HttpMethods } from '@/common/constants'
 import { isH5 } from '@/utils'
-import { type Post } from '@/apis/modules/type'
+import type { PageData, Post } from '@/apis/modules/type'
 
 const mock = isH5 ? mockBrowser : mockMP
 
 const posts = mock({
-  'data|10': [
+  'data|100': [
     {
       'id|+1': 1,
       'userId|+1': 1,
@@ -29,11 +29,34 @@ interface Response {
   url: string
 }
 
-// 获取所有文章数据
-mock('/posts', 'GET', {
-  code: 1,
-  message: 'success',
-  data: posts
+// 获取文章数据（支持分页）
+mock('/posts', 'GET', (res: Response) => {
+  const { page, pageSize } = res.body || {}
+
+  // 如果没有传分页参数，返回所有数据
+  if (!page || !pageSize) {
+    return {
+      code: 1,
+      message: 'success',
+      data: posts as Post[]
+    }
+  }
+
+  // 有分页参数时返回分页数据
+  const start = (page - 1) * pageSize
+  const end = start + pageSize
+  const pageData: PageData<Post> = {
+    list: posts.slice(start, end),
+    total: posts.length,
+    page,
+    pageSize
+  }
+
+  return {
+    code: 1,
+    message: 'success',
+    data: pageData
+  }
 })
 
 // 根据文章id获取文章数据

@@ -3,6 +3,7 @@ import { useGlobalProperties, useSystemInfo } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
 import { useAppHeaderStyles } from '@/components/AppHeader/hooks'
 import { isAppPlus, isH5 } from '@/utils'
+import { type Post } from '@/apis/modules/type'
 
 const { userName, setUserName } = useStore('user')
 const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets, height, top, safeArea } = useSystemInfo()
@@ -12,6 +13,46 @@ const props = defineProps<{
 }>()
 
 const { tabIndex } = toRefs(props)
+
+const list = ref<Post[]>([])
+const pageSize = 10
+const currentPage = ref(1)
+const loading = ref(false)
+const finished = ref(false)
+
+// 初始化数据
+function initData() {
+  currentPage.value = 1
+  list.value = []
+  finished.value = false
+  loadData()
+}
+
+// 加载数据
+async function loadData() {
+  if (loading.value || finished.value) return
+
+  loading.value = true
+
+  try {
+    const res = await getPosts(currentPage.value, pageSize)
+
+    // 判断是否为分页数据结构
+    const newData = 'list' in res.data ? res.data.list : res.data
+    list.value.push(...newData)
+
+    // 判断是否加载完所有数据
+    if (newData.length < pageSize) {
+      finished.value = true
+    } else {
+      currentPage.value++
+    }
+  } catch (error) {
+    console.error('加载数据失败:', error)
+  } finally {
+    loading.value = false
+  }
+}
 
 onMounted(async () => {
   if (tabIndex.value !== 0) return
@@ -39,6 +80,9 @@ onMounted(async () => {
 
   const res5 = await createPost('测试文章', '测试文章内容')
   console.log(res5)
+
+  // 初始化列表数据
+  initData()
 })
 
 const { count, dec, reset } = useCounter(60, { min: 0, max: 60 })
@@ -76,6 +120,7 @@ function handleScrollToUpper() {
 
 function handleScrollToLower() {
   console.log('滚动到底部了')
+  loadData()
 }
 
 const triggered = ref<boolean>(false)
@@ -106,6 +151,8 @@ const { menuButtonBoxStyle } = useAppHeaderStyles({
   backgroundColor: 'transparent',
   keepStatusBarBgColor: true
 })
+
+const throttledScrollToLower = useDebounceFn(handleScrollToLower, 200)
 </script>
 
 <template>
@@ -115,7 +162,9 @@ const { menuButtonBoxStyle } = useAppHeaderStyles({
     <scroll-view
       class="flex-1 h-0"
       scroll-y
-      @scrolltolower="handleScrollToLower"
+      :lower-threshold="50"
+      :upper-threshold="50"
+      @scrolltolower="throttledScrollToLower"
       @scrolltoupper="handleScrollToUpper"
       refresher-enabled
       :refresher-triggered="triggered"
@@ -123,8 +172,6 @@ const { menuButtonBoxStyle } = useAppHeaderStyles({
       @refresherrefresh="handleRefresherRefresh"
       @refresherrestore="handleRefresherrestore"
       @refresherabort="handleRefresherabort"
-      :upper-threshold="0"
-      :lower-threshold="0"
     >
       <!-- 占位盒子 -->
       <view class="w-full bg-transparent" :style="{ height: isH5 || isAppPlus ? menuButtonBoxStyle.height : `${height + top || safeArea!.top}px` }" />
@@ -161,8 +208,15 @@ const { menuButtonBoxStyle } = useAppHeaderStyles({
           <button @tap="handleSwitchLanguage('en')">English</button>
         </view>
 
-        <view v-for="(item, index) in 100" :key="index">
-          <text>{{ item }}</text>
+        <view v-for="item in list" :key="item.id" class="px-4 py-2 mb-3 bg-white rounded-lg shadow">
+          <view class="mb-2 text-lg font-bold">{{ item.title }}</view>
+          <view class="text-gray-600">{{ item.content }}</view>
+        </view>
+
+        <!-- 加载状态提示 -->
+        <view class="text-center text-gray-500">
+          <text v-if="loading">加载中...</text>
+          <text v-else-if="finished">没有更多数据了</text>
         </view>
       </view>
     </scroll-view>

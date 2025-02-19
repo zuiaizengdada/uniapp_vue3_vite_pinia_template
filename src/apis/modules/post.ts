@@ -1,12 +1,15 @@
 import ApiService from '../request'
 import { type Data } from '../request/type'
-import { type Post } from './type'
+import type { Post, PageData } from './type'
 
 const apiService = new ApiService({}, { mock: true })
 
-// 获取所有文章数据
-export function getPosts(): Promise<Data<Post>> {
-  return apiService.get('/posts')
+// 获取文章数据（支持分页）
+export function getPosts(page?: number, pageSize?: number): Promise<Data<Post[]> | Data<PageData<Post>>> {
+  if (page && pageSize) {
+    return apiService.get('/posts', { page, pageSize }) as Promise<Data<PageData<Post>>>
+  }
+  return apiService.get('/posts') as Promise<Data<Post[]>>
 }
 
 // 根据文章id获取文章数据
