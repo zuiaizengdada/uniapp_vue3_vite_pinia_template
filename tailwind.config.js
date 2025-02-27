@@ -2,7 +2,7 @@
 export default {
   mode: 'jit',
   darkMode: 'class',
-  content: ['./index.html', '!./src/**/__tests__/*', './src/**/*.{vue,ts,tsx}'],
+  content: ['./index.html', './src/**/*.{vue,ts,tsx,html,js}', '!./src/**/__tests__/*', '!./node_modules/**'],
   important: true,
   theme: {
     extend: {

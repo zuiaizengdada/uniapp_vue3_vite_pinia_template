@@ -10,8 +10,8 @@ export function useScroll(instance: ComponentInternalInstance) {
 
   const targetElementId = ref<string | null>(null)
 
-  async function scrollToTop(scrollAnimation: boolean = true) {
-    setScrollWithAnimation(scrollAnimation)
+  async function scrollToTop() {
+    setScrollWithAnimation(true)
     targetElementId.value = null
     setScrollTop(0)
   }
