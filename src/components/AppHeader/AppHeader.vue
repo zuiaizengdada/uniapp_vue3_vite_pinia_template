@@ -16,10 +16,7 @@ const emits = defineEmits<AppHeaderEmits>()
 
 defineSlots<AppHeaderSlots>()
 
-const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles({
-  backgroundColor: props.backgroundColor,
-  keepStatusBarBgColor: props.keepStatusBarBgColor
-})
+const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
 </script>
 
 <template>
