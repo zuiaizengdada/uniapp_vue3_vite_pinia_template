@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<AppTabbarProps>(), {
   animation: true,
   tabBarList: () => tabBarList
 })
-const emit = defineEmits<AppTabbarEmits>()
+const emits = defineEmits<AppTabbarEmits>()
 
 const { safeAreaInsets } = useSystemInfo()
 const {
@@ -26,7 +26,7 @@ const {
   isMoving,
   targetImage,
   animationPosition
-} = useAppTabbar(props, emit, safeAreaInsets)
+} = useAppTabbar(props, emits, safeAreaInsets)
 </script>
 
 <template>
