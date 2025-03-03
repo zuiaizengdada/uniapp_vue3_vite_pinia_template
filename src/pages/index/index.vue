@@ -35,7 +35,7 @@ async function loadData() {
   loading.value = true
 
   try {
-    const res = await getPosts(currentPage.value, pageSize)
+    const res = await getPosts({ page: currentPage.value, pageSize: pageSize })
 
     // 判断是否为分页数据结构
     const newData = 'list' in res.data ? res.data.list : res.data
@@ -72,13 +72,13 @@ onMounted(async () => {
   const res2 = await getPostById(1)
   console.log(res2)
 
-  const res3 = await updatePost(1, '更新文章', '更新文章内容')
+  const res3 = await updatePost(1, { id: 1, userId: 1, title: '更新文章', content: '更新文章内容' })
   console.log(res3)
 
   const res4 = await deletePost(1)
   console.log(res4)
 
-  const res5 = await createPost('测试文章', '测试文章内容')
+  const res5 = await createPost({ id: 1, userId: 1, title: '测试文章', content: '测试文章内容' })
   console.log(res5)
 
   // 初始化列表数据

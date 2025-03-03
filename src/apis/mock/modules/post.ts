@@ -17,7 +17,7 @@ const posts = mock({
       'id|+1': 1,
       'userId|+1': 1,
       title: '@ctitle',
-      body: '@cparagraph'
+      content: '@cparagraph'
     }
   ]
 }).data as Post[]
@@ -82,9 +82,9 @@ mock('/post/:id', 'PUT', (res: Response) => {
   const id = parseInt(res.url.match(/\/post\/(\d+)/)![1])
   const post = posts.find((post) => post.id === id)
   if (post) {
-    const { title, body } = res.body!
+    const { title, content } = res.body!
     post.title = title
-    post.body = body
+    post.content = content
     return {
       code: 1,
       message: 'success',
@@ -119,12 +119,12 @@ mock('/post/:id', 'DELETE', (res: Response) => {
 
 // 创建文章
 mock('/post', 'POST', (res: Response) => {
-  const { title, body } = res.body!
+  const { title, content } = res.body!
   const post = {
     id: posts.length + 1,
     userId: 1,
     title,
-    body
+    content
   }
   posts.push(post)
   return {

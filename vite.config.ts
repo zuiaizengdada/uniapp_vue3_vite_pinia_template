@@ -3,7 +3,7 @@ import { uniPolyfill } from './src/common/plugins'
 import uni from '@dcloudio/vite-plugin-uni'
 import AutoImport from 'unplugin-auto-import/vite'
 import PiniaAutoRefs from 'pinia-auto-refs'
-import tailwindcss from 'tailwindcss'
+// import tailwindcss from 'tailwindcss'
 import uniTailwind from '@uni-helper/vite-plugin-uni-tailwind'
 import { uniuseAutoImports } from '@uni-helper/uni-use'
 import { resolve } from 'path'
@@ -42,7 +42,7 @@ export default defineConfig({
   ],
   css: {
     postcss: {
-      plugins: [tailwindcss()]
+      plugins: [require('tailwindcss')]
     },
     preprocessorOptions: {
       scss: {

@@ -6,7 +6,7 @@ export interface Post {
   // 文章标题
   title: string
   // 文章内容
-  body: string
+  content: string
 }
 
 export interface PageData<T> {
@@ -18,4 +18,15 @@ export interface PageData<T> {
   page: number
   // 每页条数
   pageSize: number
+}
+
+export interface PostSearchParams {
+  // 当前页码
+  page?: number
+  // 每页条数
+  pageSize?: number
+  // 文章标题
+  title?: string
+  // 文章内容
+  content?: string
 }
