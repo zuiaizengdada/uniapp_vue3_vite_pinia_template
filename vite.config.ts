@@ -5,6 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import PiniaAutoRefs from 'pinia-auto-refs'
 import uniTailwind from '@uni-helper/vite-plugin-uni-tailwind'
 import { uniuseAutoImports } from '@uni-helper/uni-use'
+import Inspector from 'unplugin-vue-inspector/vite'
 import { resolve } from 'path'
 
 export default defineConfig({
@@ -19,6 +20,10 @@ export default defineConfig({
   base: './',
   plugins: [
     uni(),
+    Inspector({
+      enabled: true,
+      launchEditor: 'cursor'
+    }),
     uniTailwind(),
     AutoImport({
       imports: [
