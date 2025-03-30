@@ -82,6 +82,7 @@
     "@intlify/message-compiler": "^9.14.2",
     "@intlify/shared": "^10.0.5",
     "@rollup/rollup-darwin-x64": "^4.31.0",
+    "@tanstack/vue-query": "^5.71.0",
     "@uni-helper/uni-use": "^0.19.14",
     "@vueuse/core": "^10.7.0",
     "@vueuse/shared": "^11.3.0",

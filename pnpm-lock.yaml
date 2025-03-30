@@ -68,6 +68,9 @@ importers:
       '@rollup/rollup-darwin-x64':
         specifier: ^4.31.0
         version: 4.38.0
+      '@tanstack/vue-query':
+        specifier: ^5.71.0
+        version: 5.71.0(vue@3.5.13(typescript@5.3.3))
       '@uni-helper/uni-use':
         specifier: ^0.19.14
         version: 0.19.14(@vueuse/core@10.11.1(vue@3.5.13(typescript@5.3.3)))(postcss@8.5.3)(rollup@4.38.0)(typescript@5.3.3)(vue@3.5.13(typescript@5.3.3))
@@ -1898,6 +1901,22 @@ packages:
 
   '@sinonjs/fake-timers@8.1.0':
     resolution: {integrity: sha512-OAPJUAtgeINhh/TAlUID4QTs53Njm7xzddaVlEs/SXwgtiD1tW22zAB/W1wdqfrpmikgaWQ9Fw6Ws+hsiRm5Vg==}
+
+  '@tanstack/match-sorter-utils@8.19.4':
+    resolution: {integrity: sha512-Wo1iKt2b9OT7d+YGhvEPD3DXvPv2etTusIMhMUoG7fbhmxcXCtIjJDEygy91Y2JFlwGyjqiBPRozme7UD8hoqg==}
+    engines: {node: '>=12'}
+
+  '@tanstack/query-core@5.71.0':
+    resolution: {integrity: sha512-p4+T7CIEe1kMhii4booWiw42nuaiYI9La/bRCNzBaj1P3PDb0dEZYDhc/7oBifKJfHYN+mtS1ynW1qsmzQW7Og==}
+
+  '@tanstack/vue-query@5.71.0':
+    resolution: {integrity: sha512-/jjuDka26wbuhJi4X7DBbbgp3Fh+ZX/MG4/SKAEQOht3+MKucoEQm2uwUKv739m2td8kvFDNSFysWYiT6J+a5w==}
+    peerDependencies:
+      '@vue/composition-api': ^1.1.2
+      vue: ^2.6.0 || ^3.3.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
 
   '@tootallnate/once@1.1.2':
     resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}
@@ -4500,6 +4519,9 @@ packages:
   regjsparser@0.12.0:
     resolution: {integrity: sha512-cnE+y8bz4NhMjISKbgeVJtqNbtf5QpjZP+Bslo+UqkIt9QPnX9q095eiRRASJG1/tz6dlNr6Z5NsBiWYokp6EQ==}
     hasBin: true
+
+  remove-accents@0.5.0:
+    resolution: {integrity: sha512-8g3/Otx1eJaVD12e31UbJj1YzdtVvzH85HV7t+9MJYk/u3XmkOUJ5Ys9wQrf9PCPK8+xn4ymzqYCiZl6QWKn+A==}
 
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
@@ -7613,6 +7635,20 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 1.8.6
 
+  '@tanstack/match-sorter-utils@8.19.4':
+    dependencies:
+      remove-accents: 0.5.0
+
+  '@tanstack/query-core@5.71.0': {}
+
+  '@tanstack/vue-query@5.71.0(vue@3.5.13(typescript@5.3.3))':
+    dependencies:
+      '@tanstack/match-sorter-utils': 8.19.4
+      '@tanstack/query-core': 5.71.0
+      '@vue/devtools-api': 6.6.4
+      vue: 3.5.13(typescript@5.3.3)
+      vue-demi: 0.14.10(vue@3.5.13(typescript@5.3.3))
+
   '@tootallnate/once@1.1.2': {}
 
   '@trysound/sax@0.2.0': {}
@@ -10575,6 +10611,8 @@ snapshots:
   regjsparser@0.12.0:
     dependencies:
       jsesc: 3.0.2
+
+  remove-accents@0.5.0: {}
 
   require-directory@2.1.1: {}
 
