@@ -223,7 +223,7 @@
 			this.render()
 			// #endif
 		},
-		beforeDestroy() {
+		beforeUnmount() {
 			// 组件卸载销毁实例
 			this.call('destroy')
 		}

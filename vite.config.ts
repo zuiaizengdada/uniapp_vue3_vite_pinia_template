@@ -7,6 +7,7 @@ import uniTailwind from '@uni-helper/vite-plugin-uni-tailwind'
 import { uniuseAutoImports } from '@uni-helper/uni-use'
 import Inspector from 'unplugin-vue-inspector/vite'
 import { resolve } from 'path'
+import tailwindcss from 'tailwindcss'
 
 export default defineConfig({
   resolve: {
@@ -46,7 +47,7 @@ export default defineConfig({
   ],
   css: {
     postcss: {
-      plugins: [require('tailwindcss')]
+      plugins: [tailwindcss]
     },
     preprocessorOptions: {
       scss: {
