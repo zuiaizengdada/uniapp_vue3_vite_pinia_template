@@ -1,100 +1,9 @@
 <script setup lang="ts">
-import { useGlobalProperties, useSystemInfo } from '@/common/hooks'
+import { useGlobalProperties, useSystemInfo, useListQuery, useItemQuery, useMutations } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
 import { useAppHeaderStyles } from '@/components/AppHeader/hooks'
 import { isAppPlus, isH5 } from '@/utils'
-import type { Post, PageData } from '@/apis/modules/type'
-import { type Data } from '@/apis/request/type'
-import { type InfiniteData } from '@tanstack/vue-query'
-
-// 文章列表查询hook
-function usePostsQuery(tabIndex: Ref<number>) {
-  const pageSize = 10
-  const queryClient = useQueryClient()
-
-  const {
-    data: postsData,
-    isLoading: postsLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage
-  } = useInfiniteQuery<Data<PageData<Post>>, Error, InfiniteData<Data<PageData<Post>>>, [string]>({
-    queryKey: ['posts'] as const,
-    queryFn: ({ pageParam = 1 }) => getPosts({ page: pageParam as number, pageSize }) as Promise<Data<PageData<Post>>>,
-    getNextPageParam: (lastPage: Data<PageData<Post>>) => {
-      const hasMore = lastPage.data.page * lastPage.data.pageSize < lastPage.data.total
-      return hasMore ? lastPage.data.page + 1 : undefined
-    },
-    initialPageParam: 1,
-    select: (data) => data,
-    enabled: computed(() => tabIndex.value === 0)
-  })
-
-  // 获取单个文章的查询
-  const { data: postData, isLoading: postLoading } = useQuery<Data<Post>, Error, Post>({
-    queryKey: ['post', 1],
-    queryFn: () => getPostById(1),
-    select: (data) => data.data,
-    enabled: computed(() => tabIndex.value === 0)
-  })
-
-  const list = computed<Post[]>(() => postsData.value?.pages.reduce((acc, page) => [...acc, ...(page.data?.list || [])], [] as Post[]) || [])
-
-  const finished = computed(() => !hasNextPage.value)
-
-  function loadMore() {
-    if (postsLoading.value || isFetchingNextPage.value || !hasNextPage.value) return
-    fetchNextPage()
-  }
-
-  function refresh() {
-    return queryClient.resetQueries({ queryKey: ['posts'] })
-  }
-
-  return {
-    list,
-    finished,
-    postsLoading,
-    isFetchingNextPage,
-    loadMore,
-    refresh,
-    postData,
-    postLoading
-  }
-}
-
-// 文章操作hook
-function usePostMutations() {
-  const queryClient = useQueryClient()
-
-  const { mutate: createMutation } = useMutation<Data<Post>, Error, Post>({
-    mutationFn: (newPost: Post) => createPost(newPost),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] })
-    }
-  })
-
-  const { mutate: updateMutation } = useMutation<Data<Post>, Error, { id: number; data: Post }>({
-    mutationFn: ({ id, data }: { id: number; data: Post }) => updatePost(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] })
-      queryClient.invalidateQueries({ queryKey: ['post', 1] })
-    }
-  })
-
-  const { mutate: deleteMutation } = useMutation<Data<Post>, Error, number>({
-    mutationFn: (id: number) => deletePost(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] })
-    }
-  })
-
-  return {
-    createMutation,
-    updateMutation,
-    deleteMutation
-  }
-}
+import type { Post, PostSearchParams } from '@/apis/modules/type'
 
 const { userName, setUserName } = useStore('user')
 const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets, height, top, safeArea } = useSystemInfo()
@@ -105,11 +14,29 @@ const props = defineProps<{
 
 const { tabIndex } = toRefs(props)
 
-// 使用文章查询hook
-const { list, finished, postsLoading, loadMore, refresh } = usePostsQuery(tabIndex)
+// 文章查询
+const { list, finished, loading, loadMore, refresh } = useListQuery<Post, PostSearchParams>(
+  (params) => getPosts(params) as Promise<any>,
+  ['posts'],
+  { page: 1, pageSize: 10 },
+  computed(() => tabIndex.value === 0)
+)
 
-// 使用文章操作hook
-const { createMutation, updateMutation, deleteMutation } = usePostMutations()
+// 文章单项查询
+const { data: post } = useItemQuery<Post, number>(
+  (id) => getPostById(id),
+  ['post', 1],
+  1,
+  computed(() => tabIndex.value === 0)
+)
+
+// 文章操作
+const { createMutation, updateMutation, deleteMutation } = useMutations<Post, Post, { id: number; data: Post }, number>({
+  createFn: createPost,
+  updateFn: ({ id, data }) => updatePost(id, data),
+  deleteFn: deletePost,
+  invalidateQueryKeys: [['posts'], ['post', 1]]
+})
 
 // 下拉刷新相关
 const triggered = ref<boolean>(false)
@@ -188,9 +115,10 @@ onMounted(async () => {
   console.log(`可使用窗口高度：${screenHeight}`)
 
   // 演示文章操作
-  createMutation({ id: 1, userId: 1, title: '测试文章', content: '测试文章内容' })
-  updateMutation({ id: 1, data: { id: 1, userId: 1, title: '更新文章', content: '更新文章内容' } })
-  deleteMutation(1)
+  createMutation!({ id: 1, userId: 1, title: '测试文章', content: '测试文章内容' })
+  updateMutation!({ id: 1, data: { id: 1, userId: 1, title: '更新文章', content: '更新文章内容' } })
+  deleteMutation!(1)
+  console.log(post.value)
 })
 
 function handleScrollToUpper() {
@@ -265,7 +193,7 @@ const throttledScrollToLower = useDebounceFn(handleScrollToLower, 200)
 
         <!-- 加载状态提示 -->
         <view class="text-center text-gray-500">
-          <text v-if="postsLoading">加载中...</text>
+          <text v-if="loading">加载中...</text>
           <text v-else-if="finished">没有更多数据了</text>
         </view>
       </view>
