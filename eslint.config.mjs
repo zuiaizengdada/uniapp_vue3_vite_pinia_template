@@ -7,10 +7,12 @@ import typescriptParser from '@typescript-eslint/parser'
 import vueParser from 'vue-eslint-parser'
 
 export default [
+  {
+    ignores: ['node_modules/**', 'dist/**', 'src/uni_modules/**', 'src/components/ua-markdown/**']
+  },
   // 基础环境和规则
   js.configs.recommended,
   {
-    ignores: ['node_modules/**', 'dist/**', '.eslintignore', 'src/uni_modules/**', 'src/components/ua-markdown/**'],
     linterOptions: {
       reportUnusedDisableDirectives: true
     },

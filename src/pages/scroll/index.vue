@@ -104,9 +104,7 @@ function handleRefresherabort() {
         @refresherabort="handleRefresherabort"
       >
         <view class="scroll-content">
-          <template v-for="item in 100" :key="item">
-            <view :id="`id${item}`" class="item">{{ item }}</view>
-          </template>
+          <view v-for="item in 100" :key="item" :id="`id${item}`" class="item">{{ item }}</view>
         </view>
       </scroll-view>
       <view class="absolute right-0 bottom-[20%]" @click="scrollToTop"><text>回到顶部</text></view>
