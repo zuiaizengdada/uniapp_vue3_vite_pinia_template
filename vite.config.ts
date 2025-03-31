@@ -8,6 +8,7 @@ import { uniuseAutoImports } from '@uni-helper/uni-use'
 import Inspector from 'unplugin-vue-inspector/vite'
 import { resolve } from 'path'
 import tailwindcss from 'tailwindcss'
+import * as VueQuery from '@tanstack/vue-query'
 
 export default defineConfig({
   resolve: {
@@ -36,6 +37,9 @@ export default defineConfig({
           '@/utils/modules/pinia-auto-refs': ['useStore']
         },
         '@vueuse/core',
+        {
+          '@tanstack/vue-query': Object.keys(VueQuery)
+        },
         uniuseAutoImports()
       ],
       dts: 'src/types/auto-import.d.ts'

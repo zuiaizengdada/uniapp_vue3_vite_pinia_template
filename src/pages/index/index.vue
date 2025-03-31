@@ -3,7 +3,98 @@ import { useGlobalProperties, useSystemInfo } from '@/common/hooks'
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
 import { useAppHeaderStyles } from '@/components/AppHeader/hooks'
 import { isAppPlus, isH5 } from '@/utils'
-import { type Post } from '@/apis/modules/type'
+import type { Post, PageData } from '@/apis/modules/type'
+import { type Data } from '@/apis/request/type'
+import { type InfiniteData } from '@tanstack/vue-query'
+
+// 文章列表查询hook
+function usePostsQuery(tabIndex: Ref<number>) {
+  const pageSize = 10
+  const queryClient = useQueryClient()
+
+  const {
+    data: postsData,
+    isLoading: postsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useInfiniteQuery<Data<PageData<Post>>, Error, InfiniteData<Data<PageData<Post>>>, [string]>({
+    queryKey: ['posts'] as const,
+    queryFn: ({ pageParam = 1 }) => getPosts({ page: pageParam as number, pageSize }) as Promise<Data<PageData<Post>>>,
+    getNextPageParam: (lastPage: Data<PageData<Post>>) => {
+      const hasMore = lastPage.data.page * lastPage.data.pageSize < lastPage.data.total
+      return hasMore ? lastPage.data.page + 1 : undefined
+    },
+    initialPageParam: 1,
+    select: (data) => data,
+    enabled: computed(() => tabIndex.value === 0)
+  })
+
+  // 获取单个文章的查询
+  const { data: postData, isLoading: postLoading } = useQuery<Data<Post>, Error, Post>({
+    queryKey: ['post', 1],
+    queryFn: () => getPostById(1),
+    select: (data) => data.data,
+    enabled: computed(() => tabIndex.value === 0)
+  })
+
+  const list = computed<Post[]>(() => postsData.value?.pages.reduce((acc, page) => [...acc, ...(page.data?.list || [])], [] as Post[]) || [])
+
+  const finished = computed(() => !hasNextPage.value)
+
+  function loadMore() {
+    if (postsLoading.value || isFetchingNextPage.value || !hasNextPage.value) return
+    fetchNextPage()
+  }
+
+  function refresh() {
+    return queryClient.resetQueries({ queryKey: ['posts'] })
+  }
+
+  return {
+    list,
+    finished,
+    postsLoading,
+    isFetchingNextPage,
+    loadMore,
+    refresh,
+    postData,
+    postLoading
+  }
+}
+
+// 文章操作hook
+function usePostMutations() {
+  const queryClient = useQueryClient()
+
+  const { mutate: createMutation } = useMutation<Data<Post>, Error, Post>({
+    mutationFn: (newPost: Post) => createPost(newPost),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+    }
+  })
+
+  const { mutate: updateMutation } = useMutation<Data<Post>, Error, { id: number; data: Post }>({
+    mutationFn: ({ id, data }: { id: number; data: Post }) => updatePost(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+      queryClient.invalidateQueries({ queryKey: ['post', 1] })
+    }
+  })
+
+  const { mutate: deleteMutation } = useMutation<Data<Post>, Error, number>({
+    mutationFn: (id: number) => deletePost(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+    }
+  })
+
+  return {
+    createMutation,
+    updateMutation,
+    deleteMutation
+  }
+}
 
 const { userName, setUserName } = useStore('user')
 const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets, height, top, safeArea } = useSystemInfo()
@@ -14,46 +105,76 @@ const props = defineProps<{
 
 const { tabIndex } = toRefs(props)
 
-const list = ref<Post[]>([])
-const pageSize = 10
-const currentPage = ref(1)
-const loading = ref(false)
-const finished = ref(false)
+// 使用文章查询hook
+const { list, finished, postsLoading, loadMore, refresh } = usePostsQuery(tabIndex)
 
-// 初始化数据
-function initData() {
-  currentPage.value = 1
-  list.value = []
-  finished.value = false
-  loadData()
+// 使用文章操作hook
+const { createMutation, updateMutation, deleteMutation } = usePostMutations()
+
+// 下拉刷新相关
+const triggered = ref<boolean>(false)
+
+function handleRefresherPulling() {
+  console.log('自定义下拉刷新控件被下拉')
+  triggered.value = true
 }
 
-// 加载数据
-async function loadData() {
-  if (loading.value || finished.value) return
+function handleRefresherRefresh() {
+  console.log('自定义下拉刷新被触发')
+  triggered.value = true
+  refresh().then(() => {
+    setTimeout(() => {
+      triggered.value = false
+      console.log('自定义下拉刷新被完成')
+    }, 1500)
+  })
+}
 
-  loading.value = true
+function handleRefresherrestore() {
+  console.log('自定义下拉刷新被复位')
+}
 
-  try {
-    const res = await getPosts({ page: currentPage.value, pageSize: pageSize })
+function handleRefresherabort() {
+  console.log('自定义下拉刷新被中止')
+}
 
-    // 判断是否为分页数据结构
-    const newData = 'list' in res.data ? res.data.list : res.data
-    list.value.push(...newData)
+// 其他UI相关
+const { menuButtonBoxStyle } = useAppHeaderStyles({
+  backgroundColor: 'transparent',
+  keepStatusBarBgColor: true
+})
 
-    // 判断是否加载完所有数据
-    if (newData.length < pageSize) {
-      finished.value = true
-    } else {
-      currentPage.value++
+// 倒计时相关
+const { count, dec, reset } = useCounter(60, { min: 0, max: 60 })
+let timer: number | null | NodeJS.Timeout = null
+
+function handleGetCode() {
+  if (timer) return
+  reset()
+  timer = setInterval(() => {
+    dec()
+    if (!count.value) {
+      clearInterval(timer!)
+      timer = null
     }
-  } catch (error) {
-    console.error('加载数据失败:', error)
-  } finally {
-    loading.value = false
-  }
+  }, 1000)
 }
 
+// 语言切换
+type Languages = 'zh' | 'en'
+const { $t, $changeLocale } = useGlobalProperties()
+function handleSwitchLanguage(language: Languages) {
+  $changeLocale(language)
+}
+
+// 页面跳转
+function handleJumpToSubPackage() {
+  uni.navigateTo({
+    url: '/pagesSubPackage/common/test/test'
+  })
+}
+
+// 生命周期
 onMounted(async () => {
   if (tabIndex.value !== 0) return
 
@@ -66,53 +187,11 @@ onMounted(async () => {
   console.log(`可使用窗口宽度：${screenWidth}`)
   console.log(`可使用窗口高度：${screenHeight}`)
 
-  const res = await getPosts()
-  console.log(res)
-
-  const res2 = await getPostById(1)
-  console.log(res2)
-
-  const res3 = await updatePost(1, { id: 1, userId: 1, title: '更新文章', content: '更新文章内容' })
-  console.log(res3)
-
-  const res4 = await deletePost(1)
-  console.log(res4)
-
-  const res5 = await createPost({ id: 1, userId: 1, title: '测试文章', content: '测试文章内容' })
-  console.log(res5)
-
-  // 初始化列表数据
-  initData()
+  // 演示文章操作
+  createMutation({ id: 1, userId: 1, title: '测试文章', content: '测试文章内容' })
+  updateMutation({ id: 1, data: { id: 1, userId: 1, title: '更新文章', content: '更新文章内容' } })
+  deleteMutation(1)
 })
-
-const { count, dec, reset } = useCounter(60, { min: 0, max: 60 })
-let timer: number | null | NodeJS.Timeout = null
-
-function handleGetCode() {
-  if (timer) return
-
-  reset()
-
-  timer = setInterval(() => {
-    dec()
-    if (!count.value) {
-      clearInterval(timer!)
-      timer = null
-    }
-  }, 1000)
-}
-
-type Languages = 'zh' | 'en'
-const { $t, $changeLocale } = useGlobalProperties()
-function handleSwitchLanguage(language: Languages) {
-  $changeLocale(language)
-}
-
-function handleJumpToSubPackage() {
-  uni.navigateTo({
-    url: '/pagesSubPackage/common/test/test'
-  })
-}
 
 function handleScrollToUpper() {
   console.log('滚动到顶部了')
@@ -120,37 +199,8 @@ function handleScrollToUpper() {
 
 function handleScrollToLower() {
   console.log('滚动到底部了')
-  loadData()
+  loadMore()
 }
-
-const triggered = ref<boolean>(false)
-
-function handleRefresherPulling() {
-  console.log('自定义下拉刷新控件被下拉')
-  triggered.value = true
-}
-
-function handleRefresherRefresh() {
-  console.log('自定义下拉刷新被触发')
-  triggered.value = true
-  setTimeout(() => {
-    triggered.value = false
-    console.log('自定义下拉刷新被完成')
-  }, 1500)
-}
-
-function handleRefresherrestore() {
-  console.log('自定义下拉刷新被复位')
-}
-
-function handleRefresherabort() {
-  console.log('自定义下拉刷新被中止')
-}
-
-const { menuButtonBoxStyle } = useAppHeaderStyles({
-  backgroundColor: 'transparent',
-  keepStatusBarBgColor: true
-})
 
 const throttledScrollToLower = useDebounceFn(handleScrollToLower, 200)
 </script>
@@ -215,7 +265,7 @@ const throttledScrollToLower = useDebounceFn(handleScrollToLower, 200)
 
         <!-- 加载状态提示 -->
         <view class="text-center text-gray-500">
-          <text v-if="loading">加载中...</text>
+          <text v-if="postsLoading">加载中...</text>
           <text v-else-if="finished">没有更多数据了</text>
         </view>
       </view>

@@ -8,9 +8,15 @@ import i18n from '@/locale'
 // pinia
 import store, { Pinia } from '@/store'
 
+// polyfills
+import { setupPolyfills } from '@/common/polyfills'
+
 import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
 // 创建 QueryClient 实例
 const queryClient = new QueryClient()
+
+// 设置polyfills
+setupPolyfills()
 
 export function RegisterApp(app: App) {
   RegisterProperties(app)
