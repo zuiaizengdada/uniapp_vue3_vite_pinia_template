@@ -79,6 +79,7 @@
     "@dcloudio/uni-quickapp-webview": "3.0.0-4040520250104002",
     "@dcloudio/uni-ui": "^1.5.7",
     "@esbuild/darwin-x64": "^0.21.5",
+    "@eslint/js": "^9.23.0",
     "@intlify/message-compiler": "^9.14.2",
     "@intlify/shared": "^10.0.5",
     "@rollup/rollup-darwin-x64": "^4.31.0",
@@ -93,6 +94,7 @@
     "@vueuse/shared": "^11.3.0",
     "birpc": "^2.3.0",
     "crypto-js": "^3.3.0",
+    "globals": "^16.0.0",
     "hookable": "^5.5.3",
     "jsencrypt": "^3.3.2",
     "lodash": "^4.17.21",
@@ -107,6 +109,7 @@
     "vue": "3.5.13",
     "vue-component-type-helpers": "^2.2.0",
     "vue-demi": "^0.14.10",
+    "vue-eslint-parser": "^10.1.1",
     "vue-i18n": "^9.14.2"
   },
   "devDependencies": {
