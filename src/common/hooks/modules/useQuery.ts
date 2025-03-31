@@ -1,26 +1,15 @@
 import { useInfiniteQuery, useQuery, useQueryClient, useMutation } from '@tanstack/vue-query'
-import type { Data } from '@/apis/request/type'
-import type { PageData } from '@/apis/modules/type'
-
-type MutationFunction<T, P> = (params: P) => Promise<Data<T>>
+import type { MutationOptions, ItemQueryOptions, ListQueryOptions, PaginationQueryOptions } from '@/common/hooks/type'
 
 /**
  * 通用列表查询 Hook
- * @param queryFn 查询函数
- * @param queryKey 查询键
- * @param defaultParams 默认参数
- * @param enabled 是否启用查询
+ * @param options 查询选项
  */
-export function useListQuery<T, P extends { page?: number; pageSize?: number }>(
-  queryFn: (params: P) => Promise<Data<PageData<T>>>,
-  queryKey: unknown[],
-  defaultParams: P,
-  enabled: Ref<boolean> = ref(true)
-) {
+export function useListQuery<T, P extends { page?: number; pageSize?: number }>({ queryFn, queryKey, defaultParams, enabled = ref(true) }: ListQueryOptions<T, P>) {
   const queryClient = useQueryClient()
 
-  // 无限查询
-  const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage, isRefetching } = useInfiniteQuery({
+  // 无限滚动列表查询
+  const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey,
     queryFn: ({ pageParam = 1 }) => {
       const params = { ...defaultParams, page: pageParam as number } as P
@@ -43,6 +32,9 @@ export function useListQuery<T, P extends { page?: number; pageSize?: number }>(
   // 是否加载完成
   const finished = computed(() => !hasNextPage.value)
 
+  // 是否正在加载
+  const loading = computed(() => isLoading.value || isFetchingNextPage.value)
+
   // 加载更多
   function handleLoadMore() {
     if (isFetchingNextPage.value || !hasNextPage.value) return
@@ -57,7 +49,7 @@ export function useListQuery<T, P extends { page?: number; pageSize?: number }>(
   return {
     list,
     finished,
-    loading: computed(() => isLoading.value || isRefetching.value),
+    loading,
     loadMore: handleLoadMore,
     refresh: handleRefresh,
     hasNextPage,
@@ -68,12 +60,9 @@ export function useListQuery<T, P extends { page?: number; pageSize?: number }>(
 
 /**
  * 通用单项查询 Hook
- * @param queryFn 查询函数
- * @param queryKey 查询键
- * @param params 查询参数
- * @param enabled 是否启用查询
+ * @param options 查询选项
  */
-export function useItemQuery<T, P>(queryFn: (params: P) => Promise<Data<T>>, queryKey: unknown[], params: P, enabled: Ref<boolean> = ref(true)) {
+export function useItemQuery<T, P>({ queryFn, queryKey, params, enabled = ref(true) }: ItemQueryOptions<T, P>) {
   return useQuery({
     queryKey,
     queryFn: () => queryFn(params),
@@ -86,49 +75,160 @@ export function useItemQuery<T, P>(queryFn: (params: P) => Promise<Data<T>>, que
  * 通用数据操作 Hook
  * @param options 操作配置选项
  */
-export function useMutations<T, C, U, D = number>(options: {
-  createFn?: MutationFunction<T, C>
-  updateFn?: MutationFunction<T, U>
-  deleteFn?: MutationFunction<T, D>
-  invalidateQueryKeys?: unknown[][]
-}) {
+export function useMutations<T, C, U, D = number>(options: MutationOptions<T, C, U, D>) {
   const queryClient = useQueryClient()
   const { createFn, updateFn, deleteFn, invalidateQueryKeys = [] } = options
 
   // 刷新指定查询
   const invalidateQueries = () => {
     invalidateQueryKeys.forEach((key) => {
-      queryClient.invalidateQueries({ queryKey: key })
+      // 使用exact: false选项确保能匹配具有相同前缀的查询键
+      queryClient.invalidateQueries({ queryKey: key, exact: false })
     })
   }
 
   // 创建
-  const createMutation = createFn
+  const create = createFn
     ? useMutation({
         mutationFn: (data: C) => createFn(data),
-        onSuccess: () => invalidateQueries()
+        onSuccess: () => {
+          invalidateQueries()
+          options.createSuccess?.()
+        },
+        onError: options.createError
       })
-    : undefined
+    : {
+        mutate: () => {},
+        mutateAsync: () => Promise.resolve({} as any),
+        isPending: ref(false),
+        isSuccess: ref(false),
+        isError: ref(false),
+        data: ref(undefined),
+        error: ref(null),
+        reset: () => {}
+      }
 
   // 更新
-  const updateMutation = updateFn
+  const update = updateFn
     ? useMutation({
         mutationFn: (data: U) => updateFn(data),
-        onSuccess: () => invalidateQueries()
+        onSuccess: () => {
+          invalidateQueries()
+          options.updateSuccess?.()
+        },
+        onError: options.updateError
       })
-    : undefined
+    : {
+        mutate: () => {},
+        mutateAsync: () => Promise.resolve({} as any),
+        isPending: ref(false),
+        isSuccess: ref(false),
+        isError: ref(false),
+        data: ref(undefined),
+        error: ref(null),
+        reset: () => {}
+      }
 
   // 删除
-  const deleteMutation = deleteFn
+  const remove = deleteFn
     ? useMutation({
         mutationFn: (id: D) => deleteFn(id),
-        onSuccess: () => invalidateQueries()
+        onSuccess: () => {
+          invalidateQueries()
+          options.deleteSuccess?.()
+        },
+        onError: options.deleteError
       })
-    : undefined
+    : {
+        mutate: () => {},
+        mutateAsync: () => Promise.resolve({} as any),
+        isPending: ref(false),
+        isSuccess: ref(false),
+        isError: ref(false),
+        data: ref(undefined),
+        error: ref(null),
+        reset: () => {}
+      }
 
   return {
-    createMutation: createMutation?.mutate,
-    updateMutation: updateMutation?.mutate,
-    deleteMutation: deleteMutation?.mutate
+    create,
+    update,
+    remove
+  }
+}
+
+/**
+ * 传统分页查询 Hook
+ * @param options 查询选项
+ */
+export function usePaginationQuery<T, P extends { page?: number; pageSize?: number }>({ queryFn, queryKey, defaultParams, enabled = ref(true) }: PaginationQueryOptions<T, P>) {
+  const page = ref(defaultParams.page || 1)
+  const pageSize = ref(defaultParams.pageSize || 10)
+
+  const queryParams = computed(() => {
+    return {
+      ...defaultParams,
+      page: page.value,
+      pageSize: pageSize.value
+    } as P
+  })
+
+  // 使用标准查询
+  const { data, isLoading, isRefetching, refetch } = useQuery({
+    queryKey: [...queryKey, queryParams],
+    queryFn: () => queryFn(queryParams.value),
+    enabled
+  })
+
+  const list = computed<T[]>(() => data.value?.data?.list || [])
+  const total = computed<number>(() => data.value?.data?.total || 0)
+  const totalPages = computed<number>(() => Math.ceil(total.value / pageSize.value))
+
+  // 是否有下一页
+  const hasNextPage = computed(() => page.value < totalPages.value)
+  // 是否有上一页
+  const hasPreviousPage = computed(() => page.value > 1)
+
+  // 跳转到指定页
+  function goToPage(pageNumber: number) {
+    if (pageNumber < 1 || pageNumber > totalPages.value) return
+    page.value = pageNumber
+  }
+
+  // 下一页
+  function nextPage() {
+    if (hasNextPage.value) {
+      page.value++
+    }
+  }
+
+  // 上一页
+  function previousPage() {
+    if (hasPreviousPage.value) {
+      page.value--
+    }
+  }
+
+  // 修改每页数量
+  function changePageSize(size: number) {
+    pageSize.value = size
+    page.value = 1 // 重置到第一页
+  }
+
+  return {
+    list,
+    page,
+    pageSize,
+    total,
+    totalPages,
+    loading: computed(() => isLoading.value || isRefetching.value),
+    hasNextPage,
+    hasPreviousPage,
+    goToPage,
+    nextPage,
+    previousPage,
+    changePageSize,
+    refresh: refetch,
+    originalData: data
   }
 }

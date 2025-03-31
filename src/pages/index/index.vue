@@ -3,7 +3,8 @@ import { useGlobalProperties, useSystemInfo, useListQuery, useItemQuery, useMuta
 import { createPost, deletePost, getPosts, getPostById, updatePost } from '@/apis'
 import { useAppHeaderStyles } from '@/components/AppHeader/hooks'
 import { isAppPlus, isH5 } from '@/utils'
-import type { Post, PostSearchParams } from '@/apis/modules/type'
+import type { Post, PostSearchParams, PageData } from '@/apis/modules/type'
+import type { Data } from '@/apis/request/type'
 
 const { userName, setUserName } = useStore('user')
 const { windowHeight, windowWidth, screenWidth, screenHeight, safeAreaInsets, height, top, safeArea } = useSystemInfo()
@@ -14,24 +15,28 @@ const props = defineProps<{
 
 const { tabIndex } = toRefs(props)
 
-// 文章查询
-const { list, finished, loading, loadMore, refresh } = useListQuery<Post, PostSearchParams>(
-  (params) => getPosts(params) as Promise<any>,
-  ['posts'],
-  { page: 1, pageSize: 10 },
-  computed(() => tabIndex.value === 0)
-)
+// 文章列表查询
+const { list, finished, loading, loadMore, refresh } = useListQuery<Post, PostSearchParams>({
+  queryFn: (params) => getPosts(params) as Promise<Data<PageData<Post>>>,
+  queryKey: ['posts'],
+  defaultParams: { page: 1, pageSize: 10 },
+  enabled: computed(() => tabIndex.value === 0)
+})
 
 // 文章单项查询
-const { data: post } = useItemQuery<Post, number>(
-  (id) => getPostById(id),
-  ['post', 1],
-  1,
-  computed(() => tabIndex.value === 0)
-)
+const { data: post } = useItemQuery<Post, number>({
+  queryFn: (id) => getPostById(id),
+  queryKey: ['post', 1],
+  params: 1,
+  enabled: computed(() => tabIndex.value === 0)
+})
 
 // 文章操作
-const { createMutation, updateMutation, deleteMutation } = useMutations<Post, Post, { id: number; data: Post }, number>({
+const {
+  create: { mutate: createMutation },
+  update: { mutate: updateMutation },
+  remove: { mutate: deleteMutation }
+} = useMutations<Post, Post, { id: number; data: Post }, number>({
   createFn: createPost,
   updateFn: ({ id, data }) => updatePost(id, data),
   deleteFn: deletePost,
@@ -115,9 +120,9 @@ onMounted(async () => {
   console.log(`可使用窗口高度：${screenHeight}`)
 
   // 演示文章操作
-  createMutation!({ id: 1, userId: 1, title: '测试文章', content: '测试文章内容' })
-  updateMutation!({ id: 1, data: { id: 1, userId: 1, title: '更新文章', content: '更新文章内容' } })
-  deleteMutation!(1)
+  createMutation({ id: 1, userId: 1, title: '测试文章', content: '测试文章内容' })
+  updateMutation({ id: 1, data: { id: 1, userId: 1, title: '更新文章', content: '更新文章内容' } })
+  deleteMutation(1)
   console.log(post.value)
 })
 
@@ -138,7 +143,7 @@ const throttledScrollToLower = useDebounceFn(handleScrollToLower, 200)
     <AppHeader backgroundColor="transparent" keepStatusBarBgColor />
 
     <scroll-view
-      class="flex-1 h-0"
+      class="flex-1 h-0 scroll-container"
       scroll-y
       :lower-threshold="50"
       :upper-threshold="50"
@@ -151,50 +156,52 @@ const throttledScrollToLower = useDebounceFn(handleScrollToLower, 200)
       @refresherrestore="handleRefresherrestore"
       @refresherabort="handleRefresherabort"
     >
-      <!-- 占位盒子 -->
-      <view class="w-full bg-transparent" :style="{ height: isH5 || isAppPlus ? menuButtonBoxStyle.height : `${height + top || safeArea!.top}px` }" />
+      <view class="scroll-content">
+        <!-- 占位盒子 -->
+        <view class="w-full bg-transparent" :style="{ height: isH5 || isAppPlus ? menuButtonBoxStyle.height : `${height + top || safeArea!.top}px` }" />
 
-      <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ paddingBottom: `${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
-        <view>
-          <text>倒计时{{ count }}</text>
-        </view>
+        <view class="flex flex-col items-center w-full gap-[10px] page-container" :style="{ paddingBottom: `${safeAreaInsets?.bottom ? '180' : '150'}rpx` }">
+          <view>
+            <text>倒计时{{ count }}</text>
+          </view>
 
-        <view class="flex gap-5 items-center">
-          <button @click="handleGetCode">获取验证码</button>
-        </view>
+          <view class="flex gap-5 items-center">
+            <button @click="handleGetCode">获取验证码</button>
+          </view>
 
-        <view class="w-full text-center name">
-          <text>
-            {{ userName }}
-          </text>
-        </view>
+          <view class="w-full text-center name">
+            <text>
+              {{ userName }}
+            </text>
+          </view>
 
-        <view>
-          <button @tap="setUserName('zengdada1')">修改名字 pinia 数据持久化</button>
-        </view>
+          <view>
+            <button @tap="setUserName('zengdada1')">修改名字 pinia 数据持久化</button>
+          </view>
 
-        <view>
-          <text>{{ $t('demo') }}</text>
-        </view>
+          <view>
+            <text>{{ $t('demo') }}</text>
+          </view>
 
-        <view>
-          <button @tap="handleJumpToSubPackage">跳转到分包页面</button>
-        </view>
+          <view>
+            <button @tap="handleJumpToSubPackage">跳转到分包页面</button>
+          </view>
 
-        <view class="flex gap-5 items-center">
-          <button @tap="handleSwitchLanguage('zh')">中文</button>
-          <button @tap="handleSwitchLanguage('en')">English</button>
-        </view>
+          <view class="flex gap-5 items-center">
+            <button @tap="handleSwitchLanguage('zh')">中文</button>
+            <button @tap="handleSwitchLanguage('en')">English</button>
+          </view>
 
-        <view v-for="item in list" :key="item.id" class="px-4 py-2 mb-3 bg-white rounded-lg shadow">
-          <view class="mb-2 text-lg font-bold">{{ item.title }}</view>
-          <view class="text-gray-600">{{ item.content }}</view>
-        </view>
+          <view v-for="item in list" :key="`post-${item.id}-${item.title}`" class="px-4 py-2 mb-3 bg-white rounded-lg shadow">
+            <view class="mb-2 text-lg font-bold">{{ item.title }}</view>
+            <view class="text-gray-600">{{ item.content }}</view>
+          </view>
 
-        <!-- 加载状态提示 -->
-        <view class="text-center text-gray-500">
-          <text v-if="loading">加载中...</text>
-          <text v-else-if="finished">没有更多数据了</text>
+          <!-- 加载状态提示 -->
+          <view class="text-center text-gray-500">
+            <text v-if="loading">加载中...</text>
+            <text v-else-if="finished">没有更多数据了</text>
+          </view>
         </view>
       </view>
     </scroll-view>
