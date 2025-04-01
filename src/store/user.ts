@@ -1,7 +1,7 @@
 const userStore = defineStore(
   'user',
   () => {
-    const userName = ref<string>('zengge')
+    const userName = ref<string>('曾哥')
     const setUserName = (name: string) => {
       userName.value = name
     }

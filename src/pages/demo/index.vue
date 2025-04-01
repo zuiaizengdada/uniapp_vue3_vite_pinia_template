@@ -21,6 +21,30 @@ const list = [
     icon: 'websocket',
     name: 'WebSocket',
     path: '/pages/demo/pages/web-socket'
+  },
+  {
+    id: 4,
+    icon: 'lottie',
+    name: 'Lottie动画',
+    path: '/pages/demo/pages/lottie'
+  },
+  {
+    id: 5,
+    icon: 'mitt',
+    name: 'mitt通信(兄弟组件)',
+    path: '/pages/demo/pages/mitt'
+  },
+  {
+    id: 6,
+    icon: 'skeleton',
+    name: '骨架屏',
+    path: '/pages/demo/pages/skeleton'
+  },
+  {
+    id: 7,
+    icon: 'pinia',
+    name: 'Pinia数据持久化',
+    path: '/pages/demo/pages/pinia'
   }
 ]
 </script>

@@ -23,6 +23,30 @@
       "style": {
         "navigationBarTitleText": "WebSocket"
       }
+    },
+    {
+      "path": "pages/demo/pages/lottie",
+      "style": {
+        "navigationBarTitleText": "Lottie动画"
+      }
+    },
+    {
+      "path": "pages/demo/pages/mitt",
+      "style": {
+        "navigationBarTitleText": "mitt通信(兄弟组件)"
+      }
+    },
+    {
+      "path": "pages/demo/pages/skeleton",
+      "style": {
+        "navigationBarTitleText": "骨架屏"
+      }
+    },
+    {
+      "path": "pages/demo/pages/pinia",
+      "style": {
+        "navigationBarTitleText": "Pinia数据持久化"
+      }
     }
     // {
     //   "path": "pages/page-container/index",
