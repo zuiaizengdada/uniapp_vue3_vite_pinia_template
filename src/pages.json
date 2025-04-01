@@ -1,15 +1,39 @@
 {
   "pages": [
     {
-      "path": "pages/page-container/index",
+      "path": "pages/demo/index",
       "style": {
-        "navigationStyle": "custom",
-        "enablePullDownRefresh": false,
-        "app-plus": {
-          "bounce": "none"
-        }
+        "navigationBarTitleText": "demo 功能展示"
+      }
+    },
+    {
+      "path": "pages/demo/pages/language-switch",
+      "style": {
+        "navigationBarTitleText": "多语言切换(国际化)"
+      }
+    },
+    {
+      "path": "pages/demo/pages/list-scroll",
+      "style": {
+        "navigationBarTitleText": "列表滚动"
+      }
+    },
+    {
+      "path": "pages/demo/pages/web-socket",
+      "style": {
+        "navigationBarTitleText": "WebSocket"
       }
     }
+    // {
+    //   "path": "pages/page-container/index",
+    //   "style": {
+    //     "navigationStyle": "custom",
+    //     "enablePullDownRefresh": false,
+    //     "app-plus": {
+    //       "bounce": "none"
+    //     }
+    //   }
+    // }
     // {
     //   "path": "pages/index/index",
     //   "style": {

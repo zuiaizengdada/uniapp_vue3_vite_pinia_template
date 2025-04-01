@@ -139,7 +139,7 @@ export class WebSocketService {
     return this.options.shouldReconnect && this.reconnectAttempts < this.options.maxReconnectAttempts!
   }
 
-  private prepareMessage(message: string | Record<string, any>) {
+  private prepareMessage(message: string | number | Record<string, any>) {
     return typeof message === 'string' ? message : JSON.stringify(message)
   }
 
@@ -239,7 +239,7 @@ export class WebSocketService {
     })
   }
 
-  public sendMessage(message: string | Record<string, any>) {
+  public sendMessage(message: string | number | Record<string, any>) {
     if (this.isConnected.value && this.socket) {
       const requestMessage = this.prepareMessage(message)
       this.socket.send({

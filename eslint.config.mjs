@@ -64,7 +64,8 @@ export default [
     },
     rules: {
       ...vuePlugin.configs.essential.rules,
-      'vue/multi-word-component-names': 'off'
+      'vue/multi-word-component-names': 'off',
+      'vue/no-multiple-template-root': 'off'
     }
   },
   // 统一使用 Prettier

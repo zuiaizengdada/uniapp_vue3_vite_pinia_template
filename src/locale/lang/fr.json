@@ -1,0 +1,12 @@
+{
+  "loading": "Chargement",
+  "demo": "Exemple d'internationalisation",
+  "request": {
+    "success": "Demande réussie",
+    "Unauthorized": "La demande n'est pas autorisée, veuillez vous connecter et réessayer.",
+    "NotFound": "Erreur d'adresse de demande",
+    "InternalServerError": "Erreur interne du serveur",
+    "TimeOut": "La demande a expiré",
+    "Unkown": "Erreur inconnue"
+  }
+} 

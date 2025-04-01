@@ -1,0 +1,12 @@
+{
+  "loading": "読み込み中",
+  "demo": "国際化の例",
+  "request": {
+    "success": "リクエスト成功",
+    "Unauthorized": "リクエストは承認されていません。ログインして再試行してください。",
+    "NotFound": "リクエストアドレスエラー",
+    "InternalServerError": "サーバー内部エラー",
+    "TimeOut": "リクエストがタイムアウトしました",
+    "Unkown": "未知のエラー"
+  }
+} 

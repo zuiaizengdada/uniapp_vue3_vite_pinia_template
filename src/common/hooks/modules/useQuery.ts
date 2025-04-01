@@ -232,3 +232,262 @@ export function usePaginationQuery<T, P extends { page?: number; pageSize?: numb
     originalData: data
   }
 }
+
+/**
+ * 轮询查询 Hook - 定时自动刷新数据
+ * @param options 查询选项
+ */
+export function usePollingQuery<T, P>({
+  queryFn,
+  queryKey,
+  params,
+  enabled = ref(true),
+  pollingInterval = 5000, // 轮询间隔，默认5秒
+  maxPolls = undefined // 最大轮询次数，默认无限
+}: ItemQueryOptions<T, P> & { pollingInterval?: number; maxPolls?: number }) {
+  const pollCount = ref(0)
+  const shouldPoll = computed(() => {
+    if (!enabled.value) return false
+    if (maxPolls !== undefined && pollCount.value >= maxPolls) return false
+    return true
+  })
+
+  // 轮询次数监听器
+  const incrementPollCount = () => {
+    pollCount.value++
+  }
+
+  const query = useQuery({
+    queryKey,
+    queryFn: () => queryFn(params),
+    select: (data) => data.data,
+    enabled,
+    refetchInterval: shouldPoll.value ? pollingInterval : 0
+  })
+
+  // 添加数据更新成功后的计数
+  watch(
+    () => query.data.value,
+    (newData) => {
+      if (newData) {
+        incrementPollCount()
+      }
+    }
+  )
+
+  // 手动重置轮询计数
+  function resetPollCount() {
+    pollCount.value = 0
+  }
+
+  return {
+    ...query,
+    pollCount,
+    resetPollCount
+  }
+}
+
+/**
+ * 懒加载查询 Hook - 手动触发查询
+ * @param options 查询选项
+ */
+export function useLazyQuery<T, P>({ queryFn, queryKey }: Omit<ItemQueryOptions<T, P>, 'params' | 'enabled'>) {
+  const enabled = ref(false)
+  const params = ref<P | null>(null)
+
+  const query = useQuery({
+    queryKey: [...queryKey, params],
+    queryFn: () => {
+      if (!params.value) {
+        throw new Error('必须提供参数才能执行查询')
+      }
+      return queryFn(params.value)
+    },
+    select: (data) => data.data,
+    enabled: computed(() => enabled.value && params.value !== null)
+  })
+
+  // 执行查询
+  function execute(queryParams: P) {
+    params.value = queryParams
+    enabled.value = true
+    return query.refetch()
+  }
+
+  return {
+    ...query,
+    execute
+  }
+}
+
+/**
+ * 防抖查询 Hook - 适用于搜索框等需要防抖的场景
+ * @param options 查询选项
+ */
+export function useDebouncedQuery<T, P>({
+  queryFn,
+  queryKey,
+  defaultParams,
+  enabled = ref(true),
+  debounceTime = 500 // 防抖时间，默认500ms
+}: ListQueryOptions<T, P> & { debounceTime?: number }) {
+  const debouncedParams = ref(defaultParams)
+  const inputParams = ref(defaultParams)
+
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null
+
+  // 监听输入参数变化，防抖处理
+  watch(
+    inputParams,
+    (newParams) => {
+      debounceTimer && clearTimeout(debounceTimer)
+      debounceTimer = setTimeout(() => {
+        debouncedParams.value = newParams
+      }, debounceTime)
+    },
+    { deep: true }
+  )
+
+  const query = useQuery({
+    queryKey: [...queryKey, debouncedParams],
+    queryFn: () => queryFn(debouncedParams.value),
+    enabled: computed(() => enabled.value)
+  })
+
+  // 清除防抖定时器
+  onUnmounted(() => {
+    debounceTimer && clearTimeout(debounceTimer)
+  })
+
+  return {
+    ...query,
+    setParams: (newParams: Partial<P>) => {
+      inputParams.value = { ...inputParams.value, ...newParams }
+    },
+    inputParams
+  }
+}
+
+/**
+ * 缓存查询 Hook - 将查询结果缓存到本地存储
+ * @param options 查询选项
+ */
+export function useCachedQuery<T, P>({
+  queryFn,
+  queryKey,
+  params,
+  enabled = ref(true),
+  cacheKey, // 缓存键名
+  cacheDuration = 24 * 60 * 60 * 1000 // 缓存时间，默认1天
+}: ItemQueryOptions<T, P> & { cacheKey: string; cacheDuration?: number }) {
+  const queryClient = useQueryClient()
+  const cacheTimestamp = ref<number | null>(null)
+
+  // 初始化时从本地存储加载缓存
+  onMounted(() => {
+    try {
+      const cachedData = uni.getStorageSync(cacheKey)
+      if (cachedData) {
+        const { data, timestamp } = JSON.parse(cachedData)
+        // 检查缓存是否过期
+        if (Date.now() - timestamp < cacheDuration) {
+          queryClient.setQueryData(queryKey, data)
+          cacheTimestamp.value = timestamp
+        } else {
+          // 删除过期缓存
+          uni.removeStorageSync(cacheKey)
+        }
+      }
+    } catch (error) {
+      console.error('从缓存加载数据失败', error)
+      uni.removeStorageSync(cacheKey)
+    }
+  })
+
+  const query = useQuery({
+    queryKey,
+    queryFn: () => queryFn(params),
+    enabled
+  })
+
+  // 监听查询数据变化，保存到缓存
+  watch(
+    () => query.data.value,
+    (newData) => {
+      if (newData) {
+        const timestamp = Date.now()
+        cacheTimestamp.value = timestamp
+        uni.setStorageSync(
+          cacheKey,
+          JSON.stringify({
+            data: newData,
+            timestamp
+          })
+        )
+      }
+    }
+  )
+
+  // 清除缓存
+  function clearCache() {
+    uni.removeStorageSync(cacheKey)
+    cacheTimestamp.value = null
+    return queryClient.invalidateQueries({ queryKey })
+  }
+
+  return {
+    ...query,
+    cacheTimestamp,
+    clearCache
+  }
+}
+
+/**
+ * 乐观更新 Hook - 在请求完成前就先更新UI，提高用户体验
+ * @param options 操作配置
+ */
+export function useOptimisticMutation<P>({
+  mutationFn,
+  queryKey,
+  onMutate,
+  onError,
+  onSuccess
+}: {
+  mutationFn: (data: P) => Promise<any>
+  queryKey: unknown[]
+  onMutate?: (data: P) => any
+  onError?: (error: any, data: P, context: any) => void
+  onSuccess?: (data: any, variables: P, context: any) => void
+}) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn,
+    onMutate: async (data) => {
+      // 取消正在进行的查询
+      await queryClient.cancelQueries({ queryKey })
+
+      // 保存之前的数据状态
+      const previousData = queryClient.getQueryData(queryKey)
+
+      // 执行自定义乐观更新逻辑
+      if (onMutate) {
+        const optimisticData = onMutate(data)
+        // 更新查询数据为乐观状态
+        queryClient.setQueryData(queryKey, optimisticData)
+      }
+
+      return { previousData }
+    },
+    onError: (error, data, context: any) => {
+      // 发生错误时，回滚到之前的状态
+      queryClient.setQueryData(queryKey, context.previousData)
+      onError?.(error, data, context)
+    },
+    onSuccess: (result, variables, context) => {
+      // 查询成功，刷新数据确保与服务器同步
+      queryClient.invalidateQueries({ queryKey })
+      onSuccess?.(result, variables, context)
+    }
+  })
+}

@@ -1,0 +1,12 @@
+{
+  "loading": "Cargando",
+  "demo": "Ejemplo de internacionalización",
+  "request": {
+    "success": "Solicitud exitosa",
+    "Unauthorized": "La solicitud no está autorizada, inicie sesión e inténtelo de nuevo.",
+    "NotFound": "Error de dirección de solicitud",
+    "InternalServerError": "Error interno del servidor",
+    "TimeOut": "La solicitud expiró",
+    "Unkown": "Error desconocido"
+  }
+} 

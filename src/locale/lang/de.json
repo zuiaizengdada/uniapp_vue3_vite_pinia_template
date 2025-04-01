@@ -1,0 +1,12 @@
+{
+  "loading": "Wird geladen",
+  "demo": "Internationalisierungsbeispiel",
+  "request": {
+    "success": "Anfrage erfolgreich",
+    "Unauthorized": "Die Anfrage ist nicht autorisiert, bitte melden Sie sich an und versuchen Sie es erneut.",
+    "NotFound": "Anforderungsadressfehler",
+    "InternalServerError": "Interner Serverfehler",
+    "TimeOut": "Zeitüberschreitung der Anfrage",
+    "Unkown": "Unbekannter Fehler"
+  }
+} 
