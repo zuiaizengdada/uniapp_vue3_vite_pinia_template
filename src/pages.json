@@ -51,13 +51,13 @@
     {
       "path": "pages/demo/pages/mock",
       "style": {
-        "navigationBarTitleText": "Mock数据"
+        "navigationBarTitleText": "Mock数据(Posts)"
       }
     },
     {
       "path": "pages/demo/pages/tanstack-query",
       "style": {
-        "navigationBarTitleText": "TanStack Query示例"
+        "navigationBarTitleText": "TanStack Query示例(Todo List)"
       }
     },
     {

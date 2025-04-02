@@ -19,7 +19,7 @@ export interface MutationOptions<T, C, U, D = number> {
 export interface QueryOptions<T, P> {
   queryFn: (params: P) => Promise<Data<T>>
   queryKey: unknown[]
-  enabled?: Ref<boolean>
+  enabled?: boolean
 }
 
 export interface PaginationQueryOptions<T, P> extends QueryOptions<T, P> {
@@ -32,12 +32,12 @@ export interface ItemQueryOptions<T, P> {
   queryFn: (params: P) => Promise<Data<T>>
   queryKey: unknown[]
   params: P
-  enabled?: Ref<boolean>
+  enabled?: boolean
 }
 
 export interface ListQueryOptions<T, P> {
   queryFn: (params: P) => Promise<Data<PageData<T>>>
   queryKey: unknown[]
   defaultParams: P
-  enabled?: Ref<boolean>
+  enabled?: boolean
 }

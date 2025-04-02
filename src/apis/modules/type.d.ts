@@ -9,6 +9,17 @@ export interface Post {
   content: string
 }
 
+export interface Todo {
+  // 文章id
+  id: number
+  // 用户id
+  userId: number
+  // 文章标题
+  title: string
+  // 是否完成
+  completed: boolean
+}
+
 export interface PageData<T> {
   // 列表数据
   list: T[]
@@ -29,4 +40,15 @@ export interface PostSearchParams {
   title?: string
   // 文章内容
   content?: string
+}
+
+export interface TodoSearchParams {
+  // 当前页码
+  page?: number
+  // 每页条数
+  pageSize?: number
+  // 文章标题
+  title?: string
+  // 是否完成
+  completed?: boolean
 }

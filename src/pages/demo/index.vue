@@ -50,13 +50,13 @@ const list = [
   {
     id: 8,
     icon: 'Mock',
-    name: 'Mock数据',
+    name: 'Mock数据(Posts)',
     path: '/pages/demo/pages/mock'
   },
   {
     id: 9,
     icon: 'TanStackQuery',
-    name: 'TanStack Query示例',
+    name: 'TanStack Query示例(Todo List)',
     path: '/pages/demo/pages/tanstack-query'
   },
   {

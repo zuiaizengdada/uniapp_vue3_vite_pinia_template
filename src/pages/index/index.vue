@@ -19,16 +19,14 @@ const { tabIndex } = toRefs(props)
 const { list, finished, loading, loadMore, refresh } = useListQuery<Post, PostSearchParams>({
   queryFn: (params) => getPosts(params) as Promise<Data<PageData<Post>>>,
   queryKey: ['posts'],
-  defaultParams: { page: 1, pageSize: 10 },
-  enabled: computed(() => tabIndex.value === 0)
+  defaultParams: { page: 1, pageSize: 10 }
 })
 
 // 文章单项查询
 const { data: post } = useItemQuery<Post, number>({
   queryFn: (id) => getPostById(id),
   queryKey: ['post', 1],
-  params: 1,
-  enabled: computed(() => tabIndex.value === 0)
+  params: 1
 })
 
 // 文章操作

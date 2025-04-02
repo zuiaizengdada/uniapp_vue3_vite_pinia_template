@@ -5,7 +5,7 @@ import type { MutationOptions, ItemQueryOptions, ListQueryOptions, PaginationQue
  * 通用列表查询 Hook
  * @param options 查询选项
  */
-export function useListQuery<T, P extends { page?: number; pageSize?: number }>({ queryFn, queryKey, defaultParams, enabled = ref(true) }: ListQueryOptions<T, P>) {
+export function useListQuery<T, P extends { page?: number; pageSize?: number }>({ queryFn, queryKey, defaultParams, enabled = true }: ListQueryOptions<T, P>) {
   const queryClient = useQueryClient()
 
   // 无限滚动列表查询
@@ -62,7 +62,7 @@ export function useListQuery<T, P extends { page?: number; pageSize?: number }>(
  * 通用单项查询 Hook
  * @param options 查询选项
  */
-export function useItemQuery<T, P>({ queryFn, queryKey, params, enabled = ref(true) }: ItemQueryOptions<T, P>) {
+export function useItemQuery<T, P>({ queryFn, queryKey, params, enabled = true }: ItemQueryOptions<T, P>) {
   return useQuery({
     queryKey,
     queryFn: () => queryFn(params),
@@ -161,7 +161,7 @@ export function useMutations<T, C, U, D = number>(options: MutationOptions<T, C,
  * 传统分页查询 Hook
  * @param options 查询选项
  */
-export function usePaginationQuery<T, P extends { page?: number; pageSize?: number }>({ queryFn, queryKey, defaultParams, enabled = ref(true) }: PaginationQueryOptions<T, P>) {
+export function usePaginationQuery<T, P extends { page?: number; pageSize?: number }>({ queryFn, queryKey, defaultParams, enabled = true }: PaginationQueryOptions<T, P>) {
   const page = ref(defaultParams.page || 1)
   const pageSize = ref(defaultParams.pageSize || 10)
 
@@ -241,13 +241,13 @@ export function usePollingQuery<T, P>({
   queryFn,
   queryKey,
   params,
-  enabled = ref(true),
+  enabled = true,
   pollingInterval = 5000, // 轮询间隔，默认5秒
   maxPolls = undefined // 最大轮询次数，默认无限
 }: ItemQueryOptions<T, P> & { pollingInterval?: number; maxPolls?: number }) {
   const pollCount = ref(0)
   const shouldPoll = computed(() => {
-    if (!enabled.value) return false
+    if (!enabled) return false
     if (maxPolls !== undefined && pollCount.value >= maxPolls) return false
     return true
   })
@@ -328,7 +328,7 @@ export function useDebouncedQuery<T, P>({
   queryFn,
   queryKey,
   defaultParams,
-  enabled = ref(true),
+  enabled = true,
   debounceTime = 500 // 防抖时间，默认500ms
 }: ListQueryOptions<T, P> & { debounceTime?: number }) {
   const debouncedParams = ref(defaultParams)
@@ -351,7 +351,7 @@ export function useDebouncedQuery<T, P>({
   const query = useQuery({
     queryKey: [...queryKey, debouncedParams],
     queryFn: () => queryFn(debouncedParams.value),
-    enabled: computed(() => enabled.value)
+    enabled: computed(() => enabled)
   })
 
   // 清除防抖定时器
@@ -376,7 +376,7 @@ export function useCachedQuery<T, P>({
   queryFn,
   queryKey,
   params,
-  enabled = ref(true),
+  enabled = true,
   cacheKey, // 缓存键名
   cacheDuration = 24 * 60 * 60 * 1000 // 缓存时间，默认1天
 }: ItemQueryOptions<T, P> & { cacheKey: string; cacheDuration?: number }) {

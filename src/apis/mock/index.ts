@@ -1,1 +1,1 @@
-import './modules/post'
+import './modules/posts'
