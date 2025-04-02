@@ -18,12 +18,9 @@ const {
   }
 })
 
-console.log(todoList.value)
 const newTodo = ref('')
 const {
-  create: { mutate: createTodoMutation },
-  update: { mutate: updateTodoMutation },
-  remove: { mutate: deleteTodoMutation }
+  create: { mutate: createTodoMutation }
 } = useMutations<Todo, Todo, { id: number; data: Todo }, number>({
   createFn: createTodo,
   updateFn: ({ id, data }) => updateTodo(id, data),
