@@ -22,22 +22,23 @@ export interface QueryOptions<T, P> {
   enabled?: boolean
 }
 
-export interface PaginationQueryOptions<T, P> extends QueryOptions<T, P> {
+export type PaginationQueryOptions<T, P> = {
+  queryKey: unknown[]
+  queryFn: (params: P) => Promise<Data<PageData<T>>>
   defaultParams: P
-  pageSize?: number
-  page?: number
+  enabled?: boolean
 }
 
-export interface ItemQueryOptions<T, P> {
-  queryFn: (params: P) => Promise<Data<T>>
+export type ItemQueryOptions<T, P> = {
   queryKey: unknown[]
+  queryFn: (params: P) => Promise<Data<T>>
   params: P
   enabled?: boolean
 }
 
-export interface ListQueryOptions<T, P> {
-  queryFn: (params: P) => Promise<Data<PageData<T>>>
+export type ListQueryOptions<T, P> = {
   queryKey: unknown[]
+  queryFn: (params: P) => Promise<Data<PageData<T>>>
   defaultParams: P
   enabled?: boolean
 }

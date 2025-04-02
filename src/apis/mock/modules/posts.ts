@@ -24,7 +24,7 @@ interface Response {
 
 // 获取文章数据（支持分页和模糊查询）
 mock('/posts', 'GET', (res: Response) => {
-  const { page = 1, pageSize = 5, title } = res.body || {}
+  const { page = 1, pageSize = 10, title } = res.body || {}
 
   // 过滤数据
   let filteredPosts = [...posts]

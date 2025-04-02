@@ -2,7 +2,7 @@ import ApiService from '../request'
 import type { CustomConfig, Data } from '../request/type'
 import type { Todo, PageData, TodoSearchParams } from './type'
 
-const apiService = new ApiService({}, { mock: false })
+const apiService = new ApiService({}, { mock: true })
 
 // 获取待办事项数据（支持分页）
 export function getTodos(params?: TodoSearchParams, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<Todo[]> | Data<PageData<Todo>>> {

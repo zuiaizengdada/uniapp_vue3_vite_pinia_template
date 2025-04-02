@@ -7,39 +7,50 @@ import { mock as mockMP } from 'better-mock/dist/mock.mp'
 // #endif
 import { HttpMethods } from '@/common/constants'
 import { isH5 } from '@/utils'
-import type { PageData, Post } from '@/apis/modules/type'
+import type { PageData, Todo } from '@/apis/modules/type'
 
 const mock = isH5 ? mockBrowser : mockMP
 
-const posts = mock({
-  data: []
-}).data as Post[]
+const todos = mock({
+  'data|100': [
+    {
+      'id|+1': 1,
+      'userId|+1': 1,
+      title: '@ctitle',
+      completed: '@boolean'
+    }
+  ]
+}).data as Todo[]
 
 interface Response {
   body: Record<string, any> | null
   headers: any
   type: HttpMethods
   url: string
+  query: Record<string, any>
 }
 
-// 获取文章数据（支持分页和模糊查询）
-mock('/posts', 'GET', (res: Response) => {
-  const { page = 1, pageSize = 5, title } = res.body || {}
+// 获取待办事项数据（支持分页和模糊查询）
+mock('/todos', 'GET', (res: Response) => {
+  const searchParams = new URLSearchParams(res.url.split('?')[1])
+  const page = Number(searchParams.get('page')) || 1
+  const pageSize = Number(searchParams.get('pageSize')) || 10
+  const title = searchParams.get('title')
 
   // 过滤数据
-  let filteredPosts = [...posts]
+  let filteredTodos = [...todos]
   if (title) {
-    filteredPosts = filteredPosts.filter((post) => post.title.toLowerCase().includes(title.toLowerCase()) || post.content.toLowerCase().includes(title.toLowerCase()))
+    filteredTodos = filteredTodos.filter((todo) => todo.title.toLowerCase().includes(title.toLowerCase()))
   }
 
   // 计算分页数据
   const start = (page - 1) * pageSize
   const end = start + pageSize
-  const pageData: PageData<Post> = {
-    list: filteredPosts.slice(start, end),
-    total: filteredPosts.length,
-    page: Number(page),
-    pageSize: Number(pageSize)
+  const pageData: PageData<Todo> = {
+    list: filteredTodos.slice(start, end),
+    total: filteredTodos.length,
+    page,
+    pageSize
   }
 
   return {
@@ -49,87 +60,87 @@ mock('/posts', 'GET', (res: Response) => {
   }
 })
 
-// 根据文章id获取文章数据
-mock('/post/:id', 'GET', (res: Response) => {
-  const id = parseInt(res.url.match(/\/post\/(\d+)/)![1])
-  const post = posts.find((post) => post.id === id)
-  if (post) {
+// 根据待办id获取待办数据
+mock('/todo/:id', 'GET', (res: Response) => {
+  const id = parseInt(res.url.match(/\/todo\/(\d+)/)![1])
+  const todo = todos.find((todo) => todo.id === id)
+  if (todo) {
     return {
       code: 1,
       message: 'success',
-      data: post
+      data: todo
     }
   } else {
     return {
       code: 0,
-      message: 'Article not found'
+      message: 'Todo not found'
     }
   }
 })
 
-// 更新文章
-mock('/post/:id', 'PUT', (res: Response) => {
-  const id = parseInt(res.url.match(/\/post\/(\d+)/)![1])
-  const post = posts.find((post) => post.id === id)
-  if (post) {
-    const { title, content } = res.body!
-    post.title = title
-    post.content = content
+// 更新待办
+mock('/todo/:id', 'PUT', (res: Response) => {
+  const id = parseInt(res.url.match(/\/todo\/(\d+)/)![1])
+  const todo = todos.find((todo) => todo.id === id)
+  if (todo) {
+    const { title, completed } = res.body!
+    todo.title = title
+    todo.completed = completed
     return {
       code: 1,
       message: 'success',
-      data: post
+      data: todo
     }
   } else {
     return {
       code: 0,
-      message: 'Article not found'
+      message: 'Todo not found'
     }
   }
 })
 
-// 删除文章
-mock('/post/:id', 'DELETE', (res: Response) => {
-  const id = parseInt(res.url.match(/\/post\/(\d+)/)![1])
-  const post = posts.find((post) => post.id === id)
-  if (post) {
-    posts.splice(posts.indexOf(post), 1)
+// 删除待办
+mock('/todo/:id', 'DELETE', (res: Response) => {
+  const id = parseInt(res.url.match(/\/todo\/(\d+)/)![1])
+  const todo = todos.find((todo) => todo.id === id)
+  if (todo) {
+    todos.splice(todos.indexOf(todo), 1)
     return {
       code: 1,
       message: 'success',
-      data: post
+      data: todo
     }
   } else {
     return {
       code: 0,
-      message: 'Article not found'
+      message: 'Todo not found'
     }
   }
 })
 
-// 创建文章
-mock('/post', 'POST', (res: Response) => {
+// 创建待办
+mock('/todo', 'POST', (res: Response) => {
   let title = ''
-  let content = ''
+  let completed = false
   if (typeof res.body === 'string') {
     const body = JSON.parse(res.body)
     title = body.title
-    content = body.content
   } else {
     title = res.body!.title
-    content = res.body!.content
   }
 
-  const post = {
-    id: posts.length + 1,
+  const todo = {
+    id: todos.length + 1,
     userId: 1,
     title,
-    content
+    completed
   }
-  posts.push(post)
+  console.log(todo, 'todo')
+  todos.push(todo)
+  console.log(todos, 'todos')
   return {
     code: 1,
     message: 'success',
-    data: post
+    data: todo
   }
 })

@@ -1,26 +1,42 @@
-import { useInfiniteQuery, useQuery, useQueryClient, useMutation } from '@tanstack/vue-query'
-import type { MutationOptions, ItemQueryOptions, ListQueryOptions, PaginationQueryOptions } from '@/common/hooks/type'
+import { useInfiniteQuery, useQuery, useQueryClient, useMutation, type UseInfiniteQueryOptions, type UseQueryOptions, type UseMutationOptions } from '@tanstack/vue-query'
+import type { Data } from '@/apis/request/type'
+import type { PageData } from '@/apis/modules/type'
+import type { InfiniteData } from '@tanstack/vue-query'
+import type { ItemQueryOptions, ListQueryOptions, PaginationQueryOptions } from '../type'
 
 /**
  * 通用列表查询 Hook
  * @param options 查询选项
  */
-export function useListQuery<T, P extends { page?: number; pageSize?: number }>({ queryFn, queryKey, defaultParams, enabled = true }: ListQueryOptions<T, P>) {
+export function useListQuery<T, P, TError = Error>({
+  queryFn,
+  queryKey,
+  defaultParams,
+  ...restOptions
+}: Omit<
+  UseInfiniteQueryOptions<Data<PageData<T>>, TError, InfiniteData<Data<PageData<T>>, number>, Data<PageData<T>>, unknown[], number>,
+  'queryKey' | 'queryFn' | 'getNextPageParam' | 'initialPageParam'
+> & {
+  queryKey: unknown[]
+  queryFn: (params: P) => Promise<Data<PageData<T>>>
+  defaultParams: P
+}) {
   const queryClient = useQueryClient()
 
   // 无限滚动列表查询
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey,
     queryFn: ({ pageParam = 1 }) => {
-      const params = { ...defaultParams, page: pageParam as number } as P
+      const params = { ...defaultParams, page: pageParam } as P
       return queryFn(params)
     },
     getNextPageParam: (lastPage) => {
+      if (!lastPage?.data) return undefined
       const { page, pageSize, total } = lastPage.data
       return page * pageSize < total ? page + 1 : undefined
     },
     initialPageParam: 1,
-    enabled
+    ...restOptions
   })
 
   // 将所有页面数据合并为一个列表
@@ -62,12 +78,21 @@ export function useListQuery<T, P extends { page?: number; pageSize?: number }>(
  * 通用单项查询 Hook
  * @param options 查询选项
  */
-export function useItemQuery<T, P>({ queryFn, queryKey, params, enabled = true }: ItemQueryOptions<T, P>) {
+export function useItemQuery<T, P, TError = Error>({
+  queryFn,
+  queryKey,
+  params,
+  ...restOptions
+}: Omit<UseQueryOptions<Data<T>, TError, Data<T>, unknown[]>, 'queryKey' | 'queryFn'> & {
+  queryKey: unknown[]
+  queryFn: (params: P) => Promise<Data<T>>
+  params: P
+}) {
   return useQuery({
     queryKey,
     queryFn: () => queryFn(params),
     select: (data) => data.data,
-    enabled
+    ...restOptions
   })
 }
 
@@ -75,14 +100,29 @@ export function useItemQuery<T, P>({ queryFn, queryKey, params, enabled = true }
  * 通用数据操作 Hook
  * @param options 操作配置选项
  */
-export function useMutations<T, C, U, D = number>(options: MutationOptions<T, C, U, D>) {
+export function useMutations<T, C, U, D = number, TError = Error>({
+  createFn,
+  updateFn,
+  deleteFn,
+  invalidateQueryKeys = [],
+  ...restOptions
+}: Omit<UseMutationOptions<Data<T>, TError, C, unknown>, 'mutationFn'> & {
+  createFn?: (data: C) => Promise<Data<T>>
+  updateFn?: (data: U) => Promise<Data<T>>
+  deleteFn?: (id: D) => Promise<Data<T>>
+  invalidateQueryKeys?: unknown[][]
+  createSuccess?: () => void
+  createError?: (error: TError) => void
+  updateSuccess?: () => void
+  updateError?: (error: TError) => void
+  deleteSuccess?: () => void
+  deleteError?: (error: TError) => void
+}) {
   const queryClient = useQueryClient()
-  const { createFn, updateFn, deleteFn, invalidateQueryKeys = [] } = options
 
   // 刷新指定查询
   const invalidateQueries = () => {
     invalidateQueryKeys.forEach((key) => {
-      // 使用exact: false选项确保能匹配具有相同前缀的查询键
       queryClient.invalidateQueries({ queryKey: key, exact: false })
     })
   }
@@ -93,9 +133,10 @@ export function useMutations<T, C, U, D = number>(options: MutationOptions<T, C,
         mutationFn: (data: C) => createFn(data),
         onSuccess: () => {
           invalidateQueries()
-          options.createSuccess?.()
+          restOptions.createSuccess?.()
         },
-        onError: options.createError
+        onError: restOptions.createError,
+        ...restOptions
       })
     : {
         mutate: () => {},
@@ -114,9 +155,10 @@ export function useMutations<T, C, U, D = number>(options: MutationOptions<T, C,
         mutationFn: (data: U) => updateFn(data),
         onSuccess: () => {
           invalidateQueries()
-          options.updateSuccess?.()
+          restOptions.updateSuccess?.()
         },
-        onError: options.updateError
+        onError: restOptions.updateError,
+        ...restOptions
       })
     : {
         mutate: () => {},
@@ -135,9 +177,10 @@ export function useMutations<T, C, U, D = number>(options: MutationOptions<T, C,
         mutationFn: (id: D) => deleteFn(id),
         onSuccess: () => {
           invalidateQueries()
-          options.deleteSuccess?.()
+          restOptions.deleteSuccess?.()
         },
-        onError: options.deleteError
+        onError: restOptions.deleteError,
+        ...restOptions
       })
     : {
         mutate: () => {},

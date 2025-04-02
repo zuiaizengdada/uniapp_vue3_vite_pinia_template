@@ -24,7 +24,7 @@ export default defineConfig({
   plugins: [
     uni(),
     Inspector({
-      enabled: true,
+      enabled: false,
       launchEditor: 'cursor'
     }),
     uniTailwind(),

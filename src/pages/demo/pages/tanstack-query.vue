@@ -8,7 +8,8 @@ const {
   list: todoList,
   finished,
   loading,
-  loadMore
+  loadMore,
+  refresh
 } = useListQuery<Todo, TodoSearchParams>({
   queryKey: ['todos'],
   queryFn: (params) => getTodos(params) as Promise<Data<PageData<Todo>>>,
@@ -17,157 +18,60 @@ const {
     pageSize: 10
   }
 })
+console.log(todoList.value, 'todoList')
 
 const newTodo = ref('')
+const editPopup = ref()
+const editingTodo = ref<Todo | null>(null)
+
 const {
-  create: { mutate: createTodoMutation }
+  create: { mutate: createTodoMutation },
+  update: { mutate: updateTodoMutation },
+  remove: { mutate: deleteTodoMutation }
 } = useMutations<Todo, Todo, { id: number; data: Todo }, number>({
   createFn: createTodo,
   updateFn: ({ id, data }) => updateTodo(id, data),
-  deleteFn: deleteTodo
+  deleteFn: deleteTodo,
+  invalidateQueryKeys: [['todos']],
+  createSuccess: () => {
+    newTodo.value = ''
+  }
 })
 
-// // 模拟数据
-// const todoList = ref([
-//   {
-//     userId: 1,
-//     id: 1,
-//     title: 'delectus aut autem',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 2,
-//     title: 'quis ut nam facilis et officia qui',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 3,
-//     title: 'fugiat veniam minus',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 4,
-//     title: 'fugiat veniam minus',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 5,
-//     title: 'fugiat veniam minus',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 6,
-//     title: 'fugiat veniam minus',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 7,
-//     title: 'fugiat veniam minus',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 8,
-//     title: 'fugiat veniam minus',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 9,
-//     title: 'fugiat veniam minus',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 10,
-//     title: 'fugiat veniam minus',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 11,
-//     title: 'fugiat veniam minus',
-//     completed: false
-//   },
-//   {
-//     userId: 1,
-//     id: 12,
-//     title: 'fugiat veniam minus',
-//     completed: false
-//   }
-// ])
+// 切换待办状态
+function toggleTodo(todo: Todo) {
+  updateTodoMutation({
+    id: todo.id,
+    data: {
+      ...todo,
+      completed: !todo.completed
+    }
+  })
+}
 
-// // 分页相关状态
-// const pageSize = 10
-// const currentPage = ref(1)
-// const isLoading = ref(false)
-// const hasMore = ref(true)
+// 开始编辑
+function startEdit(todo: Todo) {
+  editingTodo.value = { ...todo }
+  editPopup.value.open()
+}
 
-// // 新增待办事项
-// const newTodo = ref('')
-// function addTodo() {
-//   if (!newTodo.value.trim()) return
-//   todoList.value.push({
-//     userId: 1,
-//     id: todoList.value.length + 1,
-//     title: newTodo.value,
-//     completed: false
-//   })
-//   newTodo.value = ''
-// }
+// 取消编辑
+function cancelEdit() {
+  editingTodo.value = null
+  editPopup.value.close()
+}
 
-// // 切换待办事项状态
-// function toggleTodo(id: number) {
-//   const todo = todoList.value.find((item) => item.id === id)
-//   if (todo) {
-//     todo.completed = !todo.completed
-//   }
-// }
-
-// // 删除待办事项
-// function deleteTodo(id: number) {
-//   todoList.value = todoList.value.filter((item) => item.id !== id)
-// }
-
-// // 加载更多数据
-// async function loadMore() {
-//   if (isLoading.value || !hasMore.value) return
-
-//   isLoading.value = true
-//   try {
-//     // 模拟API请求
-//     await new Promise((resolve) => setTimeout(resolve, 1000))
-
-//     // 模拟新数据
-//     const newTodos = Array.from({ length: pageSize }, (_, index) => ({
-//       userId: 1,
-//       id: todoList.value.length + index + 1,
-//       title: `待办事项 ${todoList.value.length + index + 1}`,
-//       completed: false
-//     }))
-
-//     todoList.value = [...todoList.value, ...newTodos]
-//     currentPage.value++
-
-//     // 模拟数据加载完毕
-//     if (currentPage.value >= 5) {
-//       hasMore.value = false
-//     }
-//   } finally {
-//     isLoading.value = false
-//   }
-// }
-
-// // 监听滚动到底部
-// function onScrollToLower() {
-//   loadMore()
-// }
+// 确认编辑
+function confirmEdit() {
+  if (!editingTodo.value) return
+  updateTodoMutation({
+    id: editingTodo.value.id,
+    data: {
+      ...editingTodo.value
+    }
+  })
+  editPopup.value.close()
+}
 </script>
 
 <template>
@@ -192,16 +96,16 @@ const {
     </view>
 
     <!-- 待办列表 -->
-    <scroll-view scroll-y class="overflow-hidden flex-1" :style="{ height: 'calc(100vh - 120px)' }" @scrolltolower="loadMore">
+    <scroll-view scroll-y class="overflow-hidden flex-1" :style="{ height: 'calc(100vh - 120px)' }" @scrolltolower="loadMore" @scrolltoupper="refresh">
       <view class="p-4 space-y-3">
         <view v-for="todo in todoList" :key="todo.id" class="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm">
           <view class="flex gap-3 items-center">
-            <checkbox :checked="todo.completed" @tap="toggleTodo(todo.id)" class="w-5 h-5 text-blue-500 rounded border-gray-300 focus:ring-blue-500" />
-            <text :class="['text-gray-800', todo.completed ? 'line-through text-gray-400' : '']">
+            <checkbox :checked="todo.completed" @tap="toggleTodo(todo)" class="w-5 h-5 text-blue-500 rounded border-gray-300 focus:ring-blue-500" />
+            <text :class="['text-gray-800', todo.completed ? 'line-through text-gray-400' : '']" @tap="startEdit(todo)">
               {{ todo.title }}
             </text>
           </view>
-          <uni-icons type="trash" size="20" color="#ef4444" @click="deleteTodo(todo.id)"></uni-icons>
+          <uni-icons type="trash" size="20" color="#ef4444" @click="deleteTodoMutation(todo.id)"></uni-icons>
         </view>
       </view>
 
@@ -209,6 +113,24 @@ const {
       <view v-if="loading" class="py-4 pt-0 text-center text-gray-500">加载中...</view>
       <view v-if="!finished && !loading" class="py-4 pt-0 text-center text-gray-500">没有更多数据了</view>
     </scroll-view>
+
+    <!-- 编辑弹窗 -->
+    <uni-popup ref="editPopup" type="center">
+      <view class="p-4 w-80 bg-white rounded-lg">
+        <view class="mb-4 text-lg font-bold">编辑待办</view>
+        <input
+          v-if="editingTodo"
+          v-model="editingTodo.title"
+          type="text"
+          class="px-4 py-2 mb-4 w-full h-full rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="请输入待办事项..."
+        />
+        <view class="flex gap-2 justify-center">
+          <button @click="cancelEdit" class="text-gray-600 bg-gray-100 rounded-lg custom-btn">取消</button>
+          <button @click="confirmEdit" class="text-white bg-blue-500 rounded-lg custom-btn">确定</button>
+        </view>
+      </view>
+    </uni-popup>
   </view>
 </template>
 

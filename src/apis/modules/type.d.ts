@@ -10,11 +10,11 @@ export interface Post {
 }
 
 export interface Todo {
-  // 文章id
+  // 待办id
   id: number
   // 用户id
   userId: number
-  // 文章标题
+  // 待办标题
   title: string
   // 是否完成
   completed: boolean
@@ -47,7 +47,7 @@ export interface TodoSearchParams {
   page?: number
   // 每页条数
   pageSize?: number
-  // 文章标题
+  // 待办标题
   title?: string
   // 是否完成
   completed?: boolean
