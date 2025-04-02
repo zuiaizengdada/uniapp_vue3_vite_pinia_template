@@ -6,10 +6,7 @@ const apiService = new ApiService({}, { mock: true })
 
 // 获取文章数据（支持分页）
 export function getPosts(params?: PostSearchParams): Promise<Data<Post[]> | Data<PageData<Post>>> {
-  if (params?.page && params?.pageSize) {
-    return apiService.get('/posts', { page: params.page, pageSize: params.pageSize }) as Promise<Data<PageData<Post>>>
-  }
-  return apiService.get('/posts') as Promise<Data<Post[]>>
+  return apiService.get('/posts', params) as Promise<Data<PageData<Post>>>
 }
 
 // 根据文章id获取文章数据

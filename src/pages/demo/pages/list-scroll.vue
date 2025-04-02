@@ -29,10 +29,6 @@ onMounted(async () => {
   scrollToBottom('.scroll-container', '.scroll-content')
 })
 
-defineProps<{
-  tabIndex: number
-}>()
-
 async function scrollToElement(id: string, scrollAnimation: boolean = true) {
   setScrollWithAnimation(scrollAnimation)
   targetElementId.value = id
@@ -83,7 +79,7 @@ function handleRefresherabort() {
 </script>
 
 <template>
-  <view class="flex flex-col items-center w-full gap-[10px]">
+  <view class="flex flex-col items-center w-full h-screen gap-[10px]">
     <scroll-view
       class="scroll-container h-[400px] bg-red-500"
       :scrollTop="scrollTop"
@@ -109,10 +105,62 @@ function handleRefresherabort() {
     <view class="absolute right-0 bottom-[20%]" @click="scrollToTop"><text>回到顶部</text></view>
     <view class="flex flex-col gap-5">
       <text>scrollTop: {{ scrollTop }}</text>
-      <button @click="scrollToElement('id10')">Scroll to Item 10</button>
-      <button @click="scrollToElement('id50')">Scroll to Item 50</button>
-      <button @click="scrollToElement('id99')">Scroll to Item 99</button>
-      <button @click="scrollToBottom('.scroll-container', '.scroll-content')">Scroll to Bottom</button>
+      <button class="custom-btn" @click="scrollToElement('id10')">Scroll to Item 10</button>
+      <button class="custom-btn" @click="scrollToElement('id50')">Scroll to Item 50</button>
+      <button class="custom-btn" @click="scrollToElement('id99')">Scroll to Item 99</button>
+      <button class="custom-btn" @click="scrollToBottom('.scroll-container', '.scroll-content')">Scroll to Bottom</button>
     </view>
   </view>
 </template>
+
+<style lang="scss" scoped>
+.custom-btn {
+  /* 基础样式 */
+  display: inline-block;
+  margin: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  background-color: #f8f8f8;
+  color: #333;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 针对H5的特定调整 */
+/* #ifdef H5 */
+button.custom-btn {
+  outline: none;
+
+  &::after {
+    display: none; /* 移除H5中的after伪元素 */
+  }
+}
+/* #endif */
+
+/* 针对微信小程序的特定调整 */
+/* #ifdef MP-WEIXIN */
+button.custom-btn {
+  overflow: visible;
+  background-color: #f8f8f8 !important; /* 确保背景色一致 */
+
+  &::after {
+    border: none; /* 移除微信小程序中的默认边框 */
+  }
+}
+/* #endif */
+
+/* 针对头条小程序的特定调整 */
+/* #ifdef MP-TOUTIAO */
+button.custom-btn {
+  overflow: visible;
+  background-color: #f8f8f8 !important;
+
+  &::after {
+    border: none;
+  }
+}
+/* #endif */
+</style>

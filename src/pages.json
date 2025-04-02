@@ -47,6 +47,24 @@
       "style": {
         "navigationBarTitleText": "Pinia数据持久化"
       }
+    },
+    {
+      "path": "pages/demo/pages/mock",
+      "style": {
+        "navigationBarTitleText": "Mock数据"
+      }
+    },
+    {
+      "path": "pages/demo/pages/tanstack-query",
+      "style": {
+        "navigationBarTitleText": "TanStack Query示例"
+      }
+    },
+    {
+      "path": "pages/demo/pages/hooks",
+      "style": {
+        "navigationBarTitleText": "常用hook合集"
+      }
     }
     // {
     //   "path": "pages/page-container/index",

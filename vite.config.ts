@@ -9,6 +9,7 @@ import Inspector from 'unplugin-vue-inspector/vite'
 import { resolve } from 'path'
 import tailwindcss from 'tailwindcss'
 import * as VueQuery from '@tanstack/vue-query'
+import lodash from 'lodash'
 
 export default defineConfig({
   resolve: {
@@ -39,6 +40,9 @@ export default defineConfig({
         '@vueuse/core',
         {
           '@tanstack/vue-query': Object.keys(VueQuery)
+        },
+        {
+          lodash: Object.keys(lodash)
         },
         uniuseAutoImports()
       ],

@@ -12,14 +12,7 @@ import type { PageData, Post } from '@/apis/modules/type'
 const mock = isH5 ? mockBrowser : mockMP
 
 const posts = mock({
-  'data|100': [
-    {
-      'id|+1': 1,
-      'userId|+1': 1,
-      title: '@ctitle',
-      content: '@cparagraph'
-    }
-  ]
+  data: []
 }).data as Post[]
 
 interface Response {
@@ -29,27 +22,24 @@ interface Response {
   url: string
 }
 
-// 获取文章数据（支持分页）
+// 获取文章数据（支持分页和模糊查询）
 mock('/posts', 'GET', (res: Response) => {
-  const { page, pageSize } = res.body || {}
+  const { page = 1, pageSize = 5, title } = res.body || {}
 
-  // 如果没有传分页参数，返回所有数据
-  if (!page || !pageSize) {
-    return {
-      code: 1,
-      message: 'success',
-      data: posts as Post[]
-    }
+  // 过滤数据
+  let filteredPosts = [...posts]
+  if (title) {
+    filteredPosts = filteredPosts.filter((post) => post.title.toLowerCase().includes(title.toLowerCase()) || post.content.toLowerCase().includes(title.toLowerCase()))
   }
 
-  // 有分页参数时返回分页数据
+  // 计算分页数据
   const start = (page - 1) * pageSize
   const end = start + pageSize
   const pageData: PageData<Post> = {
-    list: posts.slice(start, end),
-    total: posts.length,
-    page,
-    pageSize
+    list: filteredPosts.slice(start, end),
+    total: filteredPosts.length,
+    page: Number(page),
+    pageSize: Number(pageSize)
   }
 
   return {
@@ -119,7 +109,17 @@ mock('/post/:id', 'DELETE', (res: Response) => {
 
 // 创建文章
 mock('/post', 'POST', (res: Response) => {
-  const { title, content } = res.body!
+  let title = ''
+  let content = ''
+  if (typeof res.body === 'string') {
+    const body = JSON.parse(res.body)
+    title = body.title
+    content = body.content
+  } else {
+    title = res.body!.title
+    content = res.body!.content
+  }
+
   const post = {
     id: posts.length + 1,
     userId: 1,

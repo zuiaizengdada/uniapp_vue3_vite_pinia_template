@@ -121,6 +121,7 @@
     "@dcloudio/uni-stacktracey": "3.0.0-4040520250104002",
     "@dcloudio/vite-plugin-uni": "3.0.0-4040520250104002",
     "@types/crypto-js": "^4.2.2",
+    "@types/lodash": "^4.17.16",
     "@types/webpack-env": "^1.18.5",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
