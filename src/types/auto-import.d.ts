@@ -88,7 +88,6 @@ declare global {
   const debouncedRef: typeof import('@vueuse/core')['debouncedRef']
   const debouncedWatch: typeof import('@vueuse/core')['debouncedWatch']
   const deburr: typeof import('lodash')['deburr']
-  const default: typeof import('lodash')['default']
   const defaultScheduler: typeof import('@tanstack/vue-query')['defaultScheduler']
   const defaultShouldDehydrateMutation: typeof import('@tanstack/vue-query')['defaultShouldDehydrateMutation']
   const defaultShouldDehydrateQuery: typeof import('@tanstack/vue-query')['defaultShouldDehydrateQuery']
