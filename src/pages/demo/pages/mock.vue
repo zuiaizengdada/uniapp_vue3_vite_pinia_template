@@ -140,7 +140,7 @@ onMounted(() => {
     </view>
 
     <!-- 文章列表（可滚动区域） -->
-    <scroll-view scroll-y class="flex-1 p-4">
+    <scroll-view scroll-y class="overflow-hidden flex-1 p-4">
       <view class="space-y-3">
         <view v-for="item in postList" :key="item.id" class="p-3 bg-white rounded-md border">
           <view class="flex justify-between items-center">
