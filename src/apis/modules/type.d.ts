@@ -44,9 +44,9 @@ export interface PostSearchParams {
 
 export interface TodoSearchParams {
   // 当前页码
-  page?: number
+  page: number
   // 每页条数
-  pageSize?: number
+  pageSize: number
   // 待办标题
   title?: string
   // 是否完成

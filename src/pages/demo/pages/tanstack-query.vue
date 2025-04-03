@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getTodos, createTodo, updateTodo, deleteTodo } from '@/apis'
 import { useListQuery, useMutations } from '@/common/hooks'
+import { isH5 } from '@/utils'
 import type { PageData, Todo, TodoSearchParams } from '@/apis/modules/type'
 import { type Data } from '@/apis/request/type'
 
@@ -18,6 +19,7 @@ const {
     pageSize: 10
   }
 })
+
 console.log(todoList.value, 'todoList')
 
 const newTodo = ref('')
@@ -75,13 +77,16 @@ function confirmEdit() {
 </script>
 
 <template>
-  <view class="flex flex-col h-screen bg-gray-50">
-    <!-- 头部 -->
+  <view
+    class="flex flex-col bg-gray-50"
+    :style="{
+      height: isH5 ? 'calc(100vh - 44px)' : '100vh'
+    }"
+  >
     <view class="flex-none p-4 pb-0 bg-white shadow-sm">
       <view class="text-xl font-bold text-gray-800">待办事项</view>
     </view>
 
-    <!-- 添加待办 -->
     <view class="flex-none p-4 bg-white border-b">
       <view class="flex gap-2 items-center">
         <input
@@ -95,10 +100,9 @@ function confirmEdit() {
       </view>
     </view>
 
-    <!-- 待办列表 -->
     <scroll-view scroll-y class="overflow-hidden flex-1" :style="{ height: 'calc(100vh - 120px)' }" @scrolltolower="loadMore" @scrolltoupper="refresh">
       <view class="p-4 space-y-3">
-        <view v-for="todo in todoList" :key="todo.id" class="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm">
+        <view v-for="(todo, index) in todoList" :key="index" class="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm">
           <view class="flex gap-3 items-center">
             <checkbox :checked="todo.completed" @tap="toggleTodo(todo)" class="w-5 h-5 text-blue-500 rounded border-gray-300 focus:ring-blue-500" />
             <text :class="['text-gray-800', todo.completed ? 'line-through text-gray-400' : '']" @tap="startEdit(todo)">
@@ -109,12 +113,10 @@ function confirmEdit() {
         </view>
       </view>
 
-      <!-- 加载状态 -->
       <view v-if="loading" class="py-4 pt-0 text-center text-gray-500">加载中...</view>
-      <view v-if="!finished && !loading" class="py-4 pt-0 text-center text-gray-500">没有更多数据了</view>
+      <view v-if="finished && !loading" class="py-4 pt-0 text-center text-gray-500">没有更多数据了</view>
     </scroll-view>
 
-    <!-- 编辑弹窗 -->
     <uni-popup ref="editPopup" type="center">
       <view class="p-4 w-80 bg-white rounded-lg">
         <view class="mb-4 text-lg font-bold">编辑待办</view>

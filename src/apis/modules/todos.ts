@@ -16,6 +16,7 @@ export function getTodoById(id: number, options?: Partial<UniApp.RequestOptions 
 
 // 更新待办事项
 export function updateTodo(id: number, data: Todo, options?: Partial<UniApp.RequestOptions & CustomConfig>): Promise<Data<Todo>> {
+  console.log(id, data, options)
   return apiService.put(`/todo/${id}`, data, options)
 }
 

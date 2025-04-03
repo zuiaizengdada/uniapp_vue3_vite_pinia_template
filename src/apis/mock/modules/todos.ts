@@ -11,8 +11,25 @@ import type { PageData, Todo } from '@/apis/modules/type'
 
 const mock = isH5 ? mockBrowser : mockMP
 
+// 解析URL参数的函数
+function parseQueryString(url: string) {
+  const queryString = url.split('?')[1] || ''
+  const params: Record<string, string> = {}
+
+  if (queryString) {
+    queryString.split('&').forEach((param) => {
+      const [key, value] = param.split('=')
+      if (key) {
+        params[key] = decodeURIComponent(value || '')
+      }
+    })
+  }
+
+  return params
+}
+
 const todos = mock({
-  'data|100': [
+  'data|21': [
     {
       'id|+1': 1,
       'userId|+1': 1,
@@ -32,10 +49,10 @@ interface Response {
 
 // 获取待办事项数据（支持分页和模糊查询）
 mock('/todos', 'GET', (res: Response) => {
-  const searchParams = new URLSearchParams(res.url.split('?')[1])
-  const page = Number(searchParams.get('page')) || 1
-  const pageSize = Number(searchParams.get('pageSize')) || 10
-  const title = searchParams.get('title')
+  const params = parseQueryString(res.url)
+  const page = Number(params.page) || 1
+  const pageSize = Number(params.pageSize) || 10
+  const title = params.title
 
   // 过滤数据
   let filteredTodos = [...todos]
@@ -82,10 +99,17 @@ mock('/todo/:id', 'GET', (res: Response) => {
 mock('/todo/:id', 'PUT', (res: Response) => {
   const id = parseInt(res.url.match(/\/todo\/(\d+)/)![1])
   const todo = todos.find((todo) => todo.id === id)
+
   if (todo) {
-    const { title, completed } = res.body!
-    todo.title = title
-    todo.completed = completed
+    if (typeof res.body === 'string') {
+      const body = JSON.parse(res.body)
+      todo.title = body.title
+      todo.completed = body.completed
+    } else {
+      todo.title = res.body!.title
+      todo.completed = res.body!.completed
+    }
+
     return {
       code: 1,
       message: 'success',
@@ -135,9 +159,7 @@ mock('/todo', 'POST', (res: Response) => {
     title,
     completed
   }
-  console.log(todo, 'todo')
   todos.push(todo)
-  console.log(todos, 'todos')
   return {
     code: 1,
     message: 'success',

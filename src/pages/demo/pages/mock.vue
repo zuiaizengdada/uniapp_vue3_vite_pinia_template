@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { createPost, getPosts, updatePost, deletePost } from '@/apis'
+import { isH5 } from '@/utils'
 import type { PageData, Post } from '@/apis/modules/type'
 import { type Data } from '@/apis/request/type'
 
@@ -123,7 +124,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <view class="flex flex-col h-screen">
+  <view
+    class="flex flex-col"
+    :style="{
+      height: isH5 ? 'calc(100vh - 44px)' : '100vh'
+    }"
+  >
     <!-- 搜索和添加区域 -->
     <view class="flex justify-between items-center p-4 border-b">
       <view class="flex flex-1 items-center mr-2">
