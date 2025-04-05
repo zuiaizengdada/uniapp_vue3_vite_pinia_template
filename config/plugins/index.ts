@@ -43,7 +43,7 @@ export const createPlugins = (mode: string): PluginOption[] => {
   // 开发环境特定插件
   const devPlugins: PluginOption[] = [
     Inspector({
-      enabled: true,
+      enabled: false,
       launchEditor: 'cursor'
     })
   ]

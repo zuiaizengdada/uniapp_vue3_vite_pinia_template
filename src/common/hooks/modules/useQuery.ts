@@ -1,8 +1,5 @@
-import { useInfiniteQuery, useQuery, useQueryClient, useMutation, type UseInfiniteQueryOptions, type UseQueryOptions, type UseMutationOptions } from '@tanstack/vue-query'
-import type { Data } from '@/apis/request/type'
-import type { PageData } from '@/apis/modules/type'
-import type { InfiniteData } from '@tanstack/vue-query'
-import type { ItemQueryOptions, ListQueryOptions, PaginationQueryOptions } from '../type'
+import { useInfiniteQuery, useQuery, useQueryClient, useMutation } from '@tanstack/vue-query'
+import type { ItemQueryOptions, ListQueryOptions, PaginationQueryOptions, UseMutationsOptions, OptimisticMutationOptions, UseListQueryOptions, UseItemQueryOptions } from '../type'
 
 // 添加一个包含id属性的基础接口
 interface BaseItem {
@@ -13,19 +10,7 @@ interface BaseItem {
  * 通用列表查询 Hook
  * @param options 查询选项
  */
-export function useListQuery<T extends Partial<BaseItem>, P, TError = Error>({
-  queryFn,
-  queryKey,
-  defaultParams,
-  ...restOptions
-}: Omit<
-  UseInfiniteQueryOptions<Data<PageData<T>>, TError, InfiniteData<Data<PageData<T>>, number>, Data<PageData<T>>, unknown[], number>,
-  'queryKey' | 'queryFn' | 'getNextPageParam' | 'initialPageParam'
-> & {
-  queryKey: unknown[]
-  queryFn: (params: P) => Promise<Data<PageData<T>>>
-  defaultParams: P
-}) {
+export function useListQuery<T extends Partial<BaseItem>, P, TError = Error>({ queryFn, queryKey, defaultParams, ...restOptions }: UseListQueryOptions<T, P, TError>) {
   const queryClient = useQueryClient()
 
   // 无限滚动列表查询
@@ -110,16 +95,7 @@ export function useListQuery<T extends Partial<BaseItem>, P, TError = Error>({
  * 通用单项查询 Hook
  * @param options 查询选项
  */
-export function useItemQuery<T, P, TError = Error>({
-  queryFn,
-  queryKey,
-  params,
-  ...restOptions
-}: Omit<UseQueryOptions<Data<T>, TError, Data<T>, unknown[]>, 'queryKey' | 'queryFn'> & {
-  queryKey: unknown[]
-  queryFn: (params: P) => Promise<Data<T>>
-  params: P
-}) {
+export function useItemQuery<T, P, TError = Error>({ queryFn, queryKey, params, ...restOptions }: UseItemQueryOptions<T, P, TError>) {
   return useQuery({
     queryKey,
     queryFn: () => queryFn(params),
@@ -136,20 +112,11 @@ export function useMutations<T, C, U, D = number, TError = Error>({
   createFn,
   updateFn,
   deleteFn,
+  uploadFn,
+  downloadFn,
   invalidateQueryKeys = [],
   ...restOptions
-}: Omit<UseMutationOptions<Data<T>, TError, C, unknown>, 'mutationFn'> & {
-  createFn?: (data: C) => Promise<Data<T>>
-  updateFn?: (data: U) => Promise<Data<T>>
-  deleteFn?: (id: D) => Promise<Data<T>>
-  invalidateQueryKeys?: unknown[][]
-  createSuccess?: () => void
-  createError?: (error: TError) => void
-  updateSuccess?: () => void
-  updateError?: (error: TError) => void
-  deleteSuccess?: () => void
-  deleteError?: (error: TError) => void
-}) {
+}: UseMutationsOptions<T, C, U, D, TError>) {
   const queryClient = useQueryClient()
 
   // 刷新指定查询
@@ -225,10 +192,56 @@ export function useMutations<T, C, U, D = number, TError = Error>({
         reset: () => {}
       }
 
+  // 上传
+  const upload = uploadFn
+    ? useMutation({
+        mutationFn: (file: UniApp.UploadFileOption) => uploadFn(file),
+        onSuccess: () => {
+          invalidateQueries()
+          restOptions.uploadSuccess?.()
+        },
+        onError: restOptions.uploadError,
+        ...restOptions
+      })
+    : {
+        mutate: () => {},
+        mutateAsync: () => Promise.resolve({} as any),
+        isPending: ref(false),
+        isSuccess: ref(false),
+        isError: ref(false),
+        data: ref(undefined),
+        error: ref(null),
+        reset: () => {}
+      }
+
+  // 下载
+  const download = downloadFn
+    ? useMutation({
+        mutationFn: (params: UniApp.DownloadFileOption) => downloadFn(params),
+        onSuccess: () => {
+          invalidateQueries()
+          restOptions.downloadSuccess?.()
+        },
+        onError: restOptions.downloadError,
+        ...restOptions
+      })
+    : {
+        mutate: () => {},
+        mutateAsync: () => Promise.resolve({} as any),
+        isPending: ref(false),
+        isSuccess: ref(false),
+        isError: ref(false),
+        data: ref(undefined),
+        error: ref(null),
+        reset: () => {}
+      }
+
   return {
     create,
     update,
-    remove
+    remove,
+    upload,
+    download
   }
 }
 
@@ -521,19 +534,7 @@ export function useCachedQuery<T, P>({
  * 乐观更新 Hook - 在请求完成前就先更新UI，提高用户体验
  * @param options 操作配置
  */
-export function useOptimisticMutation<P>({
-  mutationFn,
-  queryKey,
-  onMutate,
-  onError,
-  onSuccess
-}: {
-  mutationFn: (data: P) => Promise<any>
-  queryKey: unknown[]
-  onMutate?: (data: P) => any
-  onError?: (error: any, data: P, context: any) => void
-  onSuccess?: (data: any, variables: P, context: any) => void
-}) {
+export function useOptimisticMutation<P>({ mutationFn, queryKey, onMutate, onError, onSuccess }: OptimisticMutationOptions<P>) {
   const queryClient = useQueryClient()
 
   return useMutation({
