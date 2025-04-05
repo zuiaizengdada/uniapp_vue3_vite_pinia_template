@@ -1,5 +1,5 @@
 // #ifdef H5
-import 'better-mock/dist/mock.browser'
+import Mock from 'better-mock'
 const mockBrowser = Mock.mock
 // #endif
 // #ifdef MP-WEIXIN || MP-TOUTIAO || APP || APP-PLUS

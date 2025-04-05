@@ -1,72 +1,18 @@
-import { defineConfig } from 'vite'
-import { uniPolyfill } from './src/common/plugins'
-import uni from '@dcloudio/vite-plugin-uni'
-import AutoImport from 'unplugin-auto-import/vite'
-import PiniaAutoRefs from 'pinia-auto-refs'
-import uniTailwind from '@uni-helper/vite-plugin-uni-tailwind'
-import { uniuseAutoImports } from '@uni-helper/uni-use'
-import Inspector from 'unplugin-vue-inspector/vite'
-import { resolve } from 'path'
-import tailwindcss from 'tailwindcss'
-import * as VueQuery from '@tanstack/vue-query'
-import lodash from 'lodash'
+import type { ConfigEnv, UserConfig } from 'vite'
+import { createBase, createPlugins, createCss, createServer, createOptimizeDeps, createBuild, createPreview, createDefine, createWorker, createSsr, createExperimental } from './config'
 
-export default defineConfig({
-  resolve: {
-    alias: [
-      {
-        find: '@',
-        replacement: resolve(__dirname, 'src')
-      }
-    ]
-  },
-  base: './',
-  plugins: [
-    uni(),
-    Inspector({
-      enabled: false,
-      launchEditor: 'cursor'
-    }),
-    uniTailwind(),
-    AutoImport({
-      imports: [
-        'vue',
-        'pinia',
-        'uni-app',
-        'vitest',
-        {
-          '@/utils/modules/pinia-auto-refs': ['useStore']
-        },
-        '@vueuse/core',
-        {
-          '@tanstack/vue-query': Object.keys(VueQuery)
-        },
-        {
-          lodash: Object.keys(lodash)
-        },
-        uniuseAutoImports()
-      ],
-      dts: 'src/types/auto-import.d.ts'
-    }),
-    PiniaAutoRefs({
-      outputFile: 'src/utils/modules/pinia-auto-refs.ts'
-    }),
-    uniPolyfill()
-  ],
-  css: {
-    postcss: {
-      plugins: [tailwindcss]
-    },
-    preprocessorOptions: {
-      scss: {
-        api: 'modern'
-      }
-    }
-  },
-  server: {
-    allowedHosts: true
-  },
-  optimizeDeps: {
-    exclude: ['better-mock']
+export default ({ mode }: ConfigEnv): UserConfig => {
+  return {
+    ...createBase(),
+    plugins: createPlugins(mode),
+    css: createCss(),
+    server: createServer(mode),
+    optimizeDeps: createOptimizeDeps(),
+    build: createBuild(mode),
+    preview: createPreview(),
+    define: createDefine(mode),
+    worker: createWorker(),
+    ssr: createSsr(),
+    experimental: createExperimental()
   }
-})
+}
