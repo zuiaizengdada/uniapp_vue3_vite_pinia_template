@@ -49,12 +49,25 @@ interface Response {
 
 // 获取待办事项数据（支持分页和模糊查询）
 mock('/todos', 'GET', (res: Response) => {
+  // 判断是否有查询参数
+  const hasParams = Object.keys(parseQueryString(res.url)).length > 0 || Object.keys(res.body!).length > 0
+
+  // 根据是否有参数决定返回全部数据还是按条件查询
+  if (!hasParams) {
+    // 没有参数时返回全部数据
+    return {
+      code: 1,
+      message: 'success',
+      data: todos
+    }
+  }
+
+  // 有参数时按条件查询
+  // 过滤数据
   const params = parseQueryString(res.url)
   const page = Number(params.page) || 1
   const pageSize = Number(params.pageSize) || 10
   const title = params.title
-
-  // 过滤数据
   let filteredTodos = [...todos]
   if (title) {
     filteredTodos = filteredTodos.filter((todo) => todo.title.toLowerCase().includes(title.toLowerCase()))
