@@ -63,6 +63,9 @@ export default defineConfig({
       }
     }
   },
+  server: {
+    allowedHosts: true
+  },
   optimizeDeps: {
     exclude: ['better-mock']
   }

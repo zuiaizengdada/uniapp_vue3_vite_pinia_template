@@ -28,6 +28,21 @@ function parseQueryString(url: string) {
   return params
 }
 
+// 从请求体中获取参数
+function getParamsFromBody(body: any): Record<string, any> {
+  if (!body) return {}
+
+  if (typeof body === 'string') {
+    try {
+      return JSON.parse(body)
+    } catch (e) {
+      return {}
+    }
+  }
+
+  return body
+}
+
 const todos = mock({
   'data|21': [
     {
@@ -50,7 +65,12 @@ interface Response {
 // 获取待办事项数据（支持分页和模糊查询）
 mock('/todos', 'GET', (res: Response) => {
   // 判断是否有查询参数
-  const hasParams = Object.keys(parseQueryString(res.url)).length > 0 || Object.keys(res.body!).length > 0
+  const urlParams = parseQueryString(res.url)
+  const bodyParams = getParamsFromBody(res.body)
+
+  // 合并参数，优先使用body参数
+  const params = { ...urlParams, ...bodyParams }
+  const hasParams = Object.keys(params).length > 0
 
   // 根据是否有参数决定返回全部数据还是按条件查询
   if (!hasParams) {
@@ -64,11 +84,11 @@ mock('/todos', 'GET', (res: Response) => {
 
   // 有参数时按条件查询
   // 过滤数据
-  const params = parseQueryString(res.url)
   const page = Number(params.page) || 1
   const pageSize = Number(params.pageSize) || 10
   const title = params.title
   let filteredTodos = [...todos]
+
   if (title) {
     filteredTodos = filteredTodos.filter((todo) => todo.title.toLowerCase().includes(title.toLowerCase()))
   }

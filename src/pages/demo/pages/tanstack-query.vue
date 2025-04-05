@@ -20,8 +20,6 @@ const {
   }
 })
 
-console.log(todoList.value, 'todoList')
-
 const newTodo = ref('')
 const editPopup = ref()
 const editingTodo = ref<Todo | null>(null)

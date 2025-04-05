@@ -4,11 +4,16 @@ import type { PageData } from '@/apis/modules/type'
 import type { InfiniteData } from '@tanstack/vue-query'
 import type { ItemQueryOptions, ListQueryOptions, PaginationQueryOptions } from '../type'
 
+// 添加一个包含id属性的基础接口
+interface BaseItem {
+  id: number | string
+}
+
 /**
  * 通用列表查询 Hook
  * @param options 查询选项
  */
-export function useListQuery<T, P, TError = Error>({
+export function useListQuery<T extends Partial<BaseItem>, P, TError = Error>({
   queryFn,
   queryKey,
   defaultParams,
@@ -31,18 +36,45 @@ export function useListQuery<T, P, TError = Error>({
       return queryFn(params)
     },
     getNextPageParam: (lastPage) => {
-      if (!lastPage?.data) return undefined
-      const { page, pageSize, total } = lastPage.data
-      return page * pageSize < total ? page + 1 : undefined
+      if (!lastPage.data || !lastPage.data.list) return undefined
+
+      const data = lastPage.data
+
+      // 如果返回的数据不足一页，说明没有下一页了
+      if (data.list.length < data.pageSize) return undefined
+
+      // 总共有21条数据，每页10条，一共3页
+      // 如果当前页码*每页条数 >= 总条数，说明已经到最后一页
+      if (data.page * data.pageSize >= data.total) return undefined
+
+      return data.page + 1
     },
+    structuralSharing: false,
     initialPageParam: 1,
+    retry: 1,
+    refetchOnWindowFocus: false,
     ...restOptions
   })
 
   // 将所有页面数据合并为一个列表
   const list = computed<T[]>(() => {
     if (!data.value) return []
-    return data.value.pages.reduce((acc: T[], page) => [...acc, ...(page.data?.list || [])], [])
+
+    // 使用Set去重，确保不会出现重复数据
+    const allItems = data.value.pages.flatMap((page: any) => page.data.list)
+
+    // 处理去重逻辑
+    // 如果项目有id字段，使用id去重；否则使用整个对象的JSON字符串作为键去重
+    const uniqueMap = new Map()
+    allItems.forEach((item: T) => {
+      // 使用id去重（如果存在），否则使用对象的JSON字符串作为键
+      const key = item.id !== undefined ? item.id : JSON.stringify(item)
+      if (!uniqueMap.has(key)) {
+        uniqueMap.set(key, item)
+      }
+    })
+
+    return Array.from(uniqueMap.values())
   })
 
   // 是否加载完成
