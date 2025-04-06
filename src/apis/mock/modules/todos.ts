@@ -6,8 +6,11 @@ const mockBrowser = Mock.mock
 import { mock as mockMP } from 'better-mock/dist/mock.mp'
 // #endif
 import { HttpMethods } from '@/common/constants'
-import { isH5 } from '@/utils'
+import { usePlatform } from '@/common/hooks'
+
 import type { PageData, Todo } from '@/apis/modules/type'
+
+const { isH5 } = usePlatform()
 
 const mock = isH5 ? mockBrowser : mockMP
 

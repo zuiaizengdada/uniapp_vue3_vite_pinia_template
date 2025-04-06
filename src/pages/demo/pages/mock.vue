@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { createPost, getPosts, updatePost, deletePost } from '@/apis'
-import { isH5 } from '@/utils'
+import { usePlatform } from '@/common/hooks'
 import type { PageData, Post } from '@/apis/modules/type'
 import { type Data } from '@/apis/request/type'
+
+const { isH5 } = usePlatform()
 
 const postList = ref<Post[]>([])
 const page = ref(1)

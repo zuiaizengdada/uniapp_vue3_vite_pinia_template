@@ -1,10 +1,13 @@
 import { HttpMethods, HttpStatusCode } from '@/common/constants'
 import { BASE_URL, TIME_OUT } from '../request/config'
-import { isProduction, router, uniStorage } from '@/utils'
+import { usePlatform } from '@/common/hooks'
+import { router, uniStorage } from '@/utils'
 import i18n from '@/locale'
 import type { RequestConfig, Data, CustomConfig } from './type'
 
 const t = i18n.global.t
+
+const { isProduction } = usePlatform()
 
 const defaultRequestConfig: RequestConfig = {
   baseURL: BASE_URL,

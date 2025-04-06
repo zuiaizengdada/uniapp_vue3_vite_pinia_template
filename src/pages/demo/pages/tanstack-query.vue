@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { getTodos, createTodo, updateTodo, deleteTodo } from '@/apis'
-import { useListQuery, useMutations } from '@/common/hooks'
-import { isH5 } from '@/utils'
+import { useListQuery, useMutations, usePlatform } from '@/common/hooks'
 import type { PageData, Todo, TodoSearchParams } from '@/apis/modules/type'
 import { type Data } from '@/apis/request/type'
+
+const { isH5 } = usePlatform()
 
 const {
   list: todoList,
