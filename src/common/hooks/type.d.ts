@@ -22,14 +22,12 @@ export interface MutationOptions<T, C, U, D = number> {
 }
 
 /**
- * 扩展的突变操作选项，支持文件上传和下载
+ * 数据操作选项
  */
 export interface UseMutationsOptions<T, C, U, D = number, TError = Error> extends Omit<UseMutationOptions<Data<T>, TError, C, unknown>, 'mutationFn'> {
   createFn?: (data: C) => Promise<Data<T>>
   updateFn?: (data: U) => Promise<Data<T>>
   deleteFn?: (id: D) => Promise<Data<T>>
-  uploadFn?: (file: UniApp.UploadFileOption) => Promise<Data<T>>
-  downloadFn?: (params: UniApp.DownloadFileOption) => Promise<Data<T>>
   invalidateQueryKeys?: unknown[][]
   createSuccess?: () => void
   createError?: (error: TError) => void
@@ -37,10 +35,6 @@ export interface UseMutationsOptions<T, C, U, D = number, TError = Error> extend
   updateError?: (error: TError) => void
   deleteSuccess?: () => void
   deleteError?: (error: TError) => void
-  uploadSuccess?: () => void
-  uploadError?: (error: TError) => void
-  downloadSuccess?: () => void
-  downloadError?: (error: TError) => void
 }
 
 /**

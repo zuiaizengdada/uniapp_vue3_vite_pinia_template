@@ -1,16 +1,11 @@
 import { useInfiniteQuery, useQuery, useQueryClient, useMutation } from '@tanstack/vue-query'
 import type { ItemQueryOptions, ListQueryOptions, PaginationQueryOptions, UseMutationsOptions, OptimisticMutationOptions, UseListQueryOptions, UseItemQueryOptions } from '../type'
 
-// 添加一个包含id属性的基础接口
-interface BaseItem {
-  id: number | string
-}
-
 /**
  * 通用列表查询 Hook
  * @param options 查询选项
  */
-export function useListQuery<T extends Partial<BaseItem>, P, TError = Error>({ queryFn, queryKey, defaultParams, ...restOptions }: UseListQueryOptions<T, P, TError>) {
+export function useListQuery<T extends Partial<{ id: number | string }>, P, TError = Error>({ queryFn, queryKey, defaultParams, ...restOptions }: UseListQueryOptions<T, P, TError>) {
   const queryClient = useQueryClient()
 
   // 无限滚动列表查询
@@ -108,15 +103,7 @@ export function useItemQuery<T, P, TError = Error>({ queryFn, queryKey, params, 
  * 通用数据操作 Hook
  * @param options 操作配置选项
  */
-export function useMutations<T, C, U, D = number, TError = Error>({
-  createFn,
-  updateFn,
-  deleteFn,
-  uploadFn,
-  downloadFn,
-  invalidateQueryKeys = [],
-  ...restOptions
-}: UseMutationsOptions<T, C, U, D, TError>) {
+export function useMutations<T, C, U, D = number, TError = Error>({ createFn, updateFn, deleteFn, invalidateQueryKeys = [], ...restOptions }: UseMutationsOptions<T, C, U, D, TError>) {
   const queryClient = useQueryClient()
 
   // 刷新指定查询
@@ -192,56 +179,10 @@ export function useMutations<T, C, U, D = number, TError = Error>({
         reset: () => {}
       }
 
-  // 上传
-  const upload = uploadFn
-    ? useMutation({
-        mutationFn: (file: UniApp.UploadFileOption) => uploadFn(file),
-        onSuccess: () => {
-          invalidateQueries()
-          restOptions.uploadSuccess?.()
-        },
-        onError: restOptions.uploadError,
-        ...restOptions
-      })
-    : {
-        mutate: () => {},
-        mutateAsync: () => Promise.resolve({} as any),
-        isPending: ref(false),
-        isSuccess: ref(false),
-        isError: ref(false),
-        data: ref(undefined),
-        error: ref(null),
-        reset: () => {}
-      }
-
-  // 下载
-  const download = downloadFn
-    ? useMutation({
-        mutationFn: (params: UniApp.DownloadFileOption) => downloadFn(params),
-        onSuccess: () => {
-          invalidateQueries()
-          restOptions.downloadSuccess?.()
-        },
-        onError: restOptions.downloadError,
-        ...restOptions
-      })
-    : {
-        mutate: () => {},
-        mutateAsync: () => Promise.resolve({} as any),
-        isPending: ref(false),
-        isSuccess: ref(false),
-        isError: ref(false),
-        data: ref(undefined),
-        error: ref(null),
-        reset: () => {}
-      }
-
   return {
     create,
     update,
-    remove,
-    upload,
-    download
+    remove
   }
 }
 
