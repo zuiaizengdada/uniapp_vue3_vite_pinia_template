@@ -2,7 +2,7 @@ import type { UseMutationOptions, UseInfiniteQueryOptions, UseQueryOptions } fro
 import type { Data } from '@/apis/request/type'
 import type { PageData } from '@/apis/modules/type'
 import type { InfiniteData } from '@tanstack/vue-query'
-
+import type { ShallowRef, Ref } from 'vue'
 type MutationFunction<T, P> = (params: P) => Promise<Data<T>>
 
 export interface MutationOptions<T, C, U, D = number> {
@@ -95,4 +95,32 @@ export interface OptimisticMutationOptions<P> {
   onMutate?: (data: P) => any
   onError?: (error: any, data: P, context: any) => void
   onSuccess?: (data: any, variables: P, context: any) => void
+}
+
+export interface UseUploadFileReturn<T> {
+  task: ShallowRef<UniApp.UploadTask | undefined>
+  response: ShallowRef<UniApp.UploadFileSuccessCallbackResult | undefined>
+  data: Ref<T | undefined> | ShallowRef<T | undefined>
+  error: ShallowRef<UniApp.GeneralCallbackResult | undefined>
+  progress: Ref<number>
+  isFinished: Ref<boolean>
+  isLoading: Ref<boolean>
+  isAborted: Ref<boolean>
+  isCanceled: Ref<boolean>
+  isPaused: Ref<boolean>
+  execute: (config?: Partial<UniApp.UploadFileOption>) => PromiseLike<UseUploadFileReturn<T>>
+  pause: () => void
+  resume: () => void
+  cancel: (message?: string) => void
+  abort: (message?: string) => void
+}
+
+export interface UseUploadFileOptions<T = any> {
+  initialData?: T
+  shallow?: boolean
+  immediate?: boolean
+  resetOnExecute?: boolean
+  onSuccess?: (data: T) => void
+  onError?: (err: UniApp.GeneralCallbackResult) => void
+  onFinish?: (res: any) => void
 }
