@@ -1,7 +1,7 @@
 import type { UniStorageMethods } from '../type'
 
-class UniStorage implements UniStorageMethods {
-  get(key: string): any {
+export function useUniStorage(): UniStorageMethods {
+  const get = (key: string): any => {
     const keys = key.split('.')
     let value: any = uni.getStorageSync(keys[0])
     for (let i = 1; i < keys.length; i++) {
@@ -13,23 +13,19 @@ class UniStorage implements UniStorageMethods {
     return value
   }
 
-  getSync(key: string): any {
+  const getSync = (key: string): any => {
     const keys = key.split('.')
-
     let value: any = uni.getStorageSync(keys[0])
-
     for (let i = 1; i < keys.length; i++) {
       if (!value || typeof JSON.parse(value) !== 'object') {
         return undefined
       }
-
       value = JSON.parse(value)[keys[i]]
     }
-
     return value
   }
 
-  set(params: { key: string; data: any; success?: () => void; fail?: (error: Error) => void }): void {
+  const set = (params: { key: string; data: any; success?: () => void; fail?: (error: Error) => void }): void => {
     const keys = params.key.split('.')
     const obj: any = {}
     let temp = obj
@@ -53,7 +49,7 @@ class UniStorage implements UniStorageMethods {
     })
   }
 
-  setSync(key: string, data: any): void {
+  const setSync = (key: string, data: any): void => {
     const keys = key.split('.')
     const obj: any = {}
     let temp = obj
@@ -70,21 +66,30 @@ class UniStorage implements UniStorageMethods {
     }
   }
 
-  remove(key: string): void {
+  const remove = (key: string): void => {
     uni.removeStorage({ key })
   }
 
-  removeSync(key: string): void {
+  const removeSync = (key: string): void => {
     uni.removeStorageSync(key)
   }
 
-  clear(): void {
+  const clear = (): void => {
     uni.clearStorage()
   }
 
-  clearSync(): void {
+  const clearSync = (): void => {
     uni.clearStorageSync()
   }
-}
 
-export const uniStorage = new UniStorage()
+  return {
+    get,
+    getSync,
+    set,
+    setSync,
+    remove,
+    removeSync,
+    clear,
+    clearSync
+  }
+}

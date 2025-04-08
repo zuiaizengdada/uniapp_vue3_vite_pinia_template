@@ -19,7 +19,7 @@ const posts = mock({
 }).data as Post[]
 
 interface Response {
-  body: Record<string, any> | null
+  body: Record<string, any> | null | string
   headers: any
   type: HttpMethods
   url: string
@@ -27,7 +27,7 @@ interface Response {
 
 // 获取文章数据（支持分页和模糊查询）
 mock('/posts', 'GET', (res: Response) => {
-  const { page = 1, pageSize = 10, title } = res.body || {}
+  const { page = 1, pageSize = 10, title } = (res.body as Record<string, any>) || {}
 
   // 过滤数据
   let filteredPosts = [...posts]
@@ -75,9 +75,15 @@ mock('/post/:id', 'PUT', (res: Response) => {
   const id = parseInt(res.url.match(/\/post\/(\d+)/)![1])
   const post = posts.find((post) => post.id === id)
   if (post) {
-    const { title, content } = res.body!
-    post.title = title
-    post.content = content
+    if (typeof res.body === 'string') {
+      const { title, content } = JSON.parse(res.body)
+      post.title = title
+      post.content = content
+    } else {
+      const { title, content } = res.body!
+      post.title = title
+      post.content = content
+    }
     return {
       code: 1,
       message: 'success',

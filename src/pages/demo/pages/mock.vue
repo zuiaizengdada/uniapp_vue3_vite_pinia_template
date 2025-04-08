@@ -184,7 +184,7 @@ onMounted(() => {
         <view class="space-y-4">
           <view>
             <view class="mb-1 text-sm text-gray-600">标题</view>
-            <input type="text" v-model="editForm.title" class="px-3 py-2 w-full rounded-md border" />
+            <input type="text" v-model="editForm.title" class="px-3 py-2 w-full h-full rounded-md border" />
           </view>
           <view>
             <view class="mb-1 text-sm text-gray-600">内容</view>

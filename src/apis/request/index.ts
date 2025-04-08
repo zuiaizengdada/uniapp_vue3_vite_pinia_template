@@ -1,13 +1,15 @@
 import { HttpMethods, HttpStatusCode } from '@/common/constants'
 import { BASE_URL, TIME_OUT } from '../request/config'
 import { usePlatform } from '@/common/hooks'
-import { router, uniStorage } from '@/utils'
+import { useRouter, useUniStorage } from '@/common/hooks'
 import i18n from '@/locale'
 import type { RequestConfig, Data, CustomConfig } from './type'
 
 const t = i18n.global.t
 
 const { isProduction } = usePlatform()
+const { navigateTo } = useRouter()
+const { getSync } = useUniStorage()
 
 const defaultRequestConfig: RequestConfig = {
   baseURL: BASE_URL,
@@ -44,7 +46,7 @@ class ApiService {
 
     if (options.enabled) {
       if (options.AccessTokenKey) {
-        options.header[options.AccessTokenKey] = uniStorage.getSync(options.tokenStoragePath!)
+        options.header[options.AccessTokenKey] = getSync(options.tokenStoragePath!)
       }
     }
   }
@@ -58,7 +60,7 @@ class ApiService {
             resolve(res.data as Data<T>)
           } else if (res.statusCode === HttpStatusCode.Unauthorized) {
             // 重定向到登录页
-            router.redirectTo('/pages/login/index')
+            navigateTo('/pages/login/index')
 
             uni.showToast({
               icon: 'none',

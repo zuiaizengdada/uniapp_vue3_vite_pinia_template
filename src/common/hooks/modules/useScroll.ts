@@ -1,5 +1,5 @@
 import { type ComponentInternalInstance } from 'vue'
-import { selectorQueryClientRect } from '@/utils'
+import { useSelectorQuery } from '..'
 
 export function useScroll(instance: ComponentInternalInstance) {
   const scrollTop = ref<number | null>(0)
@@ -25,7 +25,7 @@ export function useScroll(instance: ComponentInternalInstance) {
   async function scrollToBottom(scrollViewEl: string, scrollContentEl: string, scrollAnimation: boolean = true) {
     setScrollWithAnimation(scrollAnimation)
 
-    const [{ height: scrollViewHeight }, { height: scrollContentHeight }] = (await selectorQueryClientRect([scrollViewEl, scrollContentEl], instance)) as UniApp.NodeInfo[]
+    const [{ height: scrollViewHeight }, { height: scrollContentHeight }] = (await useSelectorQuery([scrollViewEl, scrollContentEl], instance)) as UniApp.NodeInfo[]
 
     if (scrollContentHeight! > scrollViewHeight!) {
       scrollTop.value = scrollContentHeight! - scrollViewHeight!

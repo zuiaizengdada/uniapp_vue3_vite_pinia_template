@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { router } from '@/utils'
+import { useRouter } from '@/common/hooks'
 import { usePlatform } from '@/common/hooks'
 
 const { isH5 } = usePlatform()
 
-const { navigateTo } = router
+const { navigateTo } = useRouter()
 
 const list = [
   {
