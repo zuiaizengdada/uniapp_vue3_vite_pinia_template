@@ -11,6 +11,6 @@ pnpm-lock.yaml
 /public/*
 
 /src/types/*.d.ts
-/src/utils/modules/pinia-auto-refs.ts
+/src/common/plugins/modules/pinia-auto-refs.ts
 /src/uni_modules/*
 package.json
