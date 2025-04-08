@@ -11,14 +11,12 @@ import userStore from '@/store/user'
 import store from '@/store'
 
 type StoreToRefs<T extends StoreDefinition> = {
-  [K in keyof ReturnType<T>]: ReturnType<T>[K] extends Function
-    ? ReturnType<T>[K]
-    : ToRef<UnwrapRef<ReturnType<T>[K]>>
+  [K in keyof ReturnType<T>]: ReturnType<T>[K] extends Function ? ReturnType<T>[K] : ToRef<UnwrapRef<ReturnType<T>[K]>>
 }
 
 const storeExports = {
   system: systemStore,
-  user: userStore,
+  user: userStore
 }
 
 export function useStore<T extends keyof typeof storeExports>(storeName: T) {
