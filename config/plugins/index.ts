@@ -35,7 +35,7 @@ export const createPlugins = (mode: string): PluginOption[] => {
       dts: 'src/types/auto-import.d.ts'
     }),
     PiniaAutoRefs({
-      outputFile: 'src/utils/modules/pinia-auto-refs.ts'
+      outputFile: 'src/common/plugins/modules/pinia-auto-refs.ts'
     }),
     uniPolyfill()
   ]
