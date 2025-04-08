@@ -1,9 +1,18 @@
 <template>
   <view class="container">
-    <button @click="selectImage">选择图片上传</button>
+    <button @tap="uploadFile({ type: 'image' })">选择图片上传</button>
+    <button @tap="uploadFile({ type: 'video' })">选择视频上传</button>
+    <button @tap="uploadFile({ type: 'file' })">选择文件上传</button>
 
     <view v-if="filePath" style="margin-top: 20rpx">
-      <image :src="filePath" style="width: 200rpx; height: 200rpx" mode="aspectFill" />
+      <image v-if="fileType === 'image'" :src="filePath" mode="aspectFill" />
+      <video v-else-if="fileType === 'video'" :src="filePath" controls></video>
+      <view v-else-if="fileType === 'file'" style="display: flex; align-items: center">
+        <image src="/static/icon/file.png" style="width: 80rpx; height: 80rpx; margin-right: 20rpx" />
+        <view>
+          <text>{{ filePath.split('/').pop() }}</text>
+        </view>
+      </view>
     </view>
 
     <view v-if="isLoading" style="margin-top: 20rpx">
@@ -23,40 +32,16 @@
 
 <script setup lang="ts">
 import { useUploadFile } from '@/common/hooks'
-const filePath = ref<string>('')
 
-const { execute, isLoading, data, error, progress } = useUploadFile<string>(
+const { uploadFile, isLoading, data, error, progress, fileType, filePath } = useUploadFile<string>(
   'https://httpbin.org/post',
   {
     name: 'file'
   },
   {
-    immediate: false,
-    onSuccess: (res: any) => {
-      console.log('上传成功', res)
-    },
-    onError: (err: any) => {
-      console.log('上传失败', err)
-    }
+    immediate: false
   }
 )
-
-// 选择图片
-const selectImage = () => {
-  uni.chooseImage({
-    count: 1,
-    success(res) {
-      filePath.value = res.tempFilePaths[0]
-      // 开始上传
-      execute({
-        filePath: filePath.value
-      })
-    },
-    fail(err) {
-      console.error('选择图片失败', err)
-    }
-  })
-}
 </script>
 
 <style scoped>

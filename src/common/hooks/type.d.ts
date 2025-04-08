@@ -103,6 +103,8 @@ export interface UseUploadFileReturn<T> {
   data: Ref<T | undefined> | ShallowRef<T | undefined>
   error: ShallowRef<UniApp.GeneralCallbackResult | undefined>
   progress: Ref<number>
+  filePath: Ref<string | undefined>
+  fileType: Ref<'image' | 'video' | 'file'>
   isFinished: Ref<boolean>
   isLoading: Ref<boolean>
   isAborted: Ref<boolean>
@@ -113,6 +115,13 @@ export interface UseUploadFileReturn<T> {
   resume: () => void
   cancel: (message?: string) => void
   abort: (message?: string) => void
+}
+
+export interface UploadFileOptions extends Partial<UniApp.ChooseImageOptions & UniApp.ChooseVideoOptions & UniApp.ChooseFileOptions> {
+  type?: 'image' | 'video' | 'file'
+  success?: (res: any) => void
+  fail?: (err: any) => void
+  complete?: (res: any) => void
 }
 
 export interface UseUploadFileOptions<T = any> {
