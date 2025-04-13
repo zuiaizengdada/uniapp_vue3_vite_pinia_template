@@ -3,13 +3,19 @@ import { useAppHeaderStyles } from './hooks'
 import type { AppHeaderEmits, AppHeaderSlots, AppHeaderProps } from './type'
 
 const props = withDefaults(defineProps<AppHeaderProps>(), {
-  backgroundColor: 'red',
+  backgroundColor: 'transparent',
   keepStatusBarBgColor: false,
   showLeft: false,
   showCenter: true,
   showRight: false,
   safeAreaInsetTop: true,
-  customStyle: () => ({})
+  centerText: '标题',
+  leftIcon: '',
+  rightIcon: '',
+  customStyle: () => ({}),
+  centerStyle: () => ({}),
+  rightStyle: () => ({}),
+  leftStyle: () => ({})
 })
 
 const emits = defineEmits<AppHeaderEmits>()
@@ -29,21 +35,23 @@ const { statusBarBoxStyle, menuButtonBoxStyle } = useAppHeaderStyles(props)
       <!-- 左边插槽 -->
       <view v-if="showLeft" class="flex-grow-0 flex-shrink-1 basis-auto">
         <slot name="left">
-          <text @click="emits('leftClick')">返回</text>
+          <text v-if="leftIcon" class="iconfont" :class="leftIcon" @click="emits('leftClick')" :style="props.leftStyle"></text>
+          <text v-else @click="emits('leftClick')" :style="props.leftStyle">返回</text>
         </slot>
       </view>
 
       <!-- 中间插槽 -->
       <view v-if="showCenter" class="absolute left-1/2 -translate-x-1/2">
         <slot name="center">
-          <text @click="emits('centerClick')">标题</text>
+          <text @click="emits('centerClick')" :style="props.centerStyle">{{ props.centerText }}</text>
         </slot>
       </view>
 
       <!-- 右边插槽 -->
       <view v-if="showRight" class="flex-grow-0 flex-shrink-1 basis-auto">
         <slot name="right">
-          <text @click="emits('rightClick')">更多</text>
+          <text v-if="rightIcon" class="iconfont" :class="rightIcon" @click="emits('rightClick')" :style="props.rightStyle"></text>
+          <text v-else @click="emits('rightClick')" :style="props.rightStyle">更多</text>
         </slot>
       </view>
     </view>

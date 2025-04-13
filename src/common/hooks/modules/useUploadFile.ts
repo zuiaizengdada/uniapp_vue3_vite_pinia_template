@@ -6,7 +6,7 @@ export function useUploadFile<T = any>(
   url?: string,
   defaultConfig: Partial<UniApp.UploadFileOption> = {},
   options: UseUploadFileOptions<T> = {}
-): UseUploadFileReturn<T> & PromiseLike<UseUploadFileReturn<T>> & { uploadFile: (options: UploadFileOptions) => void } {
+): UseUploadFileReturn<T> & PromiseLike<UseUploadFileReturn<T>> & { uploadFile: (options: UploadFileOptions) => Promise<{ filePath: string; fileType: 'image' | 'video' | 'file' }> } {
   // 解构配置
   const { initialData, shallow = true, immediate = !!url, resetOnExecute = false, onSuccess = () => {}, onError = () => {}, onFinish = () => {} } = options
 
@@ -164,44 +164,54 @@ export function useUploadFile<T = any>(
   }
 
   const uploadFile = (options: UploadFileOptions) => {
-    const { type = 'image', count = 1, success, fail, complete, ...rest } = options
-    console.log('开始选择文件，类型:', type)
+    return new Promise<{ filePath: string; fileType: 'image' | 'video' | 'file' }>((resolve, reject) => {
+      const { type = 'image', count = 1, success, fail, complete, ...rest } = options
+      console.log('开始选择文件，类型:', type)
 
-    const chooseMethod = type === 'image' ? uni.chooseImage : type === 'video' ? uni.chooseVideo : uni.chooseFile
-    console.log('使用的选择方法:', chooseMethod)
+      const chooseMethod = type === 'image' ? uni.chooseImage : type === 'video' ? uni.chooseVideo : uni.chooseFile
+      console.log('使用的选择方法:', chooseMethod)
 
-    chooseMethod({
-      count,
-      ...rest,
-      success: (res: UniApp.ChooseImageSuccessCallbackResult | UniApp.ChooseVideoSuccess | UniApp.ChooseFileSuccessCallbackResult) => {
-        console.log('文件选择成功:', res)
-        success?.(res)
-        const filePath = (res as UniApp.ChooseImageSuccessCallbackResult).tempFilePaths?.[0] || (res as UniApp.ChooseVideoSuccess).tempFilePath
-        if (!filePath) {
-          console.warn('未获取到有效文件路径')
-          fail?.({ errMsg: '未获取到有效文件路径' })
-          return
-        }
-        console.log('选择的文件路径:', filePath)
-        result.filePath.value = filePath
-        result.fileType.value = type
-        execute({
-          filePath,
-          success: () => {},
-          fail: (e) => {
-            console.error('上传失败:', e)
-            fail?.(e)
-          },
-          complete: (r) => {
-            console.log('上传完成:', r)
-            complete?.(r)
+      chooseMethod({
+        count,
+        ...rest,
+        success: (res: UniApp.ChooseImageSuccessCallbackResult | UniApp.ChooseVideoSuccess | UniApp.ChooseFileSuccessCallbackResult) => {
+          console.log('文件选择成功:', res)
+          success?.(res)
+          const filePath = (res as UniApp.ChooseImageSuccessCallbackResult).tempFilePaths?.[0] || (res as UniApp.ChooseVideoSuccess).tempFilePath
+          if (!filePath) {
+            console.warn('未获取到有效文件路径')
+            const error = { errMsg: '未获取到有效文件路径' }
+            fail?.(error)
+            reject(error)
+            return
           }
-        })
-      },
-      fail: (err) => {
-        console.error('文件选择失败:', err)
-        fail?.(err)
-      }
+          console.log('选择的文件路径:', filePath)
+          result.filePath.value = filePath
+          result.fileType.value = type
+
+          // 立即解析 Promise，返回文件信息
+          resolve({ filePath, fileType: type })
+
+          // 继续执行上传
+          execute({
+            filePath,
+            success: () => {},
+            fail: (e) => {
+              console.error('上传失败:', e)
+              fail?.(e)
+            },
+            complete: (r) => {
+              console.log('上传完成:', r)
+              complete?.(r)
+            }
+          })
+        },
+        fail: (err) => {
+          console.error('文件选择失败:', err)
+          fail?.(err)
+          reject(err)
+        }
+      })
     })
   }
 

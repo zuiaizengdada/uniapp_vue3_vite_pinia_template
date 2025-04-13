@@ -8,6 +8,12 @@ export interface AppHeaderProps {
   showRight?: boolean
   customStyle?: CSSProperties
   safeAreaInsetTop?: boolean
+  centerText?: string
+  leftIcon?: string
+  rightIcon?: string
+  centerStyle?: CSSProperties
+  leftStyle?: CSSProperties
+  rightStyle?: CSSProperties
 }
 
 export interface AppHeaderEmits {
