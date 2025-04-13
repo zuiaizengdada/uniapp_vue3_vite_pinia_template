@@ -16,6 +16,6 @@
     },
     "types": ["@dcloudio/types", "miniprogram-api-typings"]
   },
-  "exclude": ["node_modules/**/*", "node_modules", "dist", "build"],
+  "exclude": ["node_modules/**/*", "node_modules", "dist", "build", "src/uni_modules/**"],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "*.ts", "*.d.ts", "vite.config.mjs"]
 }

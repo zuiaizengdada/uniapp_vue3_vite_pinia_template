@@ -6,7 +6,14 @@ export function useUploadFile<T = any>(
   url?: string,
   defaultConfig: Partial<UniApp.UploadFileOption> = {},
   options: UseUploadFileOptions<T> = {}
-): UseUploadFileReturn<T> & PromiseLike<UseUploadFileReturn<T>> & { uploadFile: (options: UploadFileOptions) => Promise<{ filePath: string; fileType: 'image' | 'video' | 'file' }> } {
+): UseUploadFileReturn<T> &
+  PromiseLike<UseUploadFileReturn<T>> & {
+    uploadFile: (options: UploadFileOptions) => Promise<{
+      filePath?: string
+      filePaths?: string[]
+      fileType: 'image' | 'video' | 'file'
+    }>
+  } {
   // 解构配置
   const { initialData, shallow = true, immediate = !!url, resetOnExecute = false, onSuccess = () => {}, onError = () => {}, onFinish = () => {} } = options
 
@@ -17,6 +24,7 @@ export function useUploadFile<T = any>(
   const error = shallowRef<UniApp.GeneralCallbackResult>()
   const progress = ref(0)
   const filePath = ref<string | undefined>()
+  const filePaths = ref<string[]>([])
   const fileType = ref<'image' | 'video' | 'file'>()
 
   // 状态标志
@@ -145,6 +153,7 @@ export function useUploadFile<T = any>(
     error,
     progress,
     filePath,
+    filePaths,
     fileType,
     isFinished,
     isLoading,
@@ -164,37 +173,101 @@ export function useUploadFile<T = any>(
   }
 
   const uploadFile = (options: UploadFileOptions) => {
-    return new Promise<{ filePath: string; fileType: 'image' | 'video' | 'file' }>((resolve, reject) => {
-      const { type = 'image', count = 1, success, fail, complete, ...rest } = options
+    return new Promise<{ filePath?: string; filePaths?: string[]; fileType: 'image' | 'video' | 'file' }>((resolve, reject) => {
+      const { type = 'image', count = 1, success, fail, complete, fileLimit, ...rest } = options
       console.log('开始选择文件，类型:', type)
 
       const chooseMethod = type === 'image' ? uni.chooseImage : type === 'video' ? uni.chooseVideo : uni.chooseFile
       console.log('使用的选择方法:', chooseMethod)
 
+      // 检查文件大小和类型的函数
+      const checkFile = (filePath: string): Promise<void> => {
+        return new Promise((resolve, reject) => {
+          uni.getFileInfo({
+            filePath,
+            success: (res) => {
+              // 检查文件大小
+              if (fileLimit?.maxSize && res.size > fileLimit.maxSize) {
+                reject(new Error(`文件大小不能超过${fileLimit.maxSize / (1024 * 1024)}MB`))
+                return
+              }
+
+              // 检查文件类型
+              if (fileLimit?.allowedExtensions?.length) {
+                const fileExt = filePath.substring(filePath.lastIndexOf('.')).toLowerCase()
+                if (!fileLimit.allowedExtensions.includes(fileExt)) {
+                  reject(new Error(`只支持${fileLimit.allowedExtensions.join('、')}格式的文件`))
+                  return
+                }
+              }
+
+              resolve()
+            },
+            fail: (err) => {
+              reject(err)
+            }
+          })
+        })
+      }
+
       chooseMethod({
         count,
         ...rest,
-        success: (res: UniApp.ChooseImageSuccessCallbackResult | UniApp.ChooseVideoSuccess | UniApp.ChooseFileSuccessCallbackResult) => {
+        success: async (res: UniApp.ChooseImageSuccessCallbackResult | UniApp.ChooseVideoSuccess | UniApp.ChooseFileSuccessCallbackResult) => {
           console.log('文件选择成功:', res)
           success?.(res)
-          const filePath = (res as UniApp.ChooseImageSuccessCallbackResult).tempFilePaths?.[0] || (res as UniApp.ChooseVideoSuccess).tempFilePath
-          if (!filePath) {
+
+          // 处理文件路径
+          let filePaths: string[] = []
+          if (type === 'image') {
+            const tempPaths = (res as UniApp.ChooseImageSuccessCallbackResult).tempFilePaths
+            if (tempPaths && Array.isArray(tempPaths)) filePaths = tempPaths
+          } else if (type === 'video') {
+            const videoPath = (res as UniApp.ChooseVideoSuccess).tempFilePath
+            if (videoPath) filePaths = [videoPath]
+          } else {
+            const tempPaths = (res as UniApp.ChooseFileSuccessCallbackResult).tempFilePaths
+            if (tempPaths && Array.isArray(tempPaths)) filePaths = tempPaths
+          }
+
+          if (filePaths.length === 0) {
             console.warn('未获取到有效文件路径')
             const error = { errMsg: '未获取到有效文件路径' }
             fail?.(error)
             reject(error)
             return
           }
-          console.log('选择的文件路径:', filePath)
-          result.filePath.value = filePath
+
+          try {
+            // 检查每个文件
+            for (const filePath of filePaths) {
+              await checkFile(filePath)
+            }
+          } catch (error) {
+            console.error('文件检查失败:', error)
+            fail?.(error)
+            reject(error)
+            return
+          }
+
+          console.log('选择的文件路径:', filePaths)
+          result.filePath.value = count === 1 ? filePaths[0] : undefined
+          result.filePaths.value = filePaths
           result.fileType.value = type
 
+          // 根据count返回单个或多个文件路径
+          const resultData = {
+            filePath: count === 1 ? filePaths[0] : undefined,
+            filePaths: count > 1 ? filePaths : undefined,
+            fileType: type
+          }
+
           // 立即解析 Promise，返回文件信息
-          resolve({ filePath, fileType: type })
+          resolve(resultData)
 
           // 继续执行上传
           execute({
-            filePath,
+            filePath: count === 1 ? filePaths[0] : undefined,
             success: () => {},
             fail: (e) => {
               console.error('上传失败:', e)

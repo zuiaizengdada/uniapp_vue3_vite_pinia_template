@@ -104,6 +104,7 @@ export interface UseUploadFileReturn<T> {
   error: ShallowRef<UniApp.GeneralCallbackResult | undefined>
   progress: Ref<number>
   filePath: Ref<string | undefined>
+  filePaths: Ref<string[]>
   fileType: Ref<'image' | 'video' | 'file'>
   isFinished: Ref<boolean>
   isLoading: Ref<boolean>
@@ -122,6 +123,10 @@ export interface UploadFileOptions extends Partial<UniApp.ChooseImageOptions & U
   success?: (res: any) => void
   fail?: (err: any) => void
   complete?: (res: any) => void
+  fileLimit?: {
+    allowedExtensions?: string[]
+    maxSize?: number
+  }
 }
 
 export interface UseUploadFileOptions<T = any> {

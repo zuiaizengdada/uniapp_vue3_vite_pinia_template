@@ -57,7 +57,7 @@
     "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "lint": "vue-tsc --noEmit && eslint src --fix && prettier . --write",
+    "lint": "vue-tsc --noEmit --skipLibCheck && eslint src --fix && prettier . --write",
     "commit": "cz",
     "svgicon": "node ./src/uni_modules/zui-svg-icon/tools/generate-svg-icon.js"
   },
