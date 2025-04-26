@@ -647,7 +647,7 @@ declare global {
   const useStorage: typeof import('@uni-helper/uni-use')['useStorage']
   const useStorageAsync: typeof import('@uni-helper/uni-use')['useStorageAsync']
   const useStorageSync: typeof import('@uni-helper/uni-use')['useStorageSync']
-  const useStore: typeof import('@/utils/modules/pinia-auto-refs')['useStore']
+  const useStore: typeof import('@/common/plugins/modules/pinia-auto-refs')['useStore']
   const useStyleTag: typeof import('@vueuse/core')['useStyleTag']
   const useSupported: typeof import('@vueuse/core')['useSupported']
   const useSwipe: typeof import('@vueuse/core')['useSwipe']

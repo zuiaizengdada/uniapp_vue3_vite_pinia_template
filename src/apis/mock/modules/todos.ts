@@ -8,7 +8,7 @@ import { mock as mockMP } from 'better-mock/dist/mock.mp'
 import { HttpMethods } from '@/common/constants'
 import { usePlatform } from '@/common/hooks'
 
-import type { PageData, Todo } from '@/apis/modules/type'
+import type { PageData, TodoItem } from '@/apis/modules/type'
 
 const { isH5 } = usePlatform()
 
@@ -55,7 +55,7 @@ const todos = mock({
       completed: '@boolean'
     }
   ]
-}).data as Todo[]
+}).data as TodoItem[]
 
 interface Response {
   body: Record<string, any> | null
@@ -99,7 +99,7 @@ mock('/todos', 'GET', (res: Response) => {
   // 计算分页数据
   const start = (page - 1) * pageSize
   const end = start + pageSize
-  const pageData: PageData<Todo> = {
+  const pageData: PageData<TodoItem> = {
     list: filteredTodos.slice(start, end),
     total: filteredTodos.length,
     page,
@@ -126,7 +126,7 @@ mock('/todo/:id', 'GET', (res: Response) => {
   } else {
     return {
       code: 0,
-      message: 'Todo not found'
+      message: 'TodoItem not found'
     }
   }
 })
@@ -154,7 +154,7 @@ mock('/todo/:id', 'PUT', (res: Response) => {
   } else {
     return {
       code: 0,
-      message: 'Todo not found'
+      message: 'TodoItem not found'
     }
   }
 })
@@ -173,7 +173,7 @@ mock('/todo/:id', 'DELETE', (res: Response) => {
   } else {
     return {
       code: 0,
-      message: 'Todo not found'
+      message: 'TodoItem not found'
     }
   }
 })

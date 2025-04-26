@@ -1,77 +1,98 @@
 <script setup lang="ts">
 import { getTodos, createTodo, updateTodo, deleteTodo } from '@/apis'
-import { useListQuery, useMutations, usePlatform } from '@/common/hooks'
-import type { PageData, Todo, TodoSearchParams } from '@/apis/modules/type'
+import { usePlatform } from '@/common/hooks'
+import type { PageData, TodoItem } from '@/apis/modules/type'
 import { type Data } from '@/apis/request/type'
 
 const { isH5 } = usePlatform()
 
+// --- 基础状态
+const newTodo = ref('')
+const editingTodo = ref<TodoItem | null>(null)
+const editPopup = ref()
+
+const queryClient = useQueryClient()
+
 const {
-  list: todoList,
-  finished,
-  loading,
-  loadMore,
-  refresh
-} = useListQuery<Todo, TodoSearchParams>({
+  data: todoList,
+  fetchNextPage,
+  refetch,
+  isFetched,
+  isFetching
+} = useInfiniteQuery({
   queryKey: ['todos'],
-  queryFn: (params) => getTodos(params) as Promise<Data<PageData<Todo>>>,
-  defaultParams: {
-    page: 1,
-    pageSize: 10
-  }
+  queryFn: ({ pageParam = 1 }) => getTodos({ page: pageParam, pageSize: 10 }) as Promise<Data<PageData<TodoItem>>>,
+  getNextPageParam: (lastPage) => {
+    const pageData = lastPage.data
+    if (pageData.list.length < pageData.pageSize) return undefined
+    if (pageData.page * pageData.pageSize >= pageData.total) return undefined
+    return pageData.page + 1
+  },
+  initialPageParam: 1,
+  select: (data) => data.pages.flatMap((page) => page.data.list)
 })
 
-const newTodo = ref('')
-const editPopup = ref()
-const editingTodo = ref<Todo | null>(null)
-
-const {
-  create: { mutate: createTodoMutation },
-  update: { mutate: updateTodoMutation },
-  remove: { mutate: deleteTodoMutation }
-} = useMutations<Todo, Todo, { id: number; data: Todo }, number>({
-  createFn: createTodo,
-  updateFn: ({ id, data }) => updateTodo(id, data),
-  deleteFn: deleteTodo,
-  invalidateQueryKeys: [['todos']],
-  createSuccess: () => {
+// --- 添加待办
+const { mutate: createTodoMutation } = useMutation({
+  mutationFn: async (payload: { title: string }) => {
+    if (!payload.title.trim()) throw new Error('请输入内容')
+    return await createTodo({ id: 1, userId: 1, title: payload.title, completed: false })
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['todos'] })
     newTodo.value = ''
   }
 })
 
-// 切换待办状态
-function toggleTodo(todo: Todo) {
-  updateTodoMutation({
-    id: todo.id,
-    data: {
-      ...todo,
-      completed: !todo.completed
-    }
-  })
+// --- 删除待办
+const { mutate: deleteTodoMutation } = useMutation({
+  mutationFn: async (id: number) => {
+    return await deleteTodo(id)
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['todos'] })
+  }
+})
+
+// --- 更新待办
+const { mutate: updateTodoMutation } = useMutation({
+  mutationFn: async (todo: TodoItem) => {
+    return await updateTodo(todo.id, todo)
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['todos'] })
+    editPopup.value.close()
+    editingTodo.value = null
+  }
+})
+
+// --- 切换待办完成状态
+const toggleTodo = (todo: TodoItem) => {
+  updateTodoMutation({ ...todo, completed: !todo.completed })
 }
 
-// 开始编辑
-function startEdit(todo: Todo) {
+// --- 编辑待办
+const startEdit = (todo: TodoItem) => {
   editingTodo.value = { ...todo }
   editPopup.value.open()
 }
 
-// 取消编辑
-function cancelEdit() {
+// --- 取消编辑
+const cancelEdit = () => {
   editingTodo.value = null
   editPopup.value.close()
 }
 
-// 确认编辑
-function confirmEdit() {
-  if (!editingTodo.value) return
-  updateTodoMutation({
-    id: editingTodo.value.id,
-    data: {
-      ...editingTodo.value
-    }
-  })
-  editPopup.value.close()
+// --- 确认编辑
+const confirmEdit = () => {
+  if (editingTodo.value) {
+    updateTodoMutation(editingTodo.value)
+  }
+}
+
+function scrolltoupper() {
+  console.log('scrolltoupper')
+  refetch()
 }
 </script>
 
@@ -99,7 +120,7 @@ function confirmEdit() {
       </view>
     </view>
 
-    <scroll-view scroll-y class="overflow-hidden flex-1" :style="{ height: 'calc(100vh - 120px)' }" @scrolltolower="loadMore" @scrolltoupper="refresh">
+    <scroll-view scroll-y class="overflow-hidden flex-1" :style="{ height: 'calc(100vh - 120px)' }" @scrolltolower="fetchNextPage" @scrolltoupper="scrolltoupper">
       <view class="p-4 space-y-3">
         <view v-for="(todo, index) in todoList" :key="index" class="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm">
           <view class="flex gap-3 items-center">
@@ -112,8 +133,8 @@ function confirmEdit() {
         </view>
       </view>
 
-      <view v-if="loading" class="py-4 pt-0 text-center text-gray-500">加载中...</view>
-      <view v-if="finished && !loading" class="py-4 pt-0 text-center text-gray-500">没有更多数据了</view>
+      <view v-if="isFetching" class="py-4 pt-0 text-center text-gray-500">加载中...</view>
+      <view v-if="isFetched && !isFetching" class="py-4 pt-0 text-center text-gray-500">没有更多数据了</view>
     </scroll-view>
 
     <uni-popup ref="editPopup" type="center">

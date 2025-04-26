@@ -21,7 +21,7 @@ export const createPlugins = (mode: string): PluginOption[] => {
         'uni-app',
         'vitest',
         {
-          '@/utils/modules/pinia-auto-refs': ['useStore']
+          '@/common/plugins/modules/pinia-auto-refs': ['useStore']
         },
         '@vueuse/core',
         {

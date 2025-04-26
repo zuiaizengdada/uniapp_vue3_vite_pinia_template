@@ -9,7 +9,7 @@ export interface Post {
   content: string
 }
 
-export interface Todo {
+export interface TodoItem {
   // 待办id
   id: number
   // 用户id
