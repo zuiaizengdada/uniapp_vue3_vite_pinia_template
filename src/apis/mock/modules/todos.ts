@@ -195,7 +195,7 @@ mock('/todo', 'POST', (res: Response) => {
     title,
     completed
   }
-  todos.push(todo)
+  todos.unshift(todo)
   return {
     code: 1,
     message: 'success',
