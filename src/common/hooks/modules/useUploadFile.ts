@@ -1,6 +1,9 @@
 import { ref, shallowRef } from 'vue'
 import { until } from '@vueuse/core'
+import { usePlatform } from '@/common/hooks'
 import type { UseUploadFileOptions, UseUploadFileReturn, UploadFileOptions } from '../type'
+
+const { isMpWeixin } = usePlatform()
 
 export function useUploadFile<T = any>(
   url?: string,
@@ -177,7 +180,18 @@ export function useUploadFile<T = any>(
       const { type = 'image', count = 1, success, fail, complete, fileLimit, ...rest } = options
       console.log('开始选择文件，类型:', type)
 
-      const chooseMethod = type === 'image' ? uni.chooseImage : type === 'video' ? uni.chooseVideo : uni.chooseFile
+      const chooseMethod = computed(() => {
+        switch (type) {
+          case 'image':
+            return uni.chooseImage
+          case 'video':
+            return uni.chooseVideo
+          case 'file':
+            return isMpWeixin ? wx.chooseMessageFile : uni.chooseFile
+          default:
+            throw new Error('不支持的文件类型')
+        }
+      })
       console.log('使用的选择方法:', chooseMethod)
 
       // 检查文件大小和类型的函数
@@ -210,10 +224,12 @@ export function useUploadFile<T = any>(
         })
       }
 
-      chooseMethod({
+      chooseMethod.value({
         count,
         ...rest,
-        success: async (res: UniApp.ChooseImageSuccessCallbackResult | UniApp.ChooseVideoSuccess | UniApp.ChooseFileSuccessCallbackResult) => {
+        success: async (
+          res: UniApp.ChooseImageSuccessCallbackResult | UniApp.ChooseVideoSuccess | UniApp.ChooseFileSuccessCallbackResult | WechatMiniprogram.ChooseMessageFileSuccessCallbackResult
+        ) => {
           console.log('文件选择成功:', res)
           success?.(res)
 
@@ -226,7 +242,9 @@ export function useUploadFile<T = any>(
             const videoPath = (res as UniApp.ChooseVideoSuccess).tempFilePath
             if (videoPath) filePaths = [videoPath]
           } else {
-            const tempPaths = (res as UniApp.ChooseFileSuccessCallbackResult).tempFilePaths
+            const tempPaths = isMpWeixin
+              ? (res as WechatMiniprogram.ChooseMessageFileSuccessCallbackResult).tempFiles.map((file: any) => file.path)
+              : (res as UniApp.ChooseFileSuccessCallbackResult).tempFilePaths
             if (tempPaths && Array.isArray(tempPaths)) filePaths = tempPaths
           }
 
@@ -237,7 +255,6 @@ export function useUploadFile<T = any>(
             reject(error)
             return
           }
-
           try {
             // 检查每个文件
             for (const filePath of filePaths) {

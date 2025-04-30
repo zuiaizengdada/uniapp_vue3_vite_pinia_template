@@ -39,18 +39,12 @@ const {
   select: (data) => data.pages.flatMap((page) => page.data.list)
 })
 
-// --- 处理搜索
+const debouncedSearch = useDebounceFn(() => {
+  refetch()
+}, 300)
 
-function handleSearch() {
-  debounce(() => {
-    refetch()
-  }, 300)
-}
-
-// --- 监听搜索关键词变化
 watch(searchKeyword, () => {
-  console.log(111)
-  handleSearch()
+  debouncedSearch()
 })
 
 // --- 添加待办
