@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import { useUploadFile, usePlatform } from '@/common/hooks'
 
 // Tab状态管理
