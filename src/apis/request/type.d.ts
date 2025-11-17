@@ -14,6 +14,8 @@ export interface TokenConfig {
   AccessTokenKey?: string
   // token path
   tokenStoragePath?: string
+  // refresh token path
+  refreshTokenStoragePath?: string
 }
 
 // mock配置参数
