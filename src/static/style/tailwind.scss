@@ -2,6 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 覆盖 Tailwind base 层对 input/textarea 的重置，确保 iOS 小程序基线稳定 */
+@layer base {
+  input,
+  textarea {
+    /* 确保 padding 不被 Tailwind base 重置 */
+    padding: 2px 4px !important;
+    /* 统一字体度量 */
+    font-size: 28rpx !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    font-variant-numeric: tabular-nums !important;
+    vertical-align: middle !important;
+  }
+
+  /* 针对微信小程序 iOS：进一步抹平数字/字母的基线差异 */
+  /* #ifdef MP-WEIXIN */
+  input,
+  textarea {
+    padding-top: 3rpx !important;
+    padding-bottom: 1rpx !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  /* #endif */
+}
+
 @layer components {
   .flex-c-c {
     @apply flex items-center justify-center;

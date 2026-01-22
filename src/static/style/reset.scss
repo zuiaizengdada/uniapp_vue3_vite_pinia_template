@@ -4,8 +4,38 @@
   margin: 0;
 }
 
+/* 恢复 input 和 textarea 的默认 padding（iOS 小程序需要默认 padding 来保持基线稳定） */
+input,
+textarea {
+  /* 恢复默认 padding（iOS 小程序原生 input 有默认 padding，被 reset 后会导致基线问题） */
+  padding: 2px 4px;
+  margin: 0;
+  /* 统一字体度量，避免 iOS 在不同键盘下切换内部字体导致基线差异 */
+  font-size: 28rpx;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-indent: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* 确保垂直对齐稳定 */
+  vertical-align: middle;
+  /* 统一数字宽度，减少数字/字母间距差异 */
+  font-variant-numeric: tabular-nums;
+}
+
 scroll-view ::-webkit-scrollbar {
   width: 0;
   height: 0;
   background-color: transparent;
 }
+
+/* 针对微信小程序 iOS：进一步抹平数字/字母的基线差异 */
+/* #ifdef MP-WEIXIN */
+input,
+textarea {
+  /* 某些 iOS 机型下 line-height 对 input 内部排版不够"硬"，用 padding-top 微调更稳定 */
+  padding-top: 3rpx;
+  padding-bottom: 1rpx;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+/* #endif */
