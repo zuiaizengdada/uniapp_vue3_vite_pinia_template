@@ -1,6 +1,6 @@
 import { loginByWechatApi, updateUserProfileApi, getUserProfileApi } from '@/apis'
 import { useUniStorage } from '@/common/hooks'
-const { getSync, setSync } = useUniStorage()
+const { getSync } = useUniStorage()
 
 const userStore = defineStore(
   'user',
@@ -30,11 +30,11 @@ const userStore = defineStore(
       userInfo.value = { ...userInfo.value, ...info } as UniApp.UserInfo
     }
 
-    async function loginByWechat(phoneCode?: string) {
+    async function loginByWechat() {
       setLogining(true)
 
       try {
-        // 1. 设置默认用户信息 
+        // 1. 设置默认用户信息
         const defaultUserInfo = {
           nickName: '微信用户',
           avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
@@ -63,7 +63,6 @@ const userStore = defineStore(
           title: '登录成功',
           icon: 'success'
         })
-
       } catch (err: any) {
         console.error('Login failed:', err)
         showToast({
@@ -87,7 +86,7 @@ const userStore = defineStore(
         return
       }
 
-      loginByWechat(e.detail.code)
+      loginByWechat()
     }
 
     // 选择头像回调
@@ -103,18 +102,20 @@ const userStore = defineStore(
       // 同步更新到后端
       updateUserProfileApi({
         avatar: avatarUrl
-      }).then(() => {
-        showToast({
-          title: '头像更新成功',
-          icon: 'success'
-        })
-      }).catch(err => {
-        console.error('Update avatar failed:', err)
-        showToast({
-          title: '头像同步失败',
-          icon: 'none'
-        })
       })
+        .then(() => {
+          showToast({
+            title: '头像更新成功',
+            icon: 'success'
+          })
+        })
+        .catch((err) => {
+          console.error('Update avatar failed:', err)
+          showToast({
+            title: '头像同步失败',
+            icon: 'none'
+          })
+        })
     }
 
     // 昵称输入框失焦/回车回调
@@ -129,18 +130,20 @@ const userStore = defineStore(
         // 同步更新到后端
         updateUserProfileApi({
           nickname: nickName
-        }).then(() => {
-          showToast({
-            title: '昵称更新成功',
-            icon: 'success'
-          })
-        }).catch(err => {
-          console.error('Update nickname failed:', err)
-          showToast({
-            title: '昵称同步失败',
-            icon: 'none'
-          })
         })
+          .then(() => {
+            showToast({
+              title: '昵称更新成功',
+              icon: 'success'
+            })
+          })
+          .catch((err) => {
+            console.error('Update nickname failed:', err)
+            showToast({
+              title: '昵称同步失败',
+              icon: 'none'
+            })
+          })
       }
     }
 

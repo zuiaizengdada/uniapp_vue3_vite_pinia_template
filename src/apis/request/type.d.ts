@@ -23,7 +23,7 @@ export interface MockConfig {
 }
 
 // 自定义配置参数
-export interface CustomConfig extends TokenConfig, MockConfig { }
+export interface CustomConfig extends TokenConfig, MockConfig {}
 
 // 网络请求返回格式
 export interface Data<T> {

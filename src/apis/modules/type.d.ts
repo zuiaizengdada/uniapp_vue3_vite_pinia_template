@@ -59,7 +59,7 @@ export interface LoginByWechatData {
   // 微信登录code
   code: string
   // 类型
-  type?: LoginType = "mini"
+  type?: LoginType
 }
 
 export interface LoginByWechatReturn {
