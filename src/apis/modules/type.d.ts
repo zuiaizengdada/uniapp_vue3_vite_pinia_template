@@ -52,3 +52,34 @@ export interface TodoSearchParams {
   // 是否完成
   completed?: boolean
 }
+
+type LoginType = 'mini' | 'web'
+
+export interface LoginByWechatData {
+  // 微信登录code
+  code: string
+  // 类型
+  type?: LoginType = "mini"
+}
+
+export interface LoginByWechatReturn {
+  // 访问令牌
+  access_token?: string
+  refresh_token?: string
+  user_id?: number
+  user_nicename?: string
+}
+
+export interface UpdateUserProfileData {
+  nickname?: string
+  avatar?: string
+}
+
+export interface UserProfile {
+  id: number | string
+  openid: string
+  nickname: string
+  avatar: string
+  role: string
+  createdAt: string
+}

@@ -65,81 +65,18 @@
       "style": {
         "navigationBarTitleText": "常用hook合集"
       }
+    },
+    {
+      "path": "pages/demo/pages/wechat-login",
+      "style": {
+        "navigationBarTitleText": "微信登录示例"
+      }
     }
-    // {
-    //   "path": "pages/page-container/index",
-    //   "style": {
-    //     "navigationStyle": "custom",
-    //     "enablePullDownRefresh": false,
-    //     "app-plus": {
-    //       "bounce": "none"
-    //     }
-    //   }
-    // }
-    // {
-    //   "path": "pages/index/index",
-    //   "style": {
-    //     "navigationBarTitleText": "首页",
-    //     "enablePullDownRefresh": false,
-    //     "app-plus": {
-    //       "bounce": "none"
-    //     }
-    //   }
-    // },
-    // {
-    //   "path": "pages/websocket/index",
-    //   "style": {
-    //     "navigationBarTitleText": "websocket演示"
-    //   }
-    // },
-    // {
-    //   "path": "pages/mitt/index",
-    //   "style": {
-    //     "navigationBarTitleText": "mitt库演示",
-    //     "enablePullDownRefresh": false,
-    //     "app-plus": {
-    //       "bounce": "none"
-    //     }
-    //   }
-    // },
-    // {
-    //   "path": "pages/scroll/index",
-    //   "style": {
-    //     "navigationBarTitleText": "滚动演示",
-    //     "enablePullDownRefresh": false,
-    //     "app-plus": {
-    //       "bounce": "none"
-    //     }
-    //   }
-    // }
   ],
-  // "tabBar": {
-  //   "color": "#000000",
-  //   "selectedColor": "#000000",
-  //   "backgroundColor": "#ffffff",
-  //   "borderStyle": "black",
-  //   "height": "0",
-  //   "list": [
-  //     {
-  //       "pagePath": "pages/index/index",
-  //       "text": "首页"
-  //     },
-  //     {
-  //       "pagePath": "pages/websocket/index",
-  //       "text": "websocket"
-  //     },
-  //     {
-  //       "pagePath": "pages/mitt/index",
-  //       "text": "mitt"
-  //     },
-  //     {
-  //       "pagePath": "pages/scroll/index",
-  //       "text": "滚动"
-  //     }
-  //   ]
-  // },
   "mp-weixin": {
-    "optimization": { "subPackages": true }
+    "optimization": {
+      "subPackages": true
+    }
   },
   "subPackages": [
     {

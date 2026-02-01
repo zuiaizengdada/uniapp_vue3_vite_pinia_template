@@ -66,6 +66,12 @@ const list = [
     icon: 'Hooks',
     name: '常用hook合集',
     path: '/pages/demo/pages/hooks'
+  },
+  {
+    id: 11,
+    icon: 'Wechat',
+    name: '微信登录示例',
+    path: '/pages/demo/pages/wechat-login'
   }
 ]
 </script>

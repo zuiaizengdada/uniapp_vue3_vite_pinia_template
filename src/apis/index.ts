@@ -1,2 +1,5 @@
+export * from './modules/auth'
+export * from './modules/user'
 export * from './modules/posts'
 export * from './modules/todos'
+export * from './modules/auth'

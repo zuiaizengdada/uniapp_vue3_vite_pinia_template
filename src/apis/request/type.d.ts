@@ -14,8 +14,6 @@ export interface TokenConfig {
   AccessTokenKey?: string
   // token path
   tokenStoragePath?: string
-  // refresh token path
-  refreshTokenStoragePath?: string
 }
 
 // mock配置参数
@@ -25,7 +23,7 @@ export interface MockConfig {
 }
 
 // 自定义配置参数
-export interface CustomConfig extends TokenConfig, MockConfig {}
+export interface CustomConfig extends TokenConfig, MockConfig { }
 
 // 网络请求返回格式
 export interface Data<T> {
@@ -35,10 +33,6 @@ export interface Data<T> {
   data: T
   // 状态描述
   message?: string
-  // 是否成功
-  success?: boolean
   // 时间戳
   timestamp?: number
-  // 分布式链路id
-  traceId?: string
 }
