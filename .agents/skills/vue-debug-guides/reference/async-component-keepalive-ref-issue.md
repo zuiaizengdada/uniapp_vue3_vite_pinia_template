@@ -14,9 +14,7 @@ This is a known Vue issue where the ref binding works correctly on first activat
 <script setup>
 import { ref, defineAsyncComponent } from 'vue'
 
-const AsyncWidget = defineAsyncComponent(() =>
-  import('./Widget.vue')
-)
+const AsyncWidget = defineAsyncComponent(() => import('./Widget.vue'))
 
 const currentComponent = ref(AsyncWidget)
 const widgetRef = ref(null)
@@ -42,9 +40,7 @@ function callWidgetMethod() {
 <script setup>
 import { ref, defineAsyncComponent, onActivated, nextTick } from 'vue'
 
-const AsyncWidget = defineAsyncComponent(() =>
-  import('./Widget.vue')
-)
+const AsyncWidget = defineAsyncComponent(() => import('./Widget.vue'))
 
 const currentComponent = ref(AsyncWidget)
 const widgetRef = ref(null)
@@ -71,7 +67,7 @@ If possible, use one of these alternatives:
 
 <!-- Option B: Use static component with keep-alive -->
 <script setup>
-import Widget from './Widget.vue'  // Regular import
+import Widget from './Widget.vue' // Regular import
 </script>
 <template>
   <keep-alive>
@@ -87,7 +83,9 @@ import Widget from './Widget.vue'  // Regular import
 <script setup>
 import { provide, ref } from 'vue'
 
-const sharedState = ref({ /* shared data */ })
+const sharedState = ref({
+  /* shared data */
+})
 provide('widgetState', sharedState)
 </script>
 

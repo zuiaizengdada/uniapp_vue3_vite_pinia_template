@@ -21,6 +21,7 @@ tags: [vue3, typescript, props, defineProps, composition-api]
 ## The Two Declaration Styles
 
 **Runtime Declaration (traditional):**
+
 ```vue
 <script setup lang="ts">
 const props = defineProps({
@@ -32,6 +33,7 @@ const props = defineProps({
 ```
 
 **Type-Based Declaration (recommended):**
+
 ```vue
 <script setup lang="ts">
 interface Props {
@@ -49,13 +51,14 @@ const props = defineProps<Props>()
 ```typescript
 // WRONG: Cannot use both runtime and type-based declaration
 const props = defineProps<{ foo: string }>({
-  foo: { type: String, required: true }  // Error!
+  foo: { type: String, required: true } // Error!
 })
 
 // CORRECT: Choose one style
-const props = defineProps<{ foo: string }>()  // Type-based only
+const props = defineProps<{ foo: string }>() // Type-based only
 // OR
-const props = defineProps({                    // Runtime only
+const props = defineProps({
+  // Runtime only
   foo: { type: String, required: true }
 })
 ```
@@ -75,7 +78,7 @@ interface Props {
 // CRITICAL: Mutable types (arrays, objects) MUST use factory functions
 const props = withDefaults(defineProps<Props>(), {
   msg: 'hello',
-  labels: () => ['one', 'two'],      // Factory function required!
+  labels: () => ['one', 'two'], // Factory function required!
   config: () => ({ theme: 'light' }) // Factory function required!
 })
 </script>
@@ -143,10 +146,12 @@ const props = defineProps({
 ## TypeScript Limitations (Prior to Vue 3.3)
 
 In Vue 3.2 and below, type-based declaration only supported:
+
 - Type literals defined inline
 - References to local interfaces
 
 Vue 3.3+ supports:
+
 - Imported types
 - Limited complex types
 - BUT NOT conditional types for the entire props object
@@ -158,14 +163,15 @@ defineProps<UserProps>()
 
 // Still NOT supported: conditional types for entire props
 type ConditionalProps<T> = T extends string ? { foo: string } : { bar: number }
-defineProps<ConditionalProps<SomeType>>()  // Error!
+defineProps<ConditionalProps<SomeType>>() // Error!
 
 // Conditional types ARE supported for individual props
 interface Props {
-  value: SomeType extends string ? string : number  // OK
+  value: SomeType extends string ? string : number // OK
 }
 ```
 
 ## Reference
+
 - [Vue.js TypeScript with Composition API - Props](https://vuejs.org/guide/typescript/composition-api.html#typing-component-props)
 - [Vue.js SFC Script Setup](https://vuejs.org/api/sfc-script-setup.html#defineprops-defineemits)

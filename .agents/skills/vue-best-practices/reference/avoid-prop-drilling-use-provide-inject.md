@@ -53,6 +53,7 @@ Vue's provide/inject API allows ancestor components to share data with any desce
 ```
 
 **Problems:**
+
 1. `MainLayout` and `Sidebar` are cluttered with props they don't use
 2. Adding a new shared value requires updating every component in the chain
 3. Removing a deeply nested component requires updating all ancestors
@@ -61,6 +62,7 @@ Vue's provide/inject API allows ancestor components to share data with any desce
 ## Solution: Provide/Inject
 
 **Correct - Provider (ancestor):**
+
 ```vue
 <!-- App.vue -->
 <script setup>
@@ -87,6 +89,7 @@ provide('updateTheme', (newTheme) => {
 ```
 
 **Correct - Intermediate components are now clean:**
+
 ```vue
 <!-- MainLayout.vue - No props needed -->
 <template>
@@ -104,6 +107,7 @@ provide('updateTheme', (newTheme) => {
 ```
 
 **Correct - Consumer (descendant):**
+
 ```vue
 <!-- UserMenu.vue -->
 <script setup>
@@ -132,9 +136,7 @@ function toggleTheme() {
 </script>
 
 <template>
-  <button @click="toggleTheme">
-    Current: {{ theme }}
-  </button>
+  <button @click="toggleTheme">Current: {{ theme }}</button>
 </template>
 ```
 
@@ -214,36 +216,42 @@ import { provide, computed } from 'vue'
 const items = ref([1, 2, 3])
 
 // Descendants will reactively update
-provide('itemCount', computed(() => items.value.length))
+provide(
+  'itemCount',
+  computed(() => items.value.length)
+)
 </script>
 ```
 
 ## When to Use What
 
-| Scenario | Solution |
-|----------|----------|
-| Direct parent-child | Props |
-| 1-2 levels deep | Props (drilling is acceptable) |
-| Deep nesting, same component tree | Provide/Inject |
-| Unrelated component trees | Pinia (state management) |
-| Cross-app global state | Pinia |
-| Plugin configuration | Provide/Inject from plugin install |
+| Scenario                          | Solution                           |
+| --------------------------------- | ---------------------------------- |
+| Direct parent-child               | Props                              |
+| 1-2 levels deep                   | Props (drilling is acceptable)     |
+| Deep nesting, same component tree | Provide/Inject                     |
+| Unrelated component trees         | Pinia (state management)           |
+| Cross-app global state            | Pinia                              |
+| Plugin configuration              | Provide/Inject from plugin install |
 
 ## Provide/Inject vs Pinia
 
 **Provide/Inject:**
+
 - Scoped to component subtree
 - Great for component library internals
 - No DevTools support
 - Ancestor-descendant relationships only
 
 **Pinia:**
+
 - Global, accessible anywhere
 - Excellent DevTools integration
 - Better for application state
 - Works across unrelated components
 
 ## Reference
+
 - [Vue.js Provide/Inject](https://vuejs.org/guide/components/provide-inject.html)
 - [Vue.js - Prop Drilling](https://vuejs.org/guide/components/provide-inject.html#prop-drilling)
 - [Pinia Documentation](https://pinia.vuejs.org/)

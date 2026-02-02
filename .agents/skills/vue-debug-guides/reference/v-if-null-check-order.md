@@ -18,12 +18,11 @@ tags: [vue3, conditional-rendering, v-if, null-check, defensive-programming]
 - [ ] Handle loading states explicitly rather than relying on undefined checks
 
 **Incorrect:**
+
 ```html
 <!-- WRONG: Accessing property before checking object exists -->
 <template>
-  <div v-if="user.isAdmin">
-    Admin Panel
-  </div>
+  <div v-if="user.isAdmin">Admin Panel</div>
   <!-- Error if user is null/undefined: Cannot read property 'isAdmin' of undefined -->
 </template>
 ```
@@ -31,9 +30,7 @@ tags: [vue3, conditional-rendering, v-if, null-check, defensive-programming]
 ```html
 <!-- WRONG: Nested property access without checks -->
 <template>
-  <div v-if="order.customer.address.city === 'NYC'">
-    Local delivery available
-  </div>
+  <div v-if="order.customer.address.city === 'NYC'">Local delivery available</div>
   <!-- Error if any level is undefined -->
 </template>
 ```
@@ -41,52 +38,41 @@ tags: [vue3, conditional-rendering, v-if, null-check, defensive-programming]
 ```html
 <!-- WRONG: Array access without existence check -->
 <template>
-  <div v-if="items[0].name === 'Featured'">
-    {{ items[0].description }}
-  </div>
+  <div v-if="items[0].name === 'Featured'">{{ items[0].description }}</div>
   <!-- Error if items is empty array -->
 </template>
 ```
 
 **Correct:**
+
 ```html
 <!-- CORRECT: Check object exists first with && -->
 <template>
-  <div v-if="user && user.isAdmin">
-    Admin Panel
-  </div>
+  <div v-if="user && user.isAdmin">Admin Panel</div>
 </template>
 ```
 
 ```html
 <!-- CORRECT: Optional chaining (Vue 3) -->
 <template>
-  <div v-if="user?.isAdmin">
-    Admin Panel
-  </div>
+  <div v-if="user?.isAdmin">Admin Panel</div>
 </template>
 ```
 
 ```html
 <!-- CORRECT: Optional chaining for nested properties -->
 <template>
-  <div v-if="order?.customer?.address?.city === 'NYC'">
-    Local delivery available
-  </div>
+  <div v-if="order?.customer?.address?.city === 'NYC'">Local delivery available</div>
 </template>
 ```
 
 ```html
 <!-- CORRECT: Array length check before access -->
 <template>
-  <div v-if="items.length > 0 && items[0].name === 'Featured'">
-    {{ items[0].description }}
-  </div>
+  <div v-if="items.length > 0 && items[0].name === 'Featured'">{{ items[0].description }}</div>
 
   <!-- Or with optional chaining -->
-  <div v-if="items?.[0]?.name === 'Featured'">
-    {{ items[0].description }}
-  </div>
+  <div v-if="items?.[0]?.name === 'Featured'">{{ items[0].description }}</div>
 </template>
 ```
 
@@ -167,5 +153,6 @@ onMounted(async () => {
 ```
 
 ## Reference
+
 - [Vue.js Conditional Rendering](https://vuejs.org/guide/essentials/conditional.html)
 - [MDN - Optional Chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)

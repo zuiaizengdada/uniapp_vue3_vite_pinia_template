@@ -46,7 +46,7 @@ import { ref, computed } from 'vue'
 const cachedViews = ref(['Dashboard', 'Settings', 'Profile'])
 
 function removeFromCache(viewName) {
-  cachedViews.value = cachedViews.value.filter(v => v !== viewName)
+  cachedViews.value = cachedViews.value.filter((v) => v !== viewName)
 }
 
 function addToCache(viewName) {
@@ -96,10 +96,7 @@ function refreshDashboard() {
 
 <template>
   <KeepAlive>
-    <component
-      :is="currentView"
-      :key="`${currentView}-${viewKeys[currentView]}`"
-    />
+    <component :is="currentView" :key="`${currentView}-${viewKeys[currentView]}`" />
   </KeepAlive>
 </template>
 ```
@@ -157,15 +154,18 @@ const route = useRoute()
 const cachedRoutes = ref(['Dashboard', 'Settings'])
 
 // Clear specific route from cache when navigating from certain paths
-watch(() => route.name, (newRoute, oldRoute) => {
-  if (oldRoute === 'Login') {
-    // User just logged in - clear and refresh Dashboard
-    cachedRoutes.value = cachedRoutes.value.filter(r => r !== 'Dashboard')
-    nextTick(() => {
-      cachedRoutes.value.push('Dashboard')
-    })
+watch(
+  () => route.name,
+  (newRoute, oldRoute) => {
+    if (oldRoute === 'Login') {
+      // User just logged in - clear and refresh Dashboard
+      cachedRoutes.value = cachedRoutes.value.filter((r) => r !== 'Dashboard')
+      nextTick(() => {
+        cachedRoutes.value.push('Dashboard')
+      })
+    }
   }
-})
+)
 </script>
 
 <template>
@@ -186,6 +186,7 @@ watch(() => route.name, (newRoute, oldRoute) => {
 5. **Plan cache strategy** - Design around these constraints upfront
 
 ## Reference
+
 - [Vue.js KeepAlive Documentation](https://vuejs.org/guide/built-ins/keep-alive.html)
 - [Vue 3 Migration Guide](https://v3-migration.vuejs.org/)
 - [Vue RFC Discussion #283: Custom cache strategy for KeepAlive](https://github.com/vuejs/rfcs/discussions/283)

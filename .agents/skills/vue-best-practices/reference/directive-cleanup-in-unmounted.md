@@ -20,6 +20,7 @@ The key to avoiding such bugs is always implementing the `unmounted` hook to cle
 - [ ] Test that directives properly clean up when elements are removed (v-if toggling)
 
 **Incorrect:**
+
 ```javascript
 // WRONG: No cleanup - memory leak!
 const vPoll = {
@@ -46,6 +47,7 @@ const vClickOutside = {
 ```
 
 **Correct:**
+
 ```javascript
 // CORRECT: Store reference and clean up
 const vPoll = {
@@ -215,5 +217,6 @@ test('directive cleans up interval on unmount', async () => {
 ```
 
 ## Reference
+
 - [Vue.js Custom Directives - Directive Hooks](https://vuejs.org/guide/reusability/custom-directives#directive-hooks)
 - [Vue School - The Directive's unmounted Hook](https://vueschool.io/lessons/vue-3-the-directive-s-unmounted-hook)

@@ -21,6 +21,7 @@ The key insight is that Composition API gives you flexibility - which requires d
 - [ ] Consider splitting large components into smaller ones or composables
 
 **Disorganized (Bad):**
+
 ```vue
 <script setup>
 // Scattered code - hard to understand what relates to what
@@ -36,32 +37,45 @@ const isLoading = ref(false)
 const error = ref(null)
 
 const filteredItems = computed(() => {
-  return items.value.filter(i => i.category === filterCategory.value)
+  return items.value.filter((i) => i.category === filterCategory.value)
 })
 
-function openModal() { isModalOpen.value = true }
+function openModal() {
+  isModalOpen.value = true
+}
 
 const sortedItems = computed(() => {
   return [...filteredItems.value].sort(/* ... */)
 })
 
-function closeModal() { isModalOpen.value = false }
+function closeModal() {
+  isModalOpen.value = false
+}
 
-watch(searchQuery, async (query) => { /* fetch */ })
-
-function selectItem(item) { selectedItem.value = item }
-
-const searchResults = computed(() => {
-  return items.value.filter(i => i.name.includes(searchQuery.value))
+watch(searchQuery, async (query) => {
+  /* fetch */
 })
 
-onMounted(() => { fetchItems() })
+function selectItem(item) {
+  selectedItem.value = item
+}
 
-async function fetchItems() { /* ... */ }
+const searchResults = computed(() => {
+  return items.value.filter((i) => i.name.includes(searchQuery.value))
+})
+
+onMounted(() => {
+  fetchItems()
+})
+
+async function fetchItems() {
+  /* ... */
+}
 </script>
 ```
 
 **Organized by Concern (Good):**
+
 ```vue
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
@@ -91,11 +105,7 @@ onMounted(() => fetchItems())
 // ============================================
 const searchQuery = ref('')
 
-const searchResults = computed(() =>
-  items.value.filter(i =>
-    i.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-  )
-)
+const searchResults = computed(() => items.value.filter((i) => i.name.toLowerCase().includes(searchQuery.value.toLowerCase())))
 
 watch(searchQuery, async (query) => {
   if (query.length > 2) {
@@ -109,17 +119,9 @@ watch(searchQuery, async (query) => {
 const filterCategory = ref('all')
 const sortOrder = ref('asc')
 
-const filteredItems = computed(() =>
-  searchResults.value.filter(i =>
-    filterCategory.value === 'all' || i.category === filterCategory.value
-  )
-)
+const filteredItems = computed(() => searchResults.value.filter((i) => filterCategory.value === 'all' || i.category === filterCategory.value))
 
-const sortedItems = computed(() =>
-  [...filteredItems.value].sort((a, b) =>
-    sortOrder.value === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
-  )
-)
+const sortedItems = computed(() => [...filteredItems.value].sort((a, b) => (sortOrder.value === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name))))
 
 // ============================================
 // SELECTION & MODAL
@@ -132,7 +134,9 @@ function selectItem(item) {
   openModal()
 }
 
-function openModal() { isModalOpen.value = true }
+function openModal() {
+  isModalOpen.value = true
+}
 function closeModal() {
   isModalOpen.value = false
   selectedItem.value = null
@@ -141,6 +145,7 @@ function closeModal() {
 ```
 
 **Best: Extract to Composables:**
+
 ```vue
 <script setup>
 import { useItems } from '@/composables/useItems'
@@ -150,12 +155,7 @@ import { useModal } from '@/composables/useModal'
 // Each composable encapsulates a logical concern
 const { items, isLoading, error, fetchItems } = useItems()
 const { searchQuery, searchResults } = useSearch(items)
-const {
-  selectedItem,
-  isOpen: isModalOpen,
-  open: openModal,
-  close: closeModal
-} = useModal()
+const { selectedItem, isOpen: isModalOpen, open: openModal, close: closeModal } = useModal()
 
 function selectItem(item) {
   selectedItem.value = item
@@ -163,27 +163,8 @@ function selectItem(item) {
 }
 </script>
 
-// composables/useItems.js
-export function useItems() {
-  const items = ref([])
-  const isLoading = ref(false)
-  const error = ref(null)
-
-  async function fetchItems(params = {}) {
-    isLoading.value = true
-    try {
-      items.value = await api.getItems(params)
-    } catch (e) {
-      error.value = e
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  onMounted(() => fetchItems())
-
-  return { items, isLoading, error, fetchItems }
-}
+// composables/useItems.js export function useItems() { const items = ref([]) const isLoading = ref(false) const error = ref(null) async function fetchItems(params = {}) { isLoading.value = true try {
+items.value = await api.getItems(params) } catch (e) { error.value = e } finally { isLoading.value = false } } onMounted(() => fetchItems()) return { items, isLoading, error, fetchItems } }
 ```
 
 ## Signs Your Component Needs Refactoring
@@ -209,5 +190,6 @@ export function useItems() {
 ```
 
 ## Reference
+
 - [Composition API FAQ - More Flexible Code Organization](https://vuejs.org/guide/extras/composition-api-faq.html#more-flexible-code-organization)
 - [Composables](https://vuejs.org/guide/reusability/composables.html)

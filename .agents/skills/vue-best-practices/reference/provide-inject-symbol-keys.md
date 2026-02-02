@@ -20,6 +20,7 @@ tags: [vue3, provide-inject, typescript, architecture, component-library]
 ## The Problem: String Key Collisions
 
 **Risky - String keys can collide:**
+
 ```vue
 <!-- ThemeProvider.vue (your code) -->
 <script setup>
@@ -196,11 +197,14 @@ if (!user) {
 }
 
 // Option 2: Provide a default
-const userWithDefault = inject(UserKey, ref({
-  id: 'guest',
-  name: 'Guest User',
-  email: ''
-}))
+const userWithDefault = inject(
+  UserKey,
+  ref({
+    id: 'guest',
+    name: 'Guest User',
+    email: ''
+  })
+)
 
 // Option 3: Use non-null assertion (only if you're certain)
 const userRequired = inject(UserKey)!
@@ -228,5 +232,6 @@ provide('myapp:analytics', analytics)
 ```
 
 ## Reference
+
 - [Vue.js Provide/Inject - Working with Symbol Keys](https://vuejs.org/guide/components/provide-inject.html#working-with-symbol-keys)
 - [Vue.js TypeScript - Typing Provide/Inject](https://vuejs.org/guide/typescript/composition-api.html#typing-provide-inject)

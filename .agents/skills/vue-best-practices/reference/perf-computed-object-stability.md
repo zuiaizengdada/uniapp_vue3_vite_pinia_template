@@ -20,6 +20,7 @@ For primitive values, Vue 3.4+ handles this automatically. For objects, manually
 - [ ] Consider if you really need to return an object, or if primitives would suffice
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { ref, computed, watchEffect } from 'vue'
@@ -43,6 +44,7 @@ watchEffect(() => {
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { ref, computed, watchEffect } from 'vue'
@@ -66,10 +68,8 @@ const stats = computed((oldValue) => {
   }
 
   // Step 2: Compare with previous value
-  if (oldValue &&
-      oldValue.isEven === newValue.isEven &&
-      oldValue.category === newValue.category) {
-    return oldValue  // Return old reference - no effect triggers
+  if (oldValue && oldValue.isEven === newValue.isEven && oldValue.category === newValue.category) {
+    return oldValue // Return old reference - no effect triggers
   }
 
   return newValue
@@ -92,26 +92,26 @@ const count = ref(0)
 // PRIMITIVE: Vue automatically detects value hasn't changed
 const isEven = computed(() => count.value % 2 === 0)
 
-watchEffect(() => console.log(isEven.value))  // true
+watchEffect(() => console.log(isEven.value)) // true
 
-count.value = 2  // isEven still true - NO log
-count.value = 4  // isEven still true - NO log
-count.value = 3  // isEven now false - logs: false
+count.value = 2 // isEven still true - NO log
+count.value = 4 // isEven still true - NO log
+count.value = 3 // isEven now false - logs: false
 
 // OBJECT: New reference every time (without manual comparison)
 const obj = computed(() => ({ isEven: count.value % 2 === 0 }))
 
-watchEffect(() => console.log(obj.value))  // { isEven: true }
+watchEffect(() => console.log(obj.value)) // { isEven: true }
 
-count.value = 2  // Logs again! New object reference
-count.value = 4  // Logs again! New object reference
+count.value = 2 // Logs again! New object reference
+count.value = 4 // Logs again! New object reference
 ```
 
 ## Advanced: Deep Object Comparison
 
 ```javascript
 import { ref, computed } from 'vue'
-import { isEqual } from 'lodash-es'  // For deep comparison
+import { isEqual } from 'lodash-es' // For deep comparison
 
 const filters = ref({ category: 'all', sortBy: 'date', page: 1 })
 
@@ -137,14 +137,14 @@ const activeFilters = computed((oldValue) => {
 // BAD: Early return prevents dependency tracking
 const optimized = computed((oldValue) => {
   if (oldValue && someCondition) {
-    return oldValue  // Dependencies not tracked!
+    return oldValue // Dependencies not tracked!
   }
   return computeExpensiveValue()
 })
 
 // GOOD: Compute first, then compare
 const optimized = computed((oldValue) => {
-  const newValue = computeExpensiveValue()  // Always track dependencies
+  const newValue = computeExpensiveValue() // Always track dependencies
   if (oldValue && newValue === oldValue) {
     return oldValue
   }
@@ -153,5 +153,6 @@ const optimized = computed((oldValue) => {
 ```
 
 ## Reference
+
 - [Vue.js Performance - Computed Stability](https://vuejs.org/guide/best-practices/performance.html#computed-stability)
 - [Vue.js Computed Properties](https://vuejs.org/guide/essentials/computed.html)

@@ -18,9 +18,7 @@ Without explicit error handling, async errors in suspended components will propa
 <template>
   <Suspense>
     <AsyncComponent />
-    <template #fallback>
-      Loading...
-    </template>
+    <template #fallback> Loading... </template>
   </Suspense>
 </template>
 ```
@@ -48,9 +46,7 @@ onErrorCaptured((err) => {
 
   <Suspense v-else>
     <AsyncComponent />
-    <template #fallback>
-      Loading...
-    </template>
+    <template #fallback> Loading... </template>
   </Suspense>
 </template>
 ```

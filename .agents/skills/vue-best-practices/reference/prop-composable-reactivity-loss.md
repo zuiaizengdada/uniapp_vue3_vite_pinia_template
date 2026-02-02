@@ -20,6 +20,7 @@ This is one of the most frequent sources of "my composable doesn't update" bugs 
 - [ ] Test that composable output updates when props change
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { useFetch } from './composables/useFetch'
@@ -40,6 +41,7 @@ const debouncedQuery = useDebounce(props.searchQuery, 300)
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { computed } from 'vue'
@@ -99,7 +101,7 @@ export function useDebounce(source, delay = 300) {
   let timeout
 
   watch(
-    () => toValue(source),  // Normalizes any input type
+    () => toValue(source), // Normalizes any input type
     (newValue) => {
       clearTimeout(timeout)
       timeout = setTimeout(() => {
@@ -143,16 +145,17 @@ export function useFetch(url) {
 
 ## Quick Reference: Input Types
 
-| Input to Composable | Reactive? | Example |
-|---------------------|-----------|---------|
-| `props.value` | No | `useFetch(props.userId)` |
-| `computed(() => ...)` | Yes | `useFetch(computed(() => props.userId))` |
-| `() => props.value` | Yes* | `useFetch(() => props.userId)` |
-| `toRef(props, 'key')` | Yes | `useFetch(toRef(props, 'userId'))` |
-| `toRefs(props).key` | Yes | `const { userId } = toRefs(props); useFetch(userId)` |
+| Input to Composable   | Reactive? | Example                                              |
+| --------------------- | --------- | ---------------------------------------------------- |
+| `props.value`         | No        | `useFetch(props.userId)`                             |
+| `computed(() => ...)` | Yes       | `useFetch(computed(() => props.userId))`             |
+| `() => props.value`   | Yes\*     | `useFetch(() => props.userId)`                       |
+| `toRef(props, 'key')` | Yes       | `useFetch(toRef(props, 'userId'))`                   |
+| `toRefs(props).key`   | Yes       | `const { userId } = toRefs(props); useFetch(userId)` |
 
-*Requires composable to use `toValue()` internally
+\*Requires composable to use `toValue()` internally
 
 ## Reference
+
 - [Vue.js Reactivity API - toValue](https://vuejs.org/api/reactivity-utilities.html#tovalue)
 - [Vue.js Composables - Conventions and Best Practices](https://vuejs.org/guide/reusability/composables.html#conventions-and-best-practices)

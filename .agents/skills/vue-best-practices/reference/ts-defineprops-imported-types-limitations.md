@@ -60,9 +60,7 @@ defineProps<User>()
 
 ```typescript
 // types/conditional.ts
-export type ConditionalProps<T> = T extends string
-  ? { value: string; onChange: (v: string) => void }
-  : { value: number; onChange: (v: number) => void }
+export type ConditionalProps<T> = T extends string ? { value: string; onChange: (v: string) => void } : { value: number; onChange: (v: number) => void }
 ```
 
 ```vue
@@ -75,6 +73,7 @@ defineProps<ConditionalProps<string>>()
 ```
 
 **Workaround:**
+
 ```vue
 <script setup lang="ts">
 // Define the resolved type directly
@@ -93,7 +92,7 @@ defineProps<StringProps>()
 <script setup lang="ts">
 // This WORKS - conditional type on individual prop
 interface Props {
-  value: SomeType extends string ? string : number  // OK
+  value: SomeType extends string ? string : number // OK
 }
 
 defineProps<Props>()
@@ -116,12 +115,13 @@ interface GlobalUser {
 <script setup lang="ts">
 // ERROR: "Unresolvable type reference"
 defineProps<{
-  user: GlobalUser  // Can't resolve ambient global type
+  user: GlobalUser // Can't resolve ambient global type
 }>()
 </script>
 ```
 
 **Workaround:**
+
 ```typescript
 // types/user.ts - Use explicit export
 export interface GlobalUser {
@@ -167,6 +167,7 @@ defineProps<{
 ```
 
 **Workaround:**
+
 ```typescript
 // Resolve the type explicitly
 export interface ReadonlyUser {
@@ -179,8 +180,14 @@ export interface ReadonlyUser {
 
 ```typescript
 // types/forms.ts
-export interface TextInput { type: 'text'; value: string }
-export interface NumberInput { type: 'number'; value: number }
+export interface TextInput {
+  type: 'text'
+  value: string
+}
+export interface NumberInput {
+  type: 'number'
+  value: number
+}
 ```
 
 ```vue
@@ -195,6 +202,7 @@ defineProps<{
 ```
 
 **Workaround:**
+
 ```typescript
 // Define the union in the types file
 export type AnyInput = TextInput | NumberInput
@@ -241,8 +249,8 @@ export type ButtonProps<V extends string, S extends string> = {
 export interface CreateUserProps {
   name: string
   email: string
-  age?: number  // Made optional
-  role?: 'admin' | 'user'  // Made optional
+  age?: number // Made optional
+  role?: 'admin' | 'user' // Made optional
 }
 ```
 
@@ -254,9 +262,7 @@ export interface CreateUserProps {
 import type { ComplexType } from '@/types'
 
 // Resolve the type here
-type ResolvedProps = ComplexType extends SomeCondition
-  ? { a: string }
-  : { b: number }
+type ResolvedProps = ComplexType extends SomeCondition ? { a: string } : { b: number }
 </script>
 
 <script setup lang="ts">
@@ -267,15 +273,16 @@ defineProps<ResolvedProps>()
 
 ## Version-Specific Behavior
 
-| Vue Version | Imported Types | Complex Types |
-|-------------|---------------|---------------|
-| 3.2 | Not supported | Not supported |
-| 3.3 | Supported | Limited |
-| 3.4+ | Supported | Better support |
+| Vue Version | Imported Types | Complex Types  |
+| ----------- | -------------- | -------------- |
+| 3.2         | Not supported  | Not supported  |
+| 3.3         | Supported      | Limited        |
+| 3.4+        | Supported      | Better support |
 
 Always check the Vue changelog for updates to type support in defineProps.
 
 ## Reference
+
 - [Vue.js TypeScript with Composition API](https://vuejs.org/guide/typescript/composition-api.html)
 - [GitHub Issue: defineProps with imported interfaces](https://github.com/vuejs/core/issues/8612)
 - [GitHub Issue: Union types in defineProps](https://github.com/vuejs/core/issues/5804)

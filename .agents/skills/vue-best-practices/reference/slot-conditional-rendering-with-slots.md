@@ -18,6 +18,7 @@ tags: [vue3, slots, conditional-rendering, performance, dom-optimization]
 - [ ] Keep DOM clean by avoiding empty wrapper elements
 
 **Incorrect:**
+
 ```vue
 <!-- Card.vue -->
 <template>
@@ -40,12 +41,19 @@ tags: [vue3, slots, conditional-rendering, performance, dom-optimization]
 </template>
 
 <style scoped>
-.card-header { padding: 16px; border-bottom: 1px solid #eee; }
-.card-footer { padding: 16px; border-top: 1px solid #eee; }
+.card-header {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+.card-footer {
+  padding: 16px;
+  border-top: 1px solid #eee;
+}
 </style>
 ```
 
 When used without all slots:
+
 ```vue
 <!-- Results in empty .card-header and .card-footer divs with borders -->
 <Card>
@@ -54,6 +62,7 @@ When used without all slots:
 ```
 
 **Correct:**
+
 ```vue
 <!-- Card.vue -->
 <template>
@@ -76,12 +85,19 @@ When used without all slots:
 </template>
 
 <style scoped>
-.card-header { padding: 16px; border-bottom: 1px solid #eee; }
-.card-footer { padding: 16px; border-top: 1px solid #eee; }
+.card-header {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+.card-footer {
+  padding: 16px;
+  border-top: 1px solid #eee;
+}
 </style>
 ```
 
 Now clean DOM:
+
 ```vue
 <!-- Only renders .card-body, no empty header/footer -->
 <Card>
@@ -126,13 +142,14 @@ function getLayoutClass() {
 
 ## When to Use This Pattern
 
-| Scenario | Use $slots Check? |
-|----------|-------------------|
-| Wrapper has styling (padding, borders, background) | Yes |
-| Wrapper affects layout (flex, grid) | Yes |
-| Slot is always expected to have content | No |
-| No wrapper element around slot | No |
-| Wrapper is purely semantic (no visual impact) | Optional |
+| Scenario                                           | Use $slots Check? |
+| -------------------------------------------------- | ----------------- |
+| Wrapper has styling (padding, borders, background) | Yes               |
+| Wrapper affects layout (flex, grid)                | Yes               |
+| Slot is always expected to have content            | No                |
+| No wrapper element around slot                     | No                |
+| Wrapper is purely semantic (no visual impact)      | Optional          |
 
 ## Reference
+
 - [Vue.js Slots - Conditional Slots](https://vuejs.org/guide/components/slots.html#conditional-slots)

@@ -30,6 +30,7 @@ tags: [vue3, keepalive, memory-leak, performance, cache, max-prop]
 ```
 
 When users navigate through many different components, each instance stays in memory:
+
 - Chrome memory grows continuously
 - VueComponent count keeps increasing
 - App becomes sluggish or crashes
@@ -46,6 +47,7 @@ When users navigate through many different components, each instance stays in me
 ```
 
 **How `max` works:**
+
 - KeepAlive uses an LRU (Least Recently Used) cache algorithm
 - When cache exceeds `max`, the oldest unused component is destroyed
 - This caps memory usage to a predictable maximum
@@ -181,6 +183,7 @@ if (import.meta.env.DEV) {
 5. **Monitor in development** - Watch for growing memory usage
 
 ## Reference
+
 - [Vue.js KeepAlive - Max Cached Instances](https://vuejs.org/guide/built-ins/keep-alive.html#max-cached-instances)
 - [Vue.js Avoiding Memory Leaks](https://v2.vuejs.org/v2/cookbook/avoiding-memory-leaks.html)
 - [GitHub Issue: Memory leak with keep-alive](https://github.com/vuejs/vue/issues/6759)

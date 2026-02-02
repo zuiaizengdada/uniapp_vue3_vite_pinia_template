@@ -66,7 +66,9 @@ Bad: passing a non-getter value into `watch()`
 const state = reactive({ count: 0 })
 
 // ❌ watch expects a getter, ref, reactive object, or array of these
-watch(state.count, () => { /* ... */ })
+watch(state.count, () => {
+  /* ... */
+})
 ```
 
 Good: preserve reactivity with `toRefs()` and use a getter for `watch()`
@@ -75,7 +77,12 @@ Good: preserve reactivity with `toRefs()` and use a getter for `watch()`
 const state = reactive({ count: 0 })
 const { count } = toRefs(state) // ✅ count is a ref
 
-watch(() => state.count, () => { /* ... */ }) // ✅
+watch(
+  () => state.count,
+  () => {
+    /* ... */
+  }
+) // ✅
 ```
 
 ## `computed()` best practices
@@ -128,8 +135,8 @@ const fullName = computed(() => `${firstName.value} ${lastName.value}`)
 
 ### Computed vs function call in templates
 
-* `computed()` is cached based on dependencies.
-* Methods/functions run whenever the component renders.
+- `computed()` is cached based on dependencies.
+- Methods/functions run whenever the component renders.
 
 Bad: expensive work inside template method
 
@@ -139,7 +146,7 @@ const items = ref<number[]>([])
 
 function expensiveFilter(values: number[]) {
   // ❌ imagine this is heavy
-  return values.filter(x => x % 2 === 0).sort((a, b) => a - b)
+  return values.filter((x) => x % 2 === 0).sort((a, b) => a - b)
 }
 </script>
 
@@ -157,9 +164,7 @@ import { computed, ref } from 'vue'
 const items = ref<number[]>([])
 
 const filtered = computed(() => {
-  return items.value
-    .filter(x => x % 2 === 0)
-    .sort((a, b) => a - b)
+  return items.value.filter((x) => x % 2 === 0).sort((a, b) => a - b)
 })
 </script>
 
@@ -183,7 +188,7 @@ watch(query, async (q, _prev, onCleanup) => {
   onCleanup(() => controller.abort())
 
   const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, {
-    signal: controller.signal,
+    signal: controller.signal
   })
 
   results.value = await res.json()

@@ -20,6 +20,7 @@ This is especially important when using animation libraries like GSAP, Anime.js,
 - [ ] Use `:css="false"` to prevent CSS rules from interfering with JS animations
 
 **Problematic Code:**
+
 ```vue
 <template>
   <!-- BAD: No done() callback - animation is skipped! -->
@@ -53,6 +54,7 @@ function onLeave(el) {
 ```
 
 **Correct Code:**
+
 ```vue
 <template>
   <!-- GOOD: done() callback signals animation completion -->
@@ -69,7 +71,7 @@ function onEnter(el, done) {
     opacity: 0,
     y: 50,
     duration: 0.5,
-    onComplete: done  // Tell Vue animation is complete
+    onComplete: done // Tell Vue animation is complete
   })
 }
 
@@ -78,7 +80,7 @@ function onLeave(el, done) {
     opacity: 0,
     y: -50,
     duration: 0.5,
-    onComplete: done  // Element removed after animation
+    onComplete: done // Element removed after animation
   })
 }
 </script>
@@ -145,7 +147,7 @@ function onEnter(el, done) {
     y: 0,
     duration: 0.5,
     ease: 'power2.out',
-    onComplete: done  // REQUIRED with :css="false"
+    onComplete: done // REQUIRED with :css="false"
   })
 }
 
@@ -172,7 +174,7 @@ function onLeave(el, done) {
     y: -50,
     duration: 0.5,
     ease: 'power2.in',
-    onComplete: done  // REQUIRED with :css="false"
+    onComplete: done // REQUIRED with :css="false"
   })
 }
 
@@ -194,25 +196,31 @@ function onLeaveCancelled() {
 ```vue
 <script setup>
 function onEnter(el, done) {
-  const animation = el.animate([
-    { opacity: 0, transform: 'scale(0.9)' },
-    { opacity: 1, transform: 'scale(1)' }
-  ], {
-    duration: 300,
-    easing: 'ease-out'
-  })
+  const animation = el.animate(
+    [
+      { opacity: 0, transform: 'scale(0.9)' },
+      { opacity: 1, transform: 'scale(1)' }
+    ],
+    {
+      duration: 300,
+      easing: 'ease-out'
+    }
+  )
 
-  animation.onfinish = done  // Call done when animation ends
+  animation.onfinish = done // Call done when animation ends
 }
 
 function onLeave(el, done) {
-  const animation = el.animate([
-    { opacity: 1, transform: 'scale(1)' },
-    { opacity: 0, transform: 'scale(0.9)' }
-  ], {
-    duration: 300,
-    easing: 'ease-in'
-  })
+  const animation = el.animate(
+    [
+      { opacity: 1, transform: 'scale(1)' },
+      { opacity: 0, transform: 'scale(0.9)' }
+    ],
+    {
+      duration: 300,
+      easing: 'ease-in'
+    }
+  )
 
   animation.onfinish = done
 }
@@ -229,10 +237,11 @@ function onEnter(el, done) {
 }
 
 // WRONG: Forgetting done() parameter
-function onEnter(el) {  // No 'done' parameter
+function onEnter(el) {
+  // No 'done' parameter
   gsap.from(el, {
     opacity: 0,
-    onComplete: done  // Error: done is not defined!
+    onComplete: done // Error: done is not defined!
   })
 }
 
@@ -241,11 +250,12 @@ function onEnter(el, done) {
   gsap.from(el, {
     opacity: 0,
     duration: 0.5,
-    onComplete: done  // Called after 0.5s
+    onComplete: done // Called after 0.5s
   })
 }
 ```
 
 ## Reference
+
 - [Vue.js Transition - JavaScript Hooks](https://vuejs.org/guide/built-ins/transition.html#javascript-hooks)
 - [GSAP with Vue](https://gsap.com/resources/vue/)

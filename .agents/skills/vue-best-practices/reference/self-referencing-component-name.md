@@ -17,6 +17,7 @@ tags: [vue3, component-registration, self-reference, recursive-components, sfc]
 - [ ] For clarity in recursive components, consider explicit naming
 
 **Example:**
+
 ```vue
 <!-- TreeItem.vue -->
 <script setup>
@@ -29,11 +30,7 @@ defineProps({
   <div class="tree-item">
     <span>{{ item.name }}</span>
     <!-- Self-reference using filename -->
-    <TreeItem
-      v-for="child in item.children"
-      :key="child.id"
-      :item="child"
-    />
+    <TreeItem v-for="child in item.children" :key="child.id" :item="child" />
   </div>
 </template>
 ```
@@ -51,11 +48,7 @@ defineProps({
     <p>{{ comment.text }}</p>
     <div class="replies" v-if="comment.replies?.length">
       <!-- Self-reference for nested replies -->
-      <Comment
-        v-for="reply in comment.replies"
-        :key="reply.id"
-        :comment="reply"
-      />
+      <Comment v-for="reply in comment.replies" :key="reply.id" :comment="reply" />
     </div>
   </div>
 </template>
@@ -141,17 +134,12 @@ defineProps({
     {{ node.name }}
     <!-- Guard against infinite recursion -->
     <template v-if="node.children && currentDepth < maxDepth">
-      <TreeNode
-        v-for="child in node.children"
-        :key="child.id"
-        :node="child"
-        :max-depth="maxDepth"
-        :current-depth="currentDepth + 1"
-      />
+      <TreeNode v-for="child in node.children" :key="child.id" :node="child" :max-depth="maxDepth" :current-depth="currentDepth + 1" />
     </template>
   </div>
 </template>
 ```
 
 ## Reference
+
 - [Vue.js Component Registration](https://vuejs.org/guide/components/registration.html)

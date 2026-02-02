@@ -26,18 +26,18 @@ const emit = defineEmits<{
   change: [id: number]
   update: [value: string]
   submit: [data: FormData, validated: boolean]
-  close: []  // No payload
+  close: [] // No payload
 }>()
 
 // Usage - fully typed
-emit('change', 42)           // OK
-emit('update', 'new value')  // OK
+emit('change', 42) // OK
+emit('update', 'new value') // OK
 emit('submit', formData, true) // OK
-emit('close')                // OK
+emit('close') // OK
 
-emit('change', 'string')     // Error: number expected
-emit('update')               // Error: missing argument
-emit('unknown')              // Error: not a declared event
+emit('change', 'string') // Error: number expected
+emit('update') // Error: missing argument
+emit('unknown') // Error: not a declared event
 </script>
 ```
 
@@ -72,12 +72,12 @@ const emit = defineEmits(['change', 'update', 'close'])
 
 ```typescript
 // WRONG: Cannot combine runtime and type-based
-const emit = defineEmits<{ change: [id: number] }>(['change'])  // Error!
+const emit = defineEmits<{ change: [id: number] }>(['change']) // Error!
 
 // CORRECT: Choose one approach
-const emit = defineEmits<{ change: [id: number] }>()  // Type-based
+const emit = defineEmits<{ change: [id: number] }>() // Type-based
 // OR
-const emit = defineEmits(['change'])  // Runtime only
+const emit = defineEmits(['change']) // Runtime only
 ```
 
 ## Complex Payload Types
@@ -112,7 +112,7 @@ const emit = defineEmits<{
 // Usage
 emit('user-selected', { id: '1', name: 'John', email: 'john@example.com' })
 emit('form-validated', formState, formData)
-emit('modal-closed')          // OK - reason is optional
+emit('modal-closed') // OK - reason is optional
 emit('modal-closed', 'cancel') // Also OK
 emit('status-changed', 'active')
 </script>
@@ -128,17 +128,14 @@ const emit = defineEmits<{
   'page-changed': [page: number]
 
   // Common patterns
-  'update:modelValue': [value: string]  // For v-model
-  'update:visible': [visible: boolean]  // For named v-model
+  'update:modelValue': [value: string] // For v-model
+  'update:visible': [visible: boolean] // For named v-model
 }>()
 </script>
 
 <template>
   <!-- Events in templates use kebab-case -->
-  <ChildComponent
-    @item-selected="handleItemSelected"
-    @page-changed="handlePageChange"
-  />
+  <ChildComponent @item-selected="handleItemSelected" @page-changed="handlePageChange" />
 </template>
 ```
 
@@ -187,5 +184,6 @@ function addItem(item: string) {
 ```
 
 ## Reference
+
 - [Vue.js TypeScript with Composition API - Emits](https://vuejs.org/guide/typescript/composition-api.html#typing-component-emits)
 - [Vue.js Component Events](https://vuejs.org/guide/components/events.html)

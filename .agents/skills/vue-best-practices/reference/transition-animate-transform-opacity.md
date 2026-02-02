@@ -19,6 +19,7 @@ tags: [vue3, transition, animation, performance, css, transform, opacity]
 - [ ] Use `will-change` sparingly and only when needed
 
 **Problematic Code:**
+
 ```css
 /* BAD: Animating height triggers layout recalculation every frame */
 .slide-enter-active,
@@ -51,6 +52,7 @@ tags: [vue3, transition, animation, performance, css, transform, opacity]
 ```
 
 **Correct Code:**
+
 ```css
 /* GOOD: Using transform and opacity - GPU accelerated */
 .fade-enter-active,
@@ -68,7 +70,9 @@ tags: [vue3, transition, animation, performance, css, transform, opacity]
 /* GOOD: Using transform for slide animations */
 .slide-enter-active,
 .slide-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .slide-enter-from {
@@ -86,7 +90,9 @@ tags: [vue3, transition, animation, performance, css, transform, opacity]
 /* GOOD: Using scale instead of width/height */
 .scale-enter-active,
 .scale-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .scale-enter-from,
@@ -113,7 +119,9 @@ If you absolutely need to animate height (e.g., accordion), consider these alter
 <style>
 .expand-enter-active,
 .expand-leave-active {
-  transition: max-height 0.3s ease, opacity 0.3s ease;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease;
   overflow: hidden;
 }
 
@@ -142,11 +150,15 @@ function onEnter(el, done) {
   el.style.transition = 'height 0.3s ease'
   el.style.height = el.scrollHeight + 'px'
 
-  el.addEventListener('transitionend', () => {
-    el.style.height = ''
-    el.style.overflow = ''
-    done()
-  }, { once: true })
+  el.addEventListener(
+    'transitionend',
+    () => {
+      el.style.height = ''
+      el.style.overflow = ''
+      done()
+    },
+    { once: true }
+  )
 }
 
 function onLeave(el, done) {
@@ -171,16 +183,17 @@ function onLeave(el, done) {
 
 ## Performance Comparison
 
-| Property | Layout | Paint | Composite | Performance |
-|----------|--------|-------|-----------|-------------|
-| `transform` | No | No | Yes | Excellent |
-| `opacity` | No | No | Yes | Excellent |
-| `background-color` | No | Yes | Yes | Good |
-| `width`/`height` | Yes | Yes | Yes | Poor |
-| `margin`/`padding` | Yes | Yes | Yes | Poor |
-| `top`/`left` | Yes | Yes | Yes | Poor |
+| Property           | Layout | Paint | Composite | Performance |
+| ------------------ | ------ | ----- | --------- | ----------- |
+| `transform`        | No     | No    | Yes       | Excellent   |
+| `opacity`          | No     | No    | Yes       | Excellent   |
+| `background-color` | No     | Yes   | Yes       | Good        |
+| `width`/`height`   | Yes    | Yes   | Yes       | Poor        |
+| `margin`/`padding` | Yes    | Yes   | Yes       | Poor        |
+| `top`/`left`       | Yes    | Yes   | Yes       | Poor        |
 
 ## Reference
+
 - [Vue.js Transition Documentation](https://vuejs.org/guide/built-ins/transition.html)
 - [CSS Triggers](https://csstriggers.com/) - Reference for which properties trigger layout/paint
 - [High Performance Animations](https://web.dev/animations-guide/)

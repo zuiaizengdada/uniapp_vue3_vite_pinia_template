@@ -20,6 +20,7 @@ tags: [vue3, provide-inject, state-management, architecture, debugging]
 ## The Problem: Scattered Mutations
 
 **Wrong - Injector mutates provided state directly:**
+
 ```vue
 <!-- Provider.vue -->
 <script setup>
@@ -45,6 +46,7 @@ function updateTheme(theme) {
 ```
 
 **Problems:**
+
 1. Hard to trace where state changes originate
 2. Multiple components might mutate the same data inconsistently
 3. No centralized validation or side effects
@@ -53,6 +55,7 @@ function updateTheme(theme) {
 ## Solution: Provide Update Functions
 
 **Correct - Provider controls all mutations:**
+
 ```vue
 <!-- Provider.vue -->
 <script setup>
@@ -131,7 +134,7 @@ function addItem(item) {
 }
 
 function removeItem(id) {
-  cart.value = cart.value.filter(item => item.id !== id)
+  cart.value = cart.value.filter((item) => item.id !== id)
 }
 
 function clearCart() {
@@ -186,5 +189,6 @@ In rare cases, direct mutation may be acceptable:
 Even then, consider using `readonly()` with update functions for consistency.
 
 ## Reference
+
 - [Vue.js Provide/Inject - Working with Reactivity](https://vuejs.org/guide/components/provide-inject.html#working-with-reactivity)
 - [The Complete Guide to Provide/Inject API in Vue 3](https://www.codemag.com/Article/2101091/The-Complete-Guide-to-Provide-Inject-API-in-Vue-3-Part-1)

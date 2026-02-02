@@ -63,12 +63,7 @@ defineOptions({
 </template>
 
 <!-- Parent usage -->
-<BaseInput
-  id="email"
-  placeholder="Enter email"
-  aria-describedby="email-help"
-  @focus="handleFocus"
-/>
+<BaseInput id="email" placeholder="Enter email" aria-describedby="email-help" @focus="handleFocus" />
 
 <!--
   RESULT: Attrs correctly applied to input
@@ -111,7 +106,7 @@ export default {
 ```vue
 <script>
 export default {
-  inheritAttrs: false,
+  inheritAttrs: false
   // other options...
 }
 </script>
@@ -193,13 +188,7 @@ defineOptions({
 </script>
 
 <template>
-  <a
-    v-if="external"
-    :href="to"
-    target="_blank"
-    rel="noopener noreferrer"
-    v-bind="$attrs"
-  >
+  <a v-if="external" :href="to" target="_blank" rel="noopener noreferrer" v-bind="$attrs">
     <slot />
   </a>
   <router-link v-else :to="to" v-bind="$attrs">

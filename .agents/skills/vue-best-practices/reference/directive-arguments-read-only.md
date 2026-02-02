@@ -20,6 +20,7 @@ If you need to share information across hooks, use the element's `dataset` attri
 - [ ] Only modify `el` (the DOM element) directly
 
 **Incorrect:**
+
 ```javascript
 // WRONG: Mutating binding object
 const vBadDirective = {
@@ -46,6 +47,7 @@ const vAnotherBadDirective = {
 ```
 
 **Correct:**
+
 ```javascript
 // CORRECT: Use el.dataset for simple data
 const vWithDataset = {
@@ -95,7 +97,7 @@ const vWithWeakMap = {
     // but explicit cleanup is good for observers/listeners
     const state = directiveState.get(el)
     if (state) {
-      state.observers.forEach(obs => obs.disconnect())
+      state.observers.forEach((obs) => obs.disconnect())
       directiveState.delete(el)
     }
   }
@@ -152,6 +154,7 @@ const vHighlight = {
 ## Binding Object Properties (Read-Only Reference)
 
 The `binding` object contains:
+
 - `value` - Current value passed to directive (read-only)
 - `oldValue` - Previous value (only in beforeUpdate/updated) (read-only)
 - `arg` - Argument passed (e.g., `v-dir:arg`) (read-only)
@@ -163,10 +166,10 @@ The `binding` object contains:
 const vExample = {
   mounted(el, binding) {
     // READ these properties, don't modify them
-    console.log(binding.value)      // Read: OK
-    console.log(binding.arg)        // Read: OK
-    console.log(binding.modifiers)  // Read: OK
-    console.log(binding.instance)   // Read: OK
+    console.log(binding.value) // Read: OK
+    console.log(binding.arg) // Read: OK
+    console.log(binding.modifiers) // Read: OK
+    console.log(binding.instance) // Read: OK
 
     // Store what you need for later
     el.dataset.directiveArg = binding.arg || ''
@@ -176,5 +179,6 @@ const vExample = {
 ```
 
 ## Reference
+
 - [Vue.js Custom Directives - Hook Arguments](https://vuejs.org/guide/reusability/custom-directives#hook-arguments)
 - [MDN - HTMLElement.dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset)

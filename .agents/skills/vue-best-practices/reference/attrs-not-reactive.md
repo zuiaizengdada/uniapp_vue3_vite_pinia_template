@@ -18,6 +18,7 @@ tags: [vue3, attrs, reactivity, composition-api]
 - [ ] Remember attrs ARE always current in templates and event handlers
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { watch, useAttrs } from 'vue'
@@ -41,6 +42,7 @@ watchEffect(() => {
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { onUpdated, useAttrs } from 'vue'
@@ -158,5 +160,6 @@ watch(
 > **Warning:** `getCurrentInstance()` is an internal API. Prefer `onUpdated()` or converting to props.
 
 ## Reference
+
 - [Fallthrough Attributes - Accessing in JavaScript](https://vuejs.org/guide/components/attrs.html#accessing-fallthrough-attributes-in-javascript)
 - [Vue 3 Reactivity Fundamentals](https://vuejs.org/guide/essentials/reactivity-fundamentals.html)

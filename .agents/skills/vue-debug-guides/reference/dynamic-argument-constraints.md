@@ -21,6 +21,7 @@ Dynamic arguments allow runtime determination of which attribute or event to bin
 - [ ] Use `null` to explicitly remove a binding
 
 **Incorrect:**
+
 ```vue
 <template>
   <!-- ERROR: Spaces and quotes not allowed in dynamic arguments -->
@@ -44,6 +45,7 @@ const someAttr = 'href'
 ```
 
 **Correct:**
+
 ```vue
 <template>
   <!-- OK: Simple variable reference -->
@@ -76,11 +78,11 @@ const dynamicAttr = computed(() => `${prefix.value}-${name.value}`)
 
 // Conditional binding with null
 const isDisabled = ref(false)
-const disabledAttr = computed(() => isDisabled.value ? 'disabled' : null)
+const disabledAttr = computed(() => (isDisabled.value ? 'disabled' : null))
 
 // Dynamic events
 const useTouch = ref(false)
-const eventName = computed(() => useTouch.value ? 'touchstart' : 'click')
+const eventName = computed(() => (useTouch.value ? 'touchstart' : 'click'))
 
 function handler() {
   console.log('Event triggered')
@@ -100,26 +102,26 @@ When writing templates directly in HTML (not SFCs), use lowercase:
 </div>
 
 <script type="module">
-import { createApp, ref } from 'vue'
+  import { createApp, ref } from 'vue'
 
-createApp({
-  setup() {
-    // Match the lowercase used in template
-    const attrname = ref('href')
-    const url = ref('https://vuejs.org')
-    return { attrname, url }
-  }
-}).mount('#app')
+  createApp({
+    setup() {
+      // Match the lowercase used in template
+      const attrname = ref('href')
+      const url = ref('https://vuejs.org')
+      return { attrname, url }
+    }
+  }).mount('#app')
 </script>
 ```
 
 ## SFC vs In-DOM Templates
 
-| Feature | SFC (.vue files) | In-DOM (HTML) |
-|---------|------------------|---------------|
-| Case sensitivity | Preserved | Lowercased by browser |
-| Dynamic arguments | Full support | Lowercase only |
-| Recommendation | Preferred | Use for progressive enhancement |
+| Feature           | SFC (.vue files) | In-DOM (HTML)                   |
+| ----------------- | ---------------- | ------------------------------- |
+| Case sensitivity  | Preserved        | Lowercased by browser           |
+| Dynamic arguments | Full support     | Lowercase only                  |
+| Recommendation    | Preferred        | Use for progressive enhancement |
 
 ## Valid Dynamic Argument Values
 
@@ -136,11 +138,12 @@ const attr3 = null
 const attr4 = undefined
 
 // Numbers, objects, arrays - WARNING
-const attr5 = 123        // Warning: should be string
+const attr5 = 123 // Warning: should be string
 const attr6 = { foo: 1 } // Warning: should be string
 </script>
 ```
 
 ## Reference
+
 - [Vue.js Template Syntax - Dynamic Arguments](https://vuejs.org/guide/essentials/template-syntax.html#dynamic-arguments)
 - [Vue.js Template Syntax - Dynamic Argument Value Constraints](https://vuejs.org/guide/essentials/template-syntax.html#dynamic-argument-value-constraints)

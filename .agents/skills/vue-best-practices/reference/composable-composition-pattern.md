@@ -78,8 +78,7 @@ export function useMouseInElement(elementRef) {
   const isOutside = computed(() => {
     if (!elementRef.value) return true
     const rect = elementRef.value.getBoundingClientRect()
-    return x.value < rect.left || x.value > rect.right ||
-           y.value < rect.top || y.value > rect.bottom
+    return x.value < rect.left || x.value > rect.right || y.value < rect.top || y.value > rect.bottom
   })
 
   return { x, y, elementX, elementY, isOutside }
@@ -90,9 +89,15 @@ export function useMouseInElement(elementRef) {
 
 ```javascript
 // Layer 1: Primitives
-export function useEventListener(target, event, callback) { /* ... */ }
-export function useInterval(callback, delay) { /* ... */ }
-export function useTimeout(callback, delay) { /* ... */ }
+export function useEventListener(target, event, callback) {
+  /* ... */
+}
+export function useInterval(callback, delay) {
+  /* ... */
+}
+export function useTimeout(callback, delay) {
+  /* ... */
+}
 
 // Layer 2: Building on primitives
 export function useWindowSize() {
@@ -110,8 +115,8 @@ export function useWindowSize() {
 export function useOnline() {
   const isOnline = ref(navigator.onLine)
 
-  useEventListener(window, 'online', () => isOnline.value = true)
-  useEventListener(window, 'offline', () => isOnline.value = false)
+  useEventListener(window, 'online', () => (isOnline.value = true))
+  useEventListener(window, 'offline', () => (isOnline.value = false))
 
   return { isOnline }
 }
@@ -126,20 +131,24 @@ export function useAutoSave(dataRef, saveFunction, options = {}) {
 
   let timeoutId = null
 
-  watch(dataRef, (newData) => {
-    if (onlyWhenOnline && !isOnline.value) return
+  watch(
+    dataRef,
+    (newData) => {
+      if (onlyWhenOnline && !isOnline.value) return
 
-    clearTimeout(timeoutId)
-    timeoutId = setTimeout(async () => {
-      isSaving.value = true
-      try {
-        await saveFunction(newData)
-        lastSaved.value = new Date()
-      } finally {
-        isSaving.value = false
-      }
-    }, debounce)
-  }, { deep: true })
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(async () => {
+        isSaving.value = true
+        try {
+          await saveFunction(newData)
+          lastSaved.value = new Date()
+        } finally {
+          isSaving.value = false
+        }
+      }, debounce)
+    },
+    { deep: true }
+  )
 
   return { isSaving, lastSaved, isOnline }
 }
@@ -190,11 +199,11 @@ export function useFilteredProducts(products, filters) {
     let result = toValue(products)
 
     if (filters.value.category) {
-      result = result.filter(p => p.category === filters.value.category)
+      result = result.filter((p) => p.category === filters.value.category)
     }
 
     if (filters.value.minPrice > 0) {
-      result = result.filter(p => p.price >= filters.value.minPrice)
+      result = result.filter((p) => p.price >= filters.value.minPrice)
     }
 
     return result
@@ -223,14 +232,15 @@ const sortedProducts = useSortedProducts(filteredProducts, sortConfig)
 
 ## Advantages Over Mixins
 
-| Composables | Mixins |
-|-------------|--------|
-| Explicit dependencies via imports | Implicit dependencies |
-| Clear data flow via parameters | Unclear which mixin provides what |
-| No namespace collisions | Properties can conflict |
-| Easy to trace and debug | Hard to track origins |
-| TypeScript-friendly | Poor TypeScript support |
+| Composables                       | Mixins                            |
+| --------------------------------- | --------------------------------- |
+| Explicit dependencies via imports | Implicit dependencies             |
+| Clear data flow via parameters    | Unclear which mixin provides what |
+| No namespace collisions           | Properties can conflict           |
+| Easy to trace and debug           | Hard to track origins             |
+| TypeScript-friendly               | Poor TypeScript support           |
 
 ## Reference
+
 - [Vue.js Composables](https://vuejs.org/guide/reusability/composables.html)
 - [Vue.js Composables vs Mixins](https://vuejs.org/guide/reusability/composables.html#comparisons-with-other-techniques)

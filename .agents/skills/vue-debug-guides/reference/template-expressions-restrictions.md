@@ -21,6 +21,7 @@ Template interpolation `{{ }}` and directive bindings evaluate JavaScript expres
 - [ ] Use `v-if`/`v-else` directives for conditional rendering
 
 **Incorrect:**
+
 ```vue
 <template>
   <!-- ERROR: Variable declaration is a statement, not expression -->
@@ -42,6 +43,7 @@ Template interpolation `{{ }}` and directive bindings evaluate JavaScript expres
 ```
 
 **Correct:**
+
 ```vue
 <template>
   <!-- OK: Simple expressions -->
@@ -56,7 +58,7 @@ Template interpolation `{{ }}` and directive bindings evaluate JavaScript expres
 
   <!-- OK: Method/function calls -->
   <p>{{ formatDate(date) }}</p>
-  <p>{{ items.filter(i => i.active).length }}</p>
+  <p>{{ items.filter((i) => i.active).length }}</p>
 
   <!-- OK: Chained expressions -->
   <p>{{ message.split('').reverse().join('') }}</p>
@@ -110,5 +112,6 @@ function formatDate(date) {
 ```
 
 ## Reference
+
 - [Vue.js Template Syntax - Using JavaScript Expressions](https://vuejs.org/guide/essentials/template-syntax.html#using-javascript-expressions)
 - [Vue.js Conditional Rendering](https://vuejs.org/guide/essentials/conditional.html)

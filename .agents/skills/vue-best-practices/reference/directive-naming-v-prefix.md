@@ -19,6 +19,7 @@ Following this naming pattern ensures Vue correctly recognizes and registers you
 - [ ] For multi-word directives, use camelCase in script and kebab-case in template
 
 **Incorrect:**
+
 ```vue
 <script setup>
 // WRONG: No v prefix - won't be recognized as directive
@@ -45,6 +46,7 @@ const 'v-focus' = {  // Syntax error
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 // CORRECT: v prefix with camelCase
@@ -92,9 +94,13 @@ In templates, directives should use kebab-case:
 
 ```vue
 <script setup>
-const vMyLongDirectiveName = (el) => { /* ... */ }
+const vMyLongDirectiveName = (el) => {
+  /* ... */
+}
 const vAutoFocusInput = (el) => el.focus()
-const vLazyLoadImage = { /* ... */ }
+const vLazyLoadImage = {
+  /* ... */
+}
 </script>
 
 <template>
@@ -122,8 +128,12 @@ export default {
     },
     // Multi-word uses camelCase key
     clickOutside: {
-      mounted(el, binding) { /* ... */ },
-      unmounted(el) { /* ... */ }
+      mounted(el, binding) {
+        /* ... */
+      },
+      unmounted(el) {
+        /* ... */
+      }
     }
   }
 }
@@ -147,8 +157,12 @@ app.directive('focus', {
 
 // Multi-word directive
 app.directive('click-outside', {
-  mounted(el, binding) { /* ... */ },
-  unmounted(el) { /* ... */ }
+  mounted(el, binding) {
+    /* ... */
+  },
+  unmounted(el) {
+    /* ... */
+  }
 })
 
 // Function shorthand
@@ -189,4 +203,5 @@ import { vFocus } from '@/directives/focus'
 ```
 
 ## Reference
+
 - [Vue.js Custom Directives - Introduction](https://vuejs.org/guide/reusability/custom-directives#introduction)

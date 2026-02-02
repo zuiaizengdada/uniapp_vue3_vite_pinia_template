@@ -21,6 +21,7 @@ Component refs should be reserved for imperative actions (focus, scroll, animati
 - [ ] Consider if the interaction can be expressed declaratively
 
 **Incorrect:**
+
 ```vue
 <!-- ParentComponent.vue -->
 <script setup>
@@ -85,6 +86,7 @@ defineExpose({
 ```
 
 **Correct:**
+
 ```vue
 <!-- ParentComponent.vue -->
 <script setup>
@@ -109,12 +111,7 @@ function handleValidChange(isValid) {
 
 <template>
   <!-- CORRECT: Props down, events up -->
-  <UserForm
-    :initial-data="initialData"
-    :submitting="isSubmitting"
-    @submit="handleSubmit"
-    @valid-change="handleValidChange"
-  />
+  <UserForm :initial-data="initialData" :submitting="isSubmitting" @submit="handleSubmit" @valid-change="handleValidChange" />
 </template>
 ```
 
@@ -202,15 +199,16 @@ defineExpose({
 
 ## Summary
 
-| Use Case | Approach |
-|----------|----------|
-| Pass data to child | Props |
-| Child notifies parent | Emit events |
-| Two-way binding | v-model (props + emit) |
-| Focus, scroll, animate | Component ref with minimal expose |
-| Access child internal state | Refactor to use props/emit |
+| Use Case                    | Approach                          |
+| --------------------------- | --------------------------------- |
+| Pass data to child          | Props                             |
+| Child notifies parent       | Emit events                       |
+| Two-way binding             | v-model (props + emit)            |
+| Focus, scroll, animate      | Component ref with minimal expose |
+| Access child internal state | Refactor to use props/emit        |
 
 ## Reference
+
 - [Vue.js Component Basics - Props](https://vuejs.org/guide/components/props.html)
 - [Vue.js Component Events](https://vuejs.org/guide/components/events.html)
 - [Vue.js Template Refs - Ref on Component](https://vuejs.org/guide/essentials/template-refs.html#ref-on-component)

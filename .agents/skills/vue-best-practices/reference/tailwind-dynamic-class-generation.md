@@ -17,25 +17,19 @@ Never construct Tailwind CSS class names dynamically using string concatenation 
 <script setup>
 const props = defineProps({
   color: String, // 'red', 'blue', 'green'
-  size: String   // 'sm', 'md', 'lg'
+  size: String // 'sm', 'md', 'lg'
 })
 </script>
 
 <template>
   <!-- WRONG: Tailwind cannot detect these classes -->
-  <div :class="`bg-${color}-500 text-${size}`">
-    Content
-  </div>
+  <div :class="`bg-${color}-500 text-${size}`">Content</div>
 
   <!-- WRONG: String concatenation -->
-  <div :class="'p-' + padding">
-    Content
-  </div>
+  <div :class="'p-' + padding">Content</div>
 
   <!-- WRONG: Template literal in array -->
-  <div :class="[`gap-x-${spacing}`]">
-    Content
-  </div>
+  <div :class="[`gap-x-${spacing}`]">Content</div>
 </template>
 ```
 
@@ -64,9 +58,7 @@ const sizeClasses = {
 
 <template>
   <!-- CORRECT: Full class names that Tailwind can detect -->
-  <div :class="[colorClasses[color], sizeClasses[size]]">
-    Content
-  </div>
+  <div :class="[colorClasses[color], sizeClasses[size]]">Content</div>
 </template>
 ```
 
@@ -81,11 +73,13 @@ const props = defineProps({
 
 <template>
   <!-- CORRECT: All class names are complete strings -->
-  <button :class="{
-    'bg-blue-500 hover:bg-blue-600': variant === 'primary',
-    'bg-gray-500 hover:bg-gray-600': variant === 'secondary',
-    'bg-red-500 hover:bg-red-600': variant === 'danger'
-  }">
+  <button
+    :class="{
+      'bg-blue-500 hover:bg-blue-600': variant === 'primary',
+      'bg-gray-500 hover:bg-gray-600': variant === 'secondary',
+      'bg-red-500 hover:bg-red-600': variant === 'danger'
+    }"
+  >
     Click me
   </button>
 </template>
@@ -123,12 +117,7 @@ const props = defineProps({
 
 <template>
   <!-- Use CSS variable for truly dynamic values -->
-  <div
-    class="dynamic-bg"
-    :style="{ '--dynamic-color': customColor }"
-  >
-    Content
-  </div>
+  <div class="dynamic-bg" :style="{ '--dynamic-color': customColor }">Content</div>
 </template>
 
 <style>

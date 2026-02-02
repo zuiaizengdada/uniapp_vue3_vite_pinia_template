@@ -20,6 +20,7 @@ Vue 3.5+ automatically transforms destructured props for template reactivity, bu
 - [ ] Consider using `props.propertyName` directly if getter syntax feels awkward
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { watch } from 'vue'
@@ -30,15 +31,16 @@ const { searchQuery, userId } = defineProps(['searchQuery', 'userId'])
 // WRONG: Passing value, not reactive source
 // This captures the initial value only - changes won't trigger the watcher
 watch(searchQuery, (newValue) => {
-  console.log('Query changed:', newValue)  // Never fires after initial!
+  console.log('Query changed:', newValue) // Never fires after initial!
 })
 
 // WRONG: Composable receives static value
-const debouncedQuery = useDebounce(searchQuery, 300)  // Won't update
+const debouncedQuery = useDebounce(searchQuery, 300) // Won't update
 </script>
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { watch } from 'vue'
@@ -47,9 +49,12 @@ import { useDebounce } from './composables'
 const { searchQuery, userId } = defineProps(['searchQuery', 'userId'])
 
 // CORRECT: Wrap in getter function to maintain reactivity
-watch(() => searchQuery, (newValue) => {
-  console.log('Query changed:', newValue)  // Fires on every change
-})
+watch(
+  () => searchQuery,
+  (newValue) => {
+    console.log('Query changed:', newValue) // Fires on every change
+  }
+)
 
 // CORRECT: Pass getter to composable
 const debouncedQuery = useDebounce(() => searchQuery, 300)
@@ -65,9 +70,12 @@ import { watch } from 'vue'
 const props = defineProps(['searchQuery', 'userId'])
 
 // Also correct: Watch via props object (no getter needed)
-watch(() => props.searchQuery, (newValue) => {
-  console.log('Query changed:', newValue)
-})
+watch(
+  () => props.searchQuery,
+  (newValue) => {
+    console.log('Query changed:', newValue)
+  }
+)
 
 // Watch multiple props
 watch(
@@ -88,7 +96,7 @@ When creating composables that should work with destructured props:
 import { ref, watch, toValue } from 'vue'
 
 export function useDebounce(source, delay = 300) {
-  const debounced = ref(toValue(source))  // toValue handles both getter and ref
+  const debounced = ref(toValue(source)) // toValue handles both getter and ref
   let timeout
 
   watch(
@@ -134,5 +142,6 @@ const __props = defineProps(['foo'])
 However, external function calls still need getters because JavaScript itself passes values, not references.
 
 ## Reference
+
 - [Vue.js Props - Reactive Props Destructure](https://vuejs.org/guide/components/props.html#reactive-props-destructure)
 - [Vue.js Watchers - Watch Source Types](https://vuejs.org/guide/essentials/watchers.html#watch-source-types)

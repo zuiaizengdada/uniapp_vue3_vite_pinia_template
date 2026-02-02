@@ -33,8 +33,8 @@ export const useUserStore = defineStore('user', () => {
   const email = ref('')
 
   // "Private" state - NOT returned
-  const authToken = ref('')  // Won't be serialized for SSR!
-  const lastFetchTime = ref(null)  // Won't appear in DevTools!
+  const authToken = ref('') // Won't be serialized for SSR!
+  const lastFetchTime = ref(null) // Won't appear in DevTools!
 
   const isLoggedIn = computed(() => !!authToken.value)
 
@@ -45,7 +45,7 @@ export const useUserStore = defineStore('user', () => {
     })
     const data = await response.json()
 
-    authToken.value = data.token  // This state won't transfer to client in SSR!
+    authToken.value = data.token // This state won't transfer to client in SSR!
     name.value = data.name
     email.value = data.email
     lastFetchTime.value = Date.now()
@@ -166,8 +166,8 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     name: '',
     email: '',
-    authToken: '',  // Automatically included
-    lastFetchTime: null  // Automatically included
+    authToken: '', // Automatically included
+    lastFetchTime: null // Automatically included
   }),
 
   getters: {
@@ -189,13 +189,14 @@ Understanding the mapping helps avoid mistakes:
 ```javascript
 defineStore('example', () => {
   // ref() becomes state
-  const count = ref(0)  // → state.count
+  const count = ref(0) // → state.count
 
   // computed() becomes getters
-  const double = computed(() => count.value * 2)  // → getters.double
+  const double = computed(() => count.value * 2) // → getters.double
 
   // Regular functions become actions
-  function increment() {  // → actions.increment
+  function increment() {
+    // → actions.increment
     count.value++
   }
 
@@ -222,6 +223,7 @@ console.log(Object.keys(userStore))
 ```
 
 ## Reference
+
 - [Pinia - Setup Stores](https://pinia.vuejs.org/core-concepts/#setup-stores)
 - [Pinia - SSR](https://pinia.vuejs.org/ssr/)
 - [Mastering Pinia - Common Mistakes](https://masteringpinia.com/blog/top-5-mistakes-to-avoid-when-using-pinia)

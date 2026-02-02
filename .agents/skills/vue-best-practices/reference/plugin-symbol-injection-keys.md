@@ -27,12 +27,12 @@ export default {
 }
 
 // component.vue
-const http = inject('http')  // Type is unknown
-const config = inject('config')  // Type is unknown
+const http = inject('http') // Type is unknown
+const config = inject('config') // Type is unknown
 
 // Another plugin accidentally uses the same key
 otherPlugin.install = (app) => {
-  app.provide('http', differentHttpClient)  // COLLISION! Overwrites first
+  app.provide('http', differentHttpClient) // COLLISION! Overwrites first
 }
 ```
 

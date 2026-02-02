@@ -13,11 +13,12 @@ tags: [vue3, v-model, defineModel, modifiers, props, naming]
 ## Task Checklist
 
 - [ ] Don't create props that end with "Modifiers" when using defineModel
-- [ ] Be aware that each defineModel creates an associated *Modifiers prop
+- [ ] Be aware that each defineModel creates an associated \*Modifiers prop
 - [ ] When using multiple models, avoid names where one model could conflict with another's modifier prop
 - [ ] Document custom modifiers to help consumers understand available options
 
 **Problem - Hidden props created automatically:**
+
 ```vue
 <script setup>
 // This creates TWO props: modelValue and modelValueModifiers
@@ -28,12 +29,13 @@ const title = defineModel('title')
 
 // CONFLICT: This prop name collides with the hidden titleModifiers
 const props = defineProps({
-  titleModifiers: Object  // WRONG: Conflicts with defineModel's hidden prop
+  titleModifiers: Object // WRONG: Conflicts with defineModel's hidden prop
 })
 </script>
 ```
 
 **Parent using modifiers:**
+
 ```vue
 <template>
   <!-- Vue passes modifiers via the hidden *Modifiers prop -->
@@ -44,6 +46,7 @@ const props = defineProps({
 ```
 
 **Correct - Accessing modifiers in child:**
+
 ```vue
 <script setup>
 // Access modifiers via destructuring
@@ -67,8 +70,8 @@ const [title, titleModifiers] = defineModel('title', {
 ```vue
 <script setup>
 // These are OK - no conflicts
-const name = defineModel('name')      // Creates: name, nameModifiers
-const age = defineModel('age')        // Creates: age, ageModifiers
+const name = defineModel('name') // Creates: name, nameModifiers
+const age = defineModel('age') // Creates: age, ageModifiers
 
 // PROBLEM: If you had a model named 'model', it creates:
 // - 'model' prop
@@ -77,18 +80,19 @@ const age = defineModel('age')        // Creates: age, ageModifiers
 // The names are similar and can cause confusion
 
 // AVOID: Don't name a model something that would conflict
-const model = defineModel('model')  // Creates 'model' and 'modelModifiers'
+const model = defineModel('model') // Creates 'model' and 'modelModifiers'
 // This is confusing alongside the default modelValue/modelValueModifiers
 </script>
 ```
 
 **Best Practice - Clear, distinct model names:**
+
 ```vue
 <script setup>
 // Good: Clear, distinct names that won't conflict
-const firstName = defineModel('firstName')   // firstNameModifiers
-const lastName = defineModel('lastName')     // lastNameModifiers
-const email = defineModel('email')           // emailModifiers
+const firstName = defineModel('firstName') // firstNameModifiers
+const lastName = defineModel('lastName') // lastNameModifiers
+const email = defineModel('email') // emailModifiers
 
 // Avoid ambiguous names
 // Bad: const value = defineModel('value')  // valueModifiers - too generic
@@ -130,5 +134,6 @@ const [title, modifiers] = defineModel('title', {
 ```
 
 ## Reference
+
 - [Vue.js Component v-model - Modifiers](https://vuejs.org/guide/components/v-model.html#handling-v-model-modifiers)
 - [Vue.js RFC - defineModel](https://github.com/vuejs/rfcs/discussions/503)

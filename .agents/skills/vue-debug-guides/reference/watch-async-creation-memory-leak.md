@@ -21,6 +21,7 @@ Always manually stop watchers that are created asynchronously, or restructure yo
 - [ ] Watch for this pattern in setTimeout, Promise callbacks, and after await
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { ref, watch, watchEffect, onMounted } from 'vue'
@@ -31,7 +32,7 @@ const data = ref(null)
 onMounted(() => {
   setTimeout(() => {
     watchEffect(() => {
-      console.log(data.value)  // Keeps running after unmount!
+      console.log(data.value) // Keeps running after unmount!
     })
   }, 1000)
 })
@@ -42,7 +43,7 @@ onMounted(async () => {
 
   // This watcher is NOT bound to component lifecycle
   watch(data, (newVal) => {
-    processData(newVal)  // Memory leak!
+    processData(newVal) // Memory leak!
   })
 })
 
@@ -56,6 +57,7 @@ fetch('/api/config').then(() => {
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { ref, watch, watchEffect, onMounted, onUnmounted } from 'vue'
@@ -65,14 +67,11 @@ const isDataLoaded = ref(false)
 let asyncWatcherCleanup = null
 
 // CORRECT: Synchronous watcher with conditional logic
-watch(
-  data,
-  (newVal) => {
-    if (isDataLoaded.value && newVal) {
-      processData(newVal)
-    }
+watch(data, (newVal) => {
+  if (isDataLoaded.value && newVal) {
+    processData(newVal)
   }
-)
+})
 
 onMounted(async () => {
   await loadInitialData()
@@ -110,15 +109,12 @@ const config = ref(null)
 const userData = ref(null)
 
 // BEST: Create watcher synchronously, handle async condition inside
-watch(
-  userData,
-  (newData) => {
-    // Only process when config is loaded
-    if (config.value && newData) {
-      applyUserSettings(config.value, newData)
-    }
+watch(userData, (newData) => {
+  // Only process when config is loaded
+  if (config.value && newData) {
+    applyUserSettings(config.value, newData)
   }
-)
+})
 
 onMounted(async () => {
   config.value = await fetchConfig()
@@ -167,10 +163,11 @@ function createDynamicWatcher(source, callback) {
 
 // Clean up all dynamic watchers
 onUnmounted(() => {
-  unwatchers.forEach(unwatch => unwatch())
+  unwatchers.forEach((unwatch) => unwatch())
 })
 </script>
 ```
 
 ## Reference
+
 - [Vue.js Watchers - Stopping a Watcher](https://vuejs.org/guide/essentials/watchers.html#stopping-a-watcher)

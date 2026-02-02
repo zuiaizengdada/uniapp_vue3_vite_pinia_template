@@ -54,6 +54,7 @@ function selectItem(item) {
 Manually forward events through each component.
 
 **Correct:**
+
 ```vue
 <!-- GrandParent.vue -->
 <template>
@@ -91,6 +92,7 @@ function selectItem(item) {
 For deeply nested components, provide a callback from the ancestor.
 
 **Correct:**
+
 ```vue
 <!-- GrandParent.vue -->
 <script setup>
@@ -131,6 +133,7 @@ function selectItem(item) {
 ```
 
 **Advantages:**
+
 - Skips intermediate components
 - No prop drilling or re-emitting
 - Works at any nesting depth
@@ -140,6 +143,7 @@ function selectItem(item) {
 For cross-component communication, especially between siblings or unrelated components, use Pinia.
 
 **Correct:**
+
 ```js
 // stores/selection.js
 import { defineStore } from 'pinia'
@@ -178,9 +182,7 @@ const store = useSelectionStore()
 </script>
 
 <template>
-  <div v-if="store.selectedItem">
-    Selected: {{ store.selectedItem.name }}
-  </div>
+  <div v-if="store.selectedItem">Selected: {{ store.selectedItem.name }}</div>
 </template>
 ```
 
@@ -224,12 +226,12 @@ onUnmounted(() => emitter.off('custom-event', handleEvent))
 
 ## Comparison Table
 
-| Method | Best For | Complexity |
-|--------|----------|------------|
-| Re-emit | 1-2 levels deep | Low |
-| Provide/Inject | Deep nesting, ancestor communication | Medium |
-| Pinia/State | Complex apps, sibling communication | Medium |
-| Event Bus | Truly decoupled, rare cases | Low (but risky) |
+| Method         | Best For                             | Complexity      |
+| -------------- | ------------------------------------ | --------------- |
+| Re-emit        | 1-2 levels deep                      | Low             |
+| Provide/Inject | Deep nesting, ancestor communication | Medium          |
+| Pinia/State    | Complex apps, sibling communication  | Medium          |
+| Event Bus      | Truly decoupled, rare cases          | Low (but risky) |
 
 ## Native Events DO Bubble
 
@@ -248,5 +250,6 @@ Note that native DOM events attached to elements still bubble normally:
 Only Vue component events (those emitted with `emit()`) don't bubble.
 
 ## Reference
+
 - [Vue.js Component Events](https://vuejs.org/guide/components/events.html)
 - [Vue.js Provide/Inject](https://vuejs.org/guide/components/provide-inject.html)

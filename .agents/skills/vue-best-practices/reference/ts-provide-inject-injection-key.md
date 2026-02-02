@@ -42,10 +42,10 @@ provide('user', user)
 import { inject } from 'vue'
 
 // Type is unknown!
-const user = inject('user')  // Type: unknown
+const user = inject('user') // Type: unknown
 
 // Must manually assert type - error prone
-const user = inject('user') as User  // Works but risky
+const user = inject('user') as User // Works but risky
 </script>
 ```
 
@@ -83,13 +83,17 @@ const user: User = { id: '1', name: 'John' }
 provide(userKey, user)
 
 // Error if type doesn't match
-provide(userKey, { wrong: 'data' })  // TypeScript error!
+provide(userKey, { wrong: 'data' }) // TypeScript error!
 
 // Complex context
 const authContext: AuthContext = {
   user: ref(null),
-  login: async (creds) => { /* ... */ },
-  logout: async () => { /* ... */ }
+  login: async (creds) => {
+    /* ... */
+  },
+  logout: async () => {
+    /* ... */
+  }
 }
 provide(authKey, authContext)
 </script>
@@ -109,7 +113,7 @@ const auth = inject(authKey)
 
 // Access with proper typing
 if (user) {
-  console.log(user.name)  // TypeScript knows this is string
+  console.log(user.name) // TypeScript knows this is string
 }
 </script>
 ```
@@ -157,10 +161,7 @@ export function useAuth(): AuthContext {
   const auth = inject(authKey)
 
   if (!auth) {
-    throw new Error(
-      'useAuth() requires an AuthProvider ancestor. ' +
-      'Make sure to wrap your component tree with <AuthProvider>.'
-    )
+    throw new Error('useAuth() requires an AuthProvider ancestor. ' + 'Make sure to wrap your component tree with <AuthProvider>.')
   }
 
   return auth
@@ -239,7 +240,10 @@ export function createListKey<T>(name: string): InjectionKey<ListContext<T>> {
 }
 
 // Usage
-interface Product { id: string; name: string }
+interface Product {
+  id: string
+  name: string
+}
 export const productListKey = createListKey<Product>('productList')
 ```
 
@@ -253,5 +257,6 @@ export const productListKey = createListKey<Product>('productList')
 6. **Provide default values** when the provider is optional
 
 ## Reference
+
 - [Vue.js TypeScript with Composition API - Provide/Inject](https://vuejs.org/guide/typescript/composition-api.html#typing-provide-inject)
 - [Vue.js Provide/Inject](https://vuejs.org/guide/components/provide-inject.html)

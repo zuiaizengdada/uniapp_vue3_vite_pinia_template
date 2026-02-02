@@ -20,6 +20,7 @@ This can cause bugs when you need to perform operations with the updated value i
 - [ ] Consider batching related updates together
 
 **Incorrect - Expecting immediate value update:**
+
 ```vue
 <script setup>
 const model = defineModel<string>()
@@ -43,6 +44,7 @@ function updateAndLog() {
 ```
 
 **Correct - Use the value directly:**
+
 ```vue
 <script setup>
 const model = defineModel<string>()
@@ -66,6 +68,7 @@ function updateAndLog() {
 ```
 
 **Alternative - Use nextTick for deferred operations:**
+
 ```vue
 <script setup>
 import { nextTick } from 'vue'
@@ -157,6 +160,7 @@ function update() {
 ```
 
 ## Reference
+
 - [Vue.js Reactivity - nextTick](https://vuejs.org/api/general.html#nexttick)
 - [Vue.js Component v-model](https://vuejs.org/guide/components/v-model.html)
 - [SIMPL Engineering: Vue defineModel Pitfalls](https://engineering.simpl.de/post/vue_definemodel/)

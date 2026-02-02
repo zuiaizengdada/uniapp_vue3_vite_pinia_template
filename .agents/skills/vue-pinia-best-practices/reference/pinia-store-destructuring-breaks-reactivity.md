@@ -102,18 +102,14 @@ const cartStore = useCartStore()
 
 // State and getters: USE storeToRefs
 const {
-  items,           // state
-  itemCount,       // getter
-  totalPrice,      // getter
-  isEmpty          // getter
+  items, // state
+  itemCount, // getter
+  totalPrice, // getter
+  isEmpty // getter
 } = storeToRefs(cartStore)
 
 // Actions: destructure directly
-const {
-  addItem,
-  removeItem,
-  clearCart
-} = cartStore
+const { addItem, removeItem, clearCart } = cartStore
 </script>
 
 <template>
@@ -189,5 +185,6 @@ const { login } = userStore
 ```
 
 ## Reference
+
 - [Pinia - Destructuring from a Store](https://pinia.vuejs.org/core-concepts/#destructuring-from-a-store)
 - [Pinia API - storeToRefs](https://pinia.vuejs.org/api/modules/pinia.html#storetorefs)

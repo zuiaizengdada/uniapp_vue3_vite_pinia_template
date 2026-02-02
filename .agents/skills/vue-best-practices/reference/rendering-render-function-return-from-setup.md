@@ -17,6 +17,7 @@ tags: [vue3, render-function, composition-api, setup, reactivity]
 - [ ] Ensure reactive values are accessed inside the returned function
 
 **Incorrect:**
+
 ```js
 import { h, ref } from 'vue'
 
@@ -28,7 +29,7 @@ export default {
     // WRONG: Returns a static vnode, created once
     // Clicking the button updates count.value, but the DOM never changes!
     return h('div', [
-      h('p', `Count: ${count.value}`),  // Captures count.value at setup time (0)
+      h('p', `Count: ${count.value}`), // Captures count.value at setup time (0)
       h('button', { onClick: increment }, 'Increment')
     ])
   }
@@ -36,6 +37,7 @@ export default {
 ```
 
 **Correct:**
+
 ```js
 import { h, ref } from 'vue'
 
@@ -46,10 +48,11 @@ export default {
 
     // CORRECT: Returns a render function
     // Vue calls this function on every reactive update
-    return () => h('div', [
-      h('p', `Count: ${count.value}`),  // Re-evaluated each render
-      h('button', { onClick: increment }, 'Increment')
-    ])
+    return () =>
+      h('div', [
+        h('p', `Count: ${count.value}`), // Re-evaluated each render
+        h('button', { onClick: increment }, 'Increment')
+      ])
   }
 }
 ```
@@ -114,7 +117,9 @@ import { h, ref } from 'vue'
 export default {
   setup(props, { expose }) {
     const count = ref(0)
-    const reset = () => { count.value = 0 }
+    const reset = () => {
+      count.value = 0
+    }
 
     // Expose methods for parent refs
     expose({ reset })
@@ -134,15 +139,17 @@ export default {
   setup(props, { slots }) {
     const count = ref(0)
 
-    return () => h('div', [
-      h('p', `Count: ${count.value}`),
-      // Slots must also be called inside the render function
-      slots.default?.()
-    ])
+    return () =>
+      h('div', [
+        h('p', `Count: ${count.value}`),
+        // Slots must also be called inside the render function
+        slots.default?.()
+      ])
   }
 }
 ```
 
 ## Reference
+
 - [Vue.js Render Functions with Composition API](https://vuejs.org/guide/extras/render-function.html#render-functions-jsx)
 - [Vue.js Composition API setup()](https://vuejs.org/api/composition-api-setup.html)

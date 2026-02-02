@@ -21,20 +21,11 @@ This pattern is particularly useful for enter animations when new items are adde
 - [ ] Consider using animation libraries (GSAP) for complex animations
 
 **Basic Pattern:**
+
 ```vue
 <template>
-  <TransitionGroup
-    tag="ul"
-    :css="false"
-    @before-enter="onBeforeEnter"
-    @enter="onEnter"
-    @leave="onLeave"
-  >
-    <li
-      v-for="(item, index) in items"
-      :key="item.id"
-      :data-index="index"
-    >
+  <TransitionGroup tag="ul" :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
+    <li v-for="(item, index) in items" :key="item.id" :data-index="index">
       {{ item.name }}
     </li>
   </TransitionGroup>
@@ -74,20 +65,11 @@ function onLeave(el, done) {
 ```
 
 **With GSAP Animation Library:**
+
 ```vue
 <template>
-  <TransitionGroup
-    tag="ul"
-    :css="false"
-    @before-enter="onBeforeEnter"
-    @enter="onEnter"
-    @leave="onLeave"
-  >
-    <li
-      v-for="(item, index) in computedList"
-      :key="item.id"
-      :data-index="index"
-    >
+  <TransitionGroup tag="ul" :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
+    <li v-for="(item, index) in computedList" :key="item.id" :data-index="index">
       {{ item.msg }}
     </li>
   </TransitionGroup>
@@ -127,13 +109,11 @@ When set, Vue skips CSS transition detection:
 
 ```vue
 <!-- Vue will look for CSS classes and detect durations -->
-<TransitionGroup name="list">
-
-<!-- Vue skips CSS, uses only JavaScript hooks -->
-<TransitionGroup :css="false">
+<TransitionGroup name="list"></TransitionGroup>
 ```
 
 Use `:css="false"` when:
+
 - You're handling all animations in JavaScript
 - You want to avoid CSS class application overhead
 - You're using a JavaScript animation library (GSAP, anime.js, etc.)
@@ -155,9 +135,7 @@ const items = ref([
 const query = ref('')
 
 const computedList = computed(() => {
-  return items.value.filter(item =>
-    item.msg.toLowerCase().includes(query.value.toLowerCase())
-  )
+  return items.value.filter((item) => item.msg.toLowerCase().includes(query.value.toLowerCase()))
 })
 </script>
 ```
@@ -196,5 +174,6 @@ function onEnter(el, done) {
 ```
 
 ## Reference
+
 - [Vue.js TransitionGroup Staggering Transitions](https://vuejs.org/guide/built-ins/transition-group.html#staggering-list-transitions)
 - [GSAP Animation Library](https://greensock.com/gsap/)

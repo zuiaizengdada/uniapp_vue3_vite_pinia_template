@@ -20,6 +20,7 @@ Every vnode in a component's render tree must be unique. You cannot use the same
 - [ ] Be especially careful when extracting vnode creation into helper functions
 
 **Incorrect:**
+
 ```javascript
 import { h } from 'vue'
 
@@ -43,8 +44,8 @@ export default {
       // WRONG: Reusing vnode in different parts of tree
       const icon = h('span', { class: 'icon' }, '★')
       return h('div', [
-        h('button', [icon, ' Save']),    // Uses icon
-        h('button', [icon, ' Delete'])   // Reuses same icon - Bug!
+        h('button', [icon, ' Save']), // Uses icon
+        h('button', [icon, ' Delete']) // Reuses same icon - Bug!
       ])
     }
   }
@@ -52,6 +53,7 @@ export default {
 ```
 
 **Correct:**
+
 ```javascript
 import { h } from 'vue'
 
@@ -59,10 +61,7 @@ export default {
   setup() {
     return () => {
       // CORRECT: Create new vnode for each use
-      return h('div', [
-        h('p', 'Hello'),
-        h('p', 'Hello')
-      ])
+      return h('div', [h('p', 'Hello'), h('p', 'Hello')])
     }
   }
 }
@@ -76,10 +75,7 @@ export default {
     return () => {
       // CORRECT: Factory function creates new vnode each time
       const createIcon = () => h('span', { class: 'icon' }, '★')
-      return h('div', [
-        h('button', [createIcon(), ' Save']),
-        h('button', [createIcon(), ' Delete'])
-      ])
+      return h('div', [h('button', [createIcon(), ' Save']), h('button', [createIcon(), ' Delete'])])
     }
   }
 }
@@ -92,7 +88,8 @@ export default {
   setup() {
     return () => {
       // CORRECT: Using map to create multiple vnodes
-      return h('div',
+      return h(
+        'div',
         Array.from({ length: 20 }).map(() => h('p', 'Hello'))
       )
     }
@@ -107,12 +104,12 @@ export default {
   setup() {
     const items = ['Apple', 'Banana', 'Cherry']
 
-    return () => h('ul',
-      // CORRECT: Each iteration creates a new vnode
-      items.map((item, index) =>
-        h('li', { key: index }, item)
+    return () =>
+      h(
+        'ul',
+        // CORRECT: Each iteration creates a new vnode
+        items.map((item, index) => h('li', { key: index }, item))
       )
-    )
   }
 }
 ```
@@ -120,14 +117,17 @@ export default {
 ## Why VNodes Must Be Unique
 
 VNodes are lightweight JavaScript objects that Vue's virtual DOM algorithm uses for diffing and patching. When the same vnode reference appears multiple times:
+
 - Vue cannot differentiate between the instances
 - The diffing algorithm produces incorrect results
 - Only one instance may render, or updates may corrupt the DOM
 
 Each vnode maintains its own identity and position in the tree, which is essential for:
+
 - Correct DOM patching during updates
 - Proper lifecycle hook execution
 - Accurate key-based reconciliation in lists
 
 ## Reference
+
 - [Vue.js Render Functions - Vnodes Must Be Unique](https://vuejs.org/guide/extras/render-function.html#vnodes-must-be-unique)

@@ -80,9 +80,7 @@ export function createI18n(options: I18nOptions): Plugin {
       const { locale, messages, fallbackLocale = 'en' } = options
 
       const translate = (key: string): string => {
-        return messages[locale]?.[key]
-          ?? messages[fallbackLocale]?.[key]
-          ?? key
+        return messages[locale]?.[key] ?? messages[fallbackLocale]?.[key] ?? key
       }
 
       app.provide('i18n', { translate, locale })
@@ -99,7 +97,7 @@ const i18n = createI18n({
   }
 })
 
-app.use(i18n)  // No second argument needed
+app.use(i18n) // No second argument needed
 ```
 
 ## Common Plugin Capabilities
@@ -168,14 +166,20 @@ const simplePlugin: Plugin = {
 ```typescript
 // BAD - This is just an object, not a plugin
 const notAPlugin = {
-  doSomething() { /* ... */ }
+  doSomething() {
+    /* ... */
+  }
 }
-app.use(notAPlugin)  // Error or silent failure
+app.use(notAPlugin) // Error or silent failure
 
 // GOOD
 const actualPlugin = {
   install(app) {
-    app.provide('service', { doSomething() { /* ... */ } })
+    app.provide('service', {
+      doSomething() {
+        /* ... */
+      }
+    })
   }
 }
 ```
@@ -195,7 +199,7 @@ const uselessPlugin = {
 const usefulPlugin = {
   install(app, options) {
     const service = createService(options)
-    app.provide('service', service)  // Actually makes it available
+    app.provide('service', service) // Actually makes it available
   }
 }
 ```

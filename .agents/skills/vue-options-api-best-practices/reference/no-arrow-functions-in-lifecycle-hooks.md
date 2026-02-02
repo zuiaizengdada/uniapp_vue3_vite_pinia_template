@@ -19,6 +19,7 @@ Arrow functions lexically bind `this` from their enclosing scope. Vue's Options 
 - [ ] Arrow functions ARE allowed inside lifecycle hooks for callbacks
 
 **Incorrect:**
+
 ```javascript
 export default {
   data() {
@@ -37,13 +38,18 @@ export default {
     this.cleanup() // Will fail!
   },
   methods: {
-    initializePlugin() { /* ... */ },
-    cleanup() { /* ... */ }
+    initializePlugin() {
+      /* ... */
+    },
+    cleanup() {
+      /* ... */
+    }
   }
 }
 ```
 
 **Correct:**
+
 ```javascript
 export default {
   data() {
@@ -54,7 +60,7 @@ export default {
     console.log(this.message) // Works! this refers to component instance
   },
   // CORRECT: Regular function expression
-  mounted: function() {
+  mounted: function () {
     this.initializePlugin() // Works!
   },
   // CORRECT: Method shorthand
@@ -68,7 +74,9 @@ export default {
         this.isReady = true // Arrow inherits `this` from mounted
       })
     },
-    cleanup() { /* ... */ }
+    cleanup() {
+      /* ... */
+    }
   }
 }
 ```
@@ -76,6 +84,7 @@ export default {
 ## All Affected Lifecycle Hooks
 
 The following Options API hooks must NOT use arrow functions:
+
 - `beforeCreate`
 - `created`
 - `beforeMount`
@@ -91,5 +100,6 @@ The following Options API hooks must NOT use arrow functions:
 - `renderTriggered`
 
 ## Reference
+
 - [Vue.js Lifecycle Hooks](https://vuejs.org/guide/essentials/lifecycle.html)
 - [Vue.js Options Lifecycle](https://vuejs.org/api/options-lifecycle.html)

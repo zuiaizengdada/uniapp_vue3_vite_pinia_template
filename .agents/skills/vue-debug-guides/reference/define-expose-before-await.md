@@ -20,6 +20,7 @@ The compiler transforms top-level await, and code after await runs in a differen
 - [ ] Test parent ref access when using async setup
 
 **Incorrect:**
+
 ```vue
 <!-- ChildComponent.vue -->
 <script setup>
@@ -72,6 +73,7 @@ onMounted(() => {
 ```
 
 **Correct:**
+
 ```vue
 <!-- ChildComponent.vue -->
 <script setup>
@@ -157,10 +159,7 @@ defineExpose({
 
 // Now safe to await
 async function loadData() {
-  const [userRes, postsRes] = await Promise.all([
-    fetch('/api/user'),
-    fetch('/api/posts')
-  ])
+  const [userRes, postsRes] = await Promise.all([fetch('/api/user'), fetch('/api/posts')])
   user.value = await userRes.json()
   posts.value = await postsRes.json()
 }
@@ -188,5 +187,6 @@ async setup() {
 ```
 
 ## Reference
+
 - [Vue.js Script Setup - defineExpose](https://vuejs.org/api/sfc-script-setup.html#defineexpose)
 - [Vue.js Async Components](https://vuejs.org/guide/components/async.html)

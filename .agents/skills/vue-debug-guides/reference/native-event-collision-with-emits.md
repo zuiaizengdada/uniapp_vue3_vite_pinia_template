@@ -22,6 +22,7 @@ This can cause unexpected behavior where clicks seem to stop working on your com
 ## The Problem
 
 **Incorrect - Declaring but not emitting:**
+
 ```vue
 <!-- ClickableCard.vue -->
 <script setup>
@@ -40,13 +41,12 @@ const emit = defineEmits(['click', 'select'])
 <!-- Parent.vue -->
 <template>
   <!-- This NEVER fires! Native clicks are blocked -->
-  <ClickableCard @click="handleClick">
-    Click me
-  </ClickableCard>
+  <ClickableCard @click="handleClick"> Click me </ClickableCard>
 </template>
 ```
 
 **Why it fails:**
+
 1. `click` is declared in `emits`
 2. Vue treats `@click` as a component event listener
 3. Native click on the `<div>` doesn't trigger component event
@@ -55,6 +55,7 @@ const emit = defineEmits(['click', 'select'])
 ## The Solution
 
 **Option 1: Emit the event explicitly:**
+
 ```vue
 <!-- ClickableCard.vue -->
 <script setup>
@@ -70,6 +71,7 @@ const emit = defineEmits(['click', 'select'])
 ```
 
 **Option 2: Don't declare native events (use fallthrough):**
+
 ```vue
 <!-- ClickableCard.vue -->
 <script setup>
@@ -89,9 +91,7 @@ const emit = defineEmits(['select', 'custom-action'])
 <!-- Parent.vue -->
 <template>
   <!-- Native click falls through and works -->
-  <ClickableCard @click="handleClick">
-    Click me
-  </ClickableCard>
+  <ClickableCard @click="handleClick"> Click me </ClickableCard>
 </template>
 ```
 
@@ -99,15 +99,15 @@ const emit = defineEmits(['select', 'custom-action'])
 
 This applies to any native DOM event you might declare:
 
-| Event | Behavior When Declared |
-|-------|----------------------|
-| `click` | Only responds to `emit('click')`, not native clicks |
-| `input` | Only responds to `emit('input')`, not native input |
-| `change` | Only responds to `emit('change')`, not native change |
-| `focus` | Only responds to `emit('focus')`, not native focus |
-| `blur` | Only responds to `emit('blur')`, not native blur |
-| `submit` | Only responds to `emit('submit')`, not native form submit |
-| `keydown` | Only responds to `emit('keydown')`, not native keydown |
+| Event     | Behavior When Declared                                    |
+| --------- | --------------------------------------------------------- |
+| `click`   | Only responds to `emit('click')`, not native clicks       |
+| `input`   | Only responds to `emit('input')`, not native input        |
+| `change`  | Only responds to `emit('change')`, not native change      |
+| `focus`   | Only responds to `emit('focus')`, not native focus        |
+| `blur`    | Only responds to `emit('blur')`, not native blur          |
+| `submit`  | Only responds to `emit('submit')`, not native form submit |
+| `keydown` | Only responds to `emit('keydown')`, not native keydown    |
 
 ## When This Is Intentional
 
@@ -158,5 +158,6 @@ function handleClick(event) {
 ```
 
 ## Reference
+
 - [Vue.js Component Events](https://vuejs.org/guide/components/events.html)
 - [Vue.js Fallthrough Attributes](https://vuejs.org/guide/components/attrs.html)

@@ -35,6 +35,7 @@ tags: [vue3, keepalive, vue-router, navigation, cache, ux]
 ```
 
 **Scenario:**
+
 1. User visits `/products?category=shoes` - sees shoes
 2. User navigates to `/products?category=hats` - sees hats
 3. User clicks "Products" nav link (to `/products`)
@@ -185,10 +186,7 @@ watch(
 <template>
   <router-view v-slot="{ Component }">
     <KeepAlive>
-      <component
-        :is="Component"
-        :key="`${route.name}-${forceRefreshKey}`"
-      />
+      <component :is="Component" :key="`${route.name}-${forceRefreshKey}`" />
     </KeepAlive>
   </router-view>
 </template>
@@ -221,6 +219,7 @@ export const CACHE_RULES = {
 5. **Document cache behavior** - Make rules explicit for your team
 
 ## Reference
+
 - [Vue.js KeepAlive Documentation](https://vuejs.org/guide/built-ins/keep-alive.html)
 - [Vue Router Navigation](https://router.vuejs.org/guide/essentials/navigation.html)
 - [Stack Keep-Alive Library](https://github.com/Zippowxk/stack-keep-alive)

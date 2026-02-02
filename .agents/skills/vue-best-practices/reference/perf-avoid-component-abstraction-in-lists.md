@@ -21,6 +21,7 @@ Don't avoid abstraction entirely, but be mindful of component depth in frequentl
 - [ ] Focus optimization efforts on the most-rendered components
 
 **Incorrect:**
+
 ```vue
 <!-- BAD: Deep abstraction in list items -->
 <template>
@@ -32,11 +33,15 @@ Don't avoid abstraction entirely, but be mindful of component depth in frequentl
 
 <!-- UserCard.vue -->
 <template>
-  <Card>  <!-- Wrapper component #1 -->
-    <CardHeader>  <!-- Wrapper component #2 -->
-      <UserAvatar :src="user.avatar" />  <!-- Wrapper component #3 -->
+  <Card>
+    <!-- Wrapper component #1 -->
+    <CardHeader>
+      <!-- Wrapper component #2 -->
+      <UserAvatar :src="user.avatar" />
+      <!-- Wrapper component #3 -->
     </CardHeader>
-    <CardBody>  <!-- Wrapper component #4 -->
+    <CardBody>
+      <!-- Wrapper component #4 -->
       <Text>{{ user.name }}</Text>
     </CardBody>
   </Card>
@@ -47,6 +52,7 @@ Don't avoid abstraction entirely, but be mindful of component depth in frequentl
 ```
 
 **Correct:**
+
 ```vue
 <!-- GOOD: Flattened structure in list items -->
 <template>
@@ -76,10 +82,18 @@ defineProps({
 
 <style scoped>
 /* Styles that would have been in Card, CardHeader, etc. */
-.card { /* ... */ }
-.card-header { /* ... */ }
-.card-body { /* ... */ }
-.avatar { /* ... */ }
+.card {
+  /* ... */
+}
+.card-header {
+  /* ... */
+}
+.card-body {
+  /* ... */
+}
+.avatar {
+  /* ... */
+}
 </style>
 ```
 
@@ -89,22 +103,11 @@ defineProps({
 <!-- Component abstraction is valuable when: -->
 
 <!-- 1. Complex behavior is encapsulated -->
-<UserStatusIndicator :user="user" />  <!-- Has logic, tooltips, etc. -->
+<UserStatusIndicator :user="user" />
+<!-- Has logic, tooltips, etc. -->
 
 <!-- 2. Reused outside of the hot path -->
-<Card>  <!-- OK to use in one-off places, not in 100-item lists -->
-
-<!-- 3. The list itself is small -->
-<template v-if="items.length < 20">
-  <FancyItem v-for="item in items" :key="item.id" />
-</template>
-
-<!-- 4. Virtualization is used (only ~20 items rendered at once) -->
-<RecycleScroller :items="items">
-  <template #default="{ item }">
-    <ComplexItem :item="item" />  <!-- OK - only 20 instances exist -->
-  </template>
-</RecycleScroller>
+<Card></Card>
 ```
 
 ## Measuring Component Overhead
@@ -120,7 +123,7 @@ onMounted(() => {
   function countComponents(vnode) {
     if (vnode.component) count++
     if (vnode.children) {
-      vnode.children.forEach(child => {
+      vnode.children.forEach((child) => {
         if (child.component || child.children) countComponents(child)
       })
     }
@@ -150,13 +153,14 @@ onMounted(() => {
 
 ## Impact Calculation
 
-| List Size | Components per Item | Total Instances | Memory Impact |
-|-----------|---------------------|-----------------|---------------|
-| 100 items | 1 (flat) | 100 | Baseline |
-| 100 items | 3 (nested) | 300 | ~3x memory |
-| 100 items | 5 (deeply nested) | 500 | ~5x memory |
-| 1000 items | 1 (flat) | 1000 | High |
-| 1000 items | 5 (deeply nested) | 5000 | Very High |
+| List Size  | Components per Item | Total Instances | Memory Impact |
+| ---------- | ------------------- | --------------- | ------------- |
+| 100 items  | 1 (flat)            | 100             | Baseline      |
+| 100 items  | 3 (nested)          | 300             | ~3x memory    |
+| 100 items  | 5 (deeply nested)   | 500             | ~5x memory    |
+| 1000 items | 1 (flat)            | 1000            | High          |
+| 1000 items | 5 (deeply nested)   | 5000            | Very High     |
 
 ## Reference
+
 - [Vue.js Performance - Avoid Unnecessary Component Abstractions](https://vuejs.org/guide/best-practices/performance.html#avoid-unnecessary-component-abstractions)

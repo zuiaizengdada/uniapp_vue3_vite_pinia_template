@@ -28,7 +28,8 @@ const activeTab = ref('dashboard')
     </TabContainer>
 
     <template #fallback>
-      Loading... <!-- Only shows on initial load -->
+      Loading...
+      <!-- Only shows on initial load -->
     </template>
   </Suspense>
 </template>
@@ -56,9 +57,7 @@ const tabs = {
     <!-- Key change forces root replacement, triggering Suspense -->
     <component :is="tabs[activeTab]" :key="activeTab" />
 
-    <template #fallback>
-      Loading...
-    </template>
+    <template #fallback> Loading... </template>
   </Suspense>
 </template>
 ```
@@ -109,19 +108,11 @@ const onTabLoaded = () => {
 <template>
   <Suspense>
     <TabContainer>
-      <div v-if="isTabLoading" class="tab-loading">
-        Loading tab...
-      </div>
-      <AsyncTab
-        v-else
-        :tab="activeTab"
-        @vue:mounted="onTabLoaded"
-      />
+      <div v-if="isTabLoading" class="tab-loading">Loading tab...</div>
+      <AsyncTab v-else :tab="activeTab" @vue:mounted="onTabLoaded" />
     </TabContainer>
 
-    <template #fallback>
-      Initial loading...
-    </template>
+    <template #fallback> Initial loading... </template>
   </Suspense>
 </template>
 ```

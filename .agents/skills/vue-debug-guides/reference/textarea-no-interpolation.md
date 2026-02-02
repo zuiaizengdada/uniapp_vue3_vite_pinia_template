@@ -20,11 +20,12 @@ Unlike v-model which provides two-way binding, interpolation only renders the in
 - [ ] Add linting rules to catch this pattern if possible
 
 **Incorrect:**
+
 ```html
 <script setup>
-import { ref } from 'vue'
+  import { ref } from 'vue'
 
-const message = ref('Hello World')
+  const message = ref('Hello World')
 </script>
 
 <template>
@@ -39,11 +40,12 @@ const message = ref('Hello World')
 ```
 
 **Correct:**
+
 ```html
 <script setup>
-import { ref } from 'vue'
+  import { ref } from 'vue'
 
-const message = ref('Hello World')
+  const message = ref('Hello World')
 </script>
 
 <template>
@@ -60,13 +62,9 @@ const message = ref('Hello World')
 
 ```html
 <!-- With placeholder and other attributes -->
-<textarea
-  v-model="message"
-  placeholder="Enter your message..."
-  rows="5"
-  maxlength="500"
-></textarea>
+<textarea v-model="message" placeholder="Enter your message..." rows="5" maxlength="500"></textarea>
 ```
 
 ## Reference
+
 - [Vue.js Form Input Bindings - Multiline text](https://vuejs.org/guide/essentials/forms.html#multiline-text)

@@ -21,6 +21,7 @@ When writing JSX in Vue, use the same attribute names you would use in regular H
 - [ ] Configure TypeScript properly for Vue JSX type inference
 
 **Incorrect (React-style):**
+
 ```jsx
 // AVOID: React conventions cause TypeScript errors in Vue JSX
 // (Vue runtime is lenient and converts these, but types don't allow them)
@@ -40,8 +41,8 @@ export default {
 // AVOID: TypeScript will reject className/htmlFor with Vue's JSX types
 const Button = () => (
   <button
-    className="btn btn-primary"  // TS error: Property 'className' does not exist
-    htmlFor="form"               // TS error: Property 'htmlFor' does not exist
+    className="btn btn-primary" // TS error: Property 'className' does not exist
+    htmlFor="form" // TS error: Property 'htmlFor' does not exist
   >
     Submit
   </button>
@@ -49,6 +50,7 @@ const Button = () => (
 ```
 
 **Correct (Vue-style):**
+
 ```jsx
 // CORRECT: Use standard HTML attributes
 export default {
@@ -65,13 +67,7 @@ export default {
 
 ```tsx
 // CORRECT: Vue TSX with HTML attributes
-const Button = () => (
-  <button
-    class="btn btn-primary"
-  >
-    Submit
-  </button>
-)
+const Button = () => <button class="btn btn-primary">Submit</button>
 ```
 
 ## TypeScript Configuration for Vue JSX
@@ -105,13 +101,13 @@ export default defineConfig({
 
 ## Other Attribute Differences
 
-| React JSX | Vue JSX | HTML |
-|-----------|---------|------|
-| className | class | class |
-| htmlFor | for | for |
-| onChange | onInput (for live updates) | oninput |
-| tabIndex | tabindex | tabindex |
-| readOnly | readonly | readonly |
+| React JSX | Vue JSX                    | HTML     |
+| --------- | -------------------------- | -------- |
+| className | class                      | class    |
+| htmlFor   | for                        | for      |
+| onChange  | onInput (for live updates) | oninput  |
+| tabIndex  | tabindex                   | tabindex |
+| readOnly  | readonly                   | readonly |
 
 ## Event Handling in Vue JSX
 
@@ -128,9 +124,7 @@ export default {
         <input onInput={handleInput} />
 
         {/* Event modifiers via helper */}
-        <div onClick={withModifiers(handleClick, ['self'])}>
-          Only triggers on self
-        </div>
+        <div onClick={withModifiers(handleClick, ['self'])}>Only triggers on self</div>
       </div>
     )
   }
@@ -138,4 +132,5 @@ export default {
 ```
 
 ## Reference
+
 - [Vue.js JSX and TSX](https://vuejs.org/guide/extras/render-function.html#jsx-tsx)

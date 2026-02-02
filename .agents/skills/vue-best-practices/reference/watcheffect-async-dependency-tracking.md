@@ -20,6 +20,7 @@ For async operations, either access all dependencies before the await, or use `w
 - [ ] Be aware that dependencies after await are invisible to Vue
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { ref, watchEffect } from 'vue'
@@ -46,14 +47,15 @@ watchEffect(async () => {
   await someAsyncSetup()
 
   // None of these are tracked!
-  console.log(optionA.value)  // Not tracked
-  console.log(optionB.value)  // Not tracked
-  doSomething(optionC.value)  // Not tracked
+  console.log(optionA.value) // Not tracked
+  console.log(optionB.value) // Not tracked
+  doSomething(optionC.value) // Not tracked
 })
 </script>
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { ref, watchEffect, watch } from 'vue'
@@ -114,9 +116,7 @@ watchEffect(async () => {
   const currentPage = page.value
 
   // Now safe to do async work
-  const response = await fetch(
-    `/api/items?status=${status}&sort=${sortBy}&page=${currentPage}`
-  )
+  const response = await fetch(`/api/items?status=${status}&sort=${sortBy}&page=${currentPage}`)
   results.value = await response.json()
 })
 </script>
@@ -155,11 +155,11 @@ const a = ref(1)
 const b = ref(2)
 
 watchEffect(async () => {
-  console.log('Tracked dependency a:', a.value)  // Tracked
+  console.log('Tracked dependency a:', a.value) // Tracked
 
   await someAsyncOperation()
 
-  console.log('Untracked dependency b:', b.value)  // NOT tracked!
+  console.log('Untracked dependency b:', b.value) // NOT tracked!
   // Changing b.value won't re-run this watchEffect
 })
 
@@ -169,5 +169,6 @@ watchEffect(async () => {
 ```
 
 ## Reference
+
 - [Vue.js Watchers - watchEffect](https://vuejs.org/guide/essentials/watchers.html#watcheffect)
 - [Vue.js API - watchEffect](https://vuejs.org/api/reactivity-core.html#watcheffect)

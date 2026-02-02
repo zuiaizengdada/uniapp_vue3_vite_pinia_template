@@ -21,6 +21,7 @@ Computed properties are designed to declaratively describe how to derive a value
 - [ ] Use event handlers for user-triggered actions
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { ref, computed } from 'vue'
@@ -31,31 +32,32 @@ const lastFetch = ref(null)
 
 // BAD: Mutates other state
 const doubledCount = computed(() => {
-  count.value++  // Side effect - modifying state!
+  count.value++ // Side effect - modifying state!
   return count.value * 2
 })
 
 // BAD: Makes async request
 const userData = computed(async () => {
-  const response = await fetch('/api/user')  // Side effect - API call!
+  const response = await fetch('/api/user') // Side effect - API call!
   return response.json()
 })
 
 // BAD: Modifies DOM
 const highlightedItems = computed(() => {
-  document.title = `${items.value.length} items`  // Side effect - DOM mutation!
-  return items.value.filter(i => i.highlighted)
+  document.title = `${items.value.length} items` // Side effect - DOM mutation!
+  return items.value.filter((i) => i.highlighted)
 })
 
 // BAD: Writes to external state
 const processedData = computed(() => {
-  lastFetch.value = new Date()  // Side effect - modifying state!
-  return items.value.map(i => i.name)
+  lastFetch.value = new Date() // Side effect - modifying state!
+  return items.value.map((i) => i.name)
 })
 </script>
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
@@ -77,13 +79,17 @@ onMounted(async () => {
 
 // GOOD: Pure filtering
 const highlightedItems = computed(() => {
-  return items.value.filter(i => i.highlighted)
+  return items.value.filter((i) => i.highlighted)
 })
 
 // GOOD: Use watcher for side effects
-watch(items, (newItems) => {
-  document.title = `${newItems.length} items`
-}, { immediate: true })
+watch(
+  items,
+  (newItems) => {
+    document.title = `${newItems.length} items`
+  },
+  { immediate: true }
+)
 
 // Increment count through event handler, not computed
 function increment() {
@@ -94,14 +100,15 @@ function increment() {
 
 ## What Counts as a Side Effect
 
-| Side Effect Type | Example | Alternative |
-|-----------------|---------|-------------|
-| State mutation | `otherRef.value = x` | Use watcher |
-| API calls | `fetch()`, `axios()` | Use watcher or lifecycle hook |
-| DOM manipulation | `document.title = x` | Use watcher |
-| Console logging | `console.log()` | Remove or use watcher |
-| Storage access | `localStorage.setItem()` | Use watcher |
-| Timer setup | `setTimeout()` | Use lifecycle hook |
+| Side Effect Type | Example                  | Alternative                   |
+| ---------------- | ------------------------ | ----------------------------- |
+| State mutation   | `otherRef.value = x`     | Use watcher                   |
+| API calls        | `fetch()`, `axios()`     | Use watcher or lifecycle hook |
+| DOM manipulation | `document.title = x`     | Use watcher                   |
+| Console logging  | `console.log()`          | Remove or use watcher         |
+| Storage access   | `localStorage.setItem()` | Use watcher                   |
+| Timer setup      | `setTimeout()`           | Use lifecycle hook            |
 
 ## Reference
+
 - [Vue.js Computed Properties - Getters Should Be Side-Effect Free](https://vuejs.org/guide/essentials/computed.html#getters-should-be-side-effect-free)

@@ -21,6 +21,7 @@ tags: [vue3, typescript, options-api, defineComponent, type-inference]
 Vue's Options API relies heavily on the `this` context, which TypeScript cannot automatically type without `defineComponent`:
 
 **BAD - No type inference:**
+
 ```typescript
 // No defineComponent - 'this' is typed as 'any'
 export default {
@@ -30,19 +31,20 @@ export default {
   computed: {
     // 'this' is 'any' - no type checking!
     greeting() {
-      return this.message + '!'  // No type inference
+      return this.message + '!' // No type inference
     }
   },
   methods: {
     // 'this' is 'any' - mistakes won't be caught
     handleClick() {
-      console.log(this.mesage)  // Typo not caught!
+      console.log(this.mesage) // Typo not caught!
     }
   }
 }
 ```
 
 **GOOD - Full type inference:**
+
 ```typescript
 import { defineComponent } from 'vue'
 
@@ -71,8 +73,8 @@ export default defineComponent({
   },
   methods: {
     handleClick() {
-      console.log(this.mesage)  // Error: Property 'mesage' does not exist
-      console.log(this.message)  // OK: string
+      console.log(this.mesage) // Error: Property 'mesage' does not exist
+      console.log(this.message) // OK: string
     }
   }
 })
@@ -110,7 +112,9 @@ Without this, TypeScript allows implicit `any` for `this`, defeating the purpose
 // At runtime, this is equivalent to:
 // export default { props: { ... }, ... }
 export default defineComponent({
-  props: { /* ... */ }
+  props: {
+    /* ... */
+  }
 })
 ```
 
@@ -118,10 +122,10 @@ This means there's zero runtime cost to using `defineComponent`.
 
 ## When to Use defineComponent vs script setup
 
-| Approach | Use Case |
-|----------|----------|
-| `defineComponent` | Options API, Class-based migration, JSX/TSX components |
-| `<script setup>` | New components, better type inference, less boilerplate |
+| Approach          | Use Case                                                |
+| ----------------- | ------------------------------------------------------- |
+| `defineComponent` | Options API, Class-based migration, JSX/TSX components  |
+| `<script setup>`  | New components, better type inference, less boilerplate |
 
 **Official recommendation**: "While Vue does support TypeScript usage with Options API, it is recommended to use Vue with TypeScript via Composition API as it offers simpler, more efficient and more robust type inference."
 
@@ -159,7 +163,7 @@ This often happens when copying JavaScript components to TypeScript:
 ```typescript
 // Copied from JS - MISSING defineComponent!
 export default {
-  name: 'MyComponent',
+  name: 'MyComponent'
   // ... entire component without type inference
 }
 ```

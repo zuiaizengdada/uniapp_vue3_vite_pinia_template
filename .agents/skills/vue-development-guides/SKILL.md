@@ -4,7 +4,7 @@ description: A collection of best practices and tips for developing applications
 license: MIT
 metadata:
   author: github.com/vuejs-ai
-  version: "17.0.0"
+  version: '17.0.0'
 compatibility: Requires Vue 3 (or above) or Nuxt 3 (or above) project
 ---
 
@@ -25,6 +25,7 @@ compatibility: Requires Vue 3 (or above) or Nuxt 3 (or above) project
 ---
 
 ## Core Principles
+
 - **Keep state predictable:** one source of truth, derive everything else.
 - **Make data flow explicit:** Props down, Events up for most cases.
 - **Favor small, focused components:** easier to test, reuse, and maintain.
@@ -59,6 +60,7 @@ NOTE: This rule also applies to the entry component (e.g. App.vue) in a Vue / Nu
 ### Data Flow
 
 IMPORTANT: You MUST follow the `references/data-flow-guide.md` for passing and receiving data between components using:
+
 - Props
 - Emits
 - `v-model`

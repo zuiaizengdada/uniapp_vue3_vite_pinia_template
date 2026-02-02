@@ -52,7 +52,7 @@ const count = ref(0)
 import { ref } from 'vue'
 
 defineOptions({
-  name: 'TabA'  // Now matches include="TabA"
+  name: 'TabA' // Now matches include="TabA"
 })
 
 const count = ref(0)
@@ -123,7 +123,7 @@ const count = ref(0)
 ```vue
 <script>
 export default {
-  name: 'tab-a'  // lowercase kebab-case
+  name: 'tab-a' // lowercase kebab-case
 }
 </script>
 ```
@@ -140,7 +140,7 @@ export default {
 **Fix:** Ensure names match exactly:
 
 ```vue
-<KeepAlive include="tab-a">  <!-- or change component name to 'TabA' -->
+<KeepAlive include="tab-a"></KeepAlive>
 ```
 
 ### Mistake 2: Dynamic Components Without Names
@@ -162,7 +162,7 @@ const AsyncTab = defineAsyncComponent(() => import('./Tab.vue'))
 <script>
 export default {
   // This doesn't set the component name!
-  props: ['name']  // 'name' prop is different from component name option
+  props: ['name'] // 'name' prop is different from component name option
 }
 </script>
 ```
@@ -213,6 +213,7 @@ onMounted(() => {
 5. **Multiple formats available** - String, RegExp, or Array for include/exclude
 
 ## Reference
+
 - [Vue.js KeepAlive - Include/Exclude](https://vuejs.org/guide/built-ins/keep-alive.html#include-exclude)
 - [Vue.js SFC `<script setup>`](https://vuejs.org/api/sfc-script-setup.html)
 - [defineOptions documentation](https://vuejs.org/api/sfc-script-setup.html#defineoptions)

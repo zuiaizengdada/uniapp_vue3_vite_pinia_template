@@ -20,6 +20,7 @@ This timing catches developers who expect to use component state in prop validat
 - [ ] Move complex validation logic to watchers or lifecycle hooks if instance access is needed
 
 **Incorrect:**
+
 ```vue
 <script>
 export default {
@@ -34,21 +35,21 @@ export default {
       type: String,
       // WRONG: 'this' is undefined during prop validation
       validator(value) {
-        return this.validOptions.includes(value)  // TypeError!
+        return this.validOptions.includes(value) // TypeError!
       }
     },
     message: {
       type: String,
       // WRONG: Cannot access data properties
       default() {
-        return this.defaultMessage  // TypeError!
+        return this.defaultMessage // TypeError!
       }
     },
     config: {
       type: Object,
       // WRONG: Cannot access computed properties
       default() {
-        return this.computedDefaults  // TypeError!
+        return this.computedDefaults // TypeError!
       }
     }
   }
@@ -57,6 +58,7 @@ export default {
 ```
 
 **Correct:**
+
 ```vue
 <script>
 // Define validation data outside the component
@@ -163,4 +165,5 @@ onMounted(() => {
 ```
 
 ## Reference
+
 - [Vue.js Props - Prop Validation](https://vuejs.org/guide/components/props.html#prop-validation)

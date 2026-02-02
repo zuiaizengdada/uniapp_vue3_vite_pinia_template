@@ -20,14 +20,14 @@ import { useAttrs } from 'vue'
 const attrs = useAttrs()
 
 // WRONG: Syntax error - hyphen interpreted as minus
-console.log(attrs.data-testid)  // Error!
+console.log(attrs.data - testid) // Error!
 
 // WRONG: This accesses a different property
-console.log(attrs.dataTestid)   // undefined (camelCase doesn't work for attrs)
+console.log(attrs.dataTestid) // undefined (camelCase doesn't work for attrs)
 
 // WRONG: Expecting hyphenated event name
-console.log(attrs['on-click'])  // undefined
-console.log(attrs['@click'])    // undefined
+console.log(attrs['on-click']) // undefined
+console.log(attrs['@click']) // undefined
 </script>
 ```
 
@@ -40,27 +40,27 @@ import { useAttrs } from 'vue'
 const attrs = useAttrs()
 
 // CORRECT: Use bracket notation for hyphenated attributes
-console.log(attrs['data-testid'])    // "my-button"
-console.log(attrs['aria-label'])     // "Submit form"
-console.log(attrs['foo-bar'])        // "baz"
+console.log(attrs['data-testid']) // "my-button"
+console.log(attrs['aria-label']) // "Submit form"
+console.log(attrs['foo-bar']) // "baz"
 
 // CORRECT: Event listeners use camelCase with 'on' prefix
-console.log(attrs.onClick)           // function
-console.log(attrs.onCustomEvent)     // function (from @custom-event)
-console.log(attrs.onMouseEnter)      // function (from @mouseenter or @mouse-enter)
+console.log(attrs.onClick) // function
+console.log(attrs.onCustomEvent) // function (from @custom-event)
+console.log(attrs.onMouseEnter) // function (from @mouseenter or @mouse-enter)
 </script>
 ```
 
 ## Attribute vs Event Naming Reference
 
-| Parent Usage | $attrs Access |
-|--------------|---------------|
-| `class="foo"` | `attrs.class` |
-| `data-id="123"` | `attrs['data-id']` |
-| `aria-label="..."` | `attrs['aria-label']` |
-| `foo-bar="baz"` | `attrs['foo-bar']` |
-| `@click="fn"` | `attrs.onClick` |
-| `@custom-event="fn"` | `attrs.onCustomEvent` |
+| Parent Usage              | $attrs Access                  |
+| ------------------------- | ------------------------------ |
+| `class="foo"`             | `attrs.class`                  |
+| `data-id="123"`           | `attrs['data-id']`             |
+| `aria-label="..."`        | `attrs['aria-label']`          |
+| `foo-bar="baz"`           | `attrs['foo-bar']`             |
+| `@click="fn"`             | `attrs.onClick`                |
+| `@custom-event="fn"`      | `attrs.onCustomEvent`          |
 | `@update:modelValue="fn"` | `attrs['onUpdate:modelValue']` |
 
 ## Common Patterns

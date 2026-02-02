@@ -19,6 +19,7 @@ Arrow functions lexically bind `this` from their enclosing scope, not from the o
 - [ ] Arrow functions ARE allowed inside methods for callbacks
 
 **Incorrect:**
+
 ```javascript
 export default {
   data() {
@@ -38,6 +39,7 @@ export default {
 ```
 
 **Correct:**
+
 ```javascript
 export default {
   data() {
@@ -49,14 +51,14 @@ export default {
       this.count++ // Works! this refers to component instance
     },
     // CORRECT: Traditional function expression
-    decrement: function() {
+    decrement: function () {
       this.count--
     },
     // Arrow functions ARE fine for callbacks INSIDE methods
     fetchData() {
       fetch('/api/data')
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           this.data = data // Arrow function inherits `this` from fetchData
         })
     }
@@ -65,4 +67,5 @@ export default {
 ```
 
 ## Reference
+
 - [Vue.js Methods - Avoid Arrow Functions](https://vuejs.org/guide/essentials/reactivity-fundamentals.html#methods)

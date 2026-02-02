@@ -18,6 +18,7 @@ tags: [vue3, rendering, performance, watch, computed, reactivity, re-renders]
 - [ ] Never trigger state changes inside watch that cause the watch to re-fire
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { ref, watch } from 'vue'
@@ -27,20 +28,31 @@ const displayName = ref('')
 
 // BAD: Using watch to compute a derived value
 // This triggers an extra reactive update cycle
-watch(() => user.value.name, (name) => {
-  displayName.value = `User: ${name}`
-}, { immediate: true })
+watch(
+  () => user.value.name,
+  (name) => {
+    displayName.value = `User: ${name}`
+  },
+  { immediate: true }
+)
 
 // BAD: Deep watcher on a large object
 // Fires on ANY nested change, even unrelated ones
-const items = ref([/* 1000 items with nested properties */])
-watch(items, (newItems) => {
-  console.log('Items changed')  // Fires on every tiny change
-}, { deep: true })
+const items = ref([
+  /* 1000 items with nested properties */
+])
+watch(
+  items,
+  (newItems) => {
+    console.log('Items changed') // Fires on every tiny change
+  },
+  { deep: true }
+)
 </script>
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { ref, computed, watch } from 'vue'
@@ -52,9 +64,11 @@ const user = ref({ name: 'John', settings: { theme: 'dark', notifications: true 
 const displayName = computed(() => `User: ${user.value.name}`)
 
 // GOOD: Watch specific paths, not the entire object
-const items = ref([/* 1000 items */])
+const items = ref([
+  /* 1000 items */
+])
 watch(
-  () => items.value.length,  // Only watch the length
+  () => items.value.length, // Only watch the length
   (newLength) => {
     console.log(`Items count: ${newLength}`)
   }
@@ -64,7 +78,7 @@ watch(
 watch(
   () => user.value.settings.theme,
   (newTheme) => {
-    applyTheme(newTheme)  // Side effect - appropriate for watch
+    applyTheme(newTheme) // Side effect - appropriate for watch
   }
 )
 </script>
@@ -72,13 +86,13 @@ watch(
 
 ## When to Use Watch vs Computed
 
-| Use Case | Use This |
-|----------|----------|
-| Derive a value from state | `computed` |
-| Format/transform data for display | `computed` |
-| Perform side effects (API calls, DOM updates) | `watch` |
-| React to route changes | `watch` |
-| Sync with external systems | `watch` |
+| Use Case                                      | Use This   |
+| --------------------------------------------- | ---------- |
+| Derive a value from state                     | `computed` |
+| Format/transform data for display             | `computed` |
+| Perform side effects (API calls, DOM updates) | `watch`    |
+| React to route changes                        | `watch`    |
+| Sync with external systems                    | `watch`    |
 
 ## Infinite Loop from Watch
 
@@ -90,7 +104,7 @@ const count = ref(0)
 
 // DANGER: Infinite loop!
 watch(count, (newVal) => {
-  count.value = newVal + 1  // Modifies watched source -> triggers watch again
+  count.value = newVal + 1 // Modifies watched source -> triggers watch again
 })
 
 // CORRECT: Use computed or avoid self-modification
@@ -109,19 +123,25 @@ import { ref, watch, toRaw } from 'vue'
 const formData = ref({
   personal: { name: '', email: '' },
   address: { street: '', city: '' },
-  preferences: { /* many properties */ }
+  preferences: {
+    /* many properties */
+  }
 })
 
 // BAD: Watches everything, including preferences changes
-watch(formData, () => {
-  saveForm()
-}, { deep: true })
+watch(
+  formData,
+  () => {
+    saveForm()
+  },
+  { deep: true }
+)
 
 // GOOD: Watch only the sections you care about
 watch(
   () => formData.value.personal,
   () => savePersonalSection(),
-  { deep: true }  // Deep only on this small subtree
+  { deep: true } // Deep only on this small subtree
 )
 
 // GOOD: Watch serialized version for change detection
@@ -147,7 +167,7 @@ watch(items, () => {
   console.log('Items changed')
 })
 
-items.value.sort()  // Watch doesn't fire - array reference unchanged
+items.value.sort() // Watch doesn't fire - array reference unchanged
 
 // Solution 1: Use deep (performance cost)
 watch(items, callback, { deep: true })
@@ -158,6 +178,7 @@ items.value = [...items.value].sort()
 ```
 
 ## Reference
+
 - [Vue.js Watchers](https://vuejs.org/guide/essentials/watchers.html)
 - [Vue.js Computed Properties](https://vuejs.org/guide/essentials/computed.html)
 - [Vue.js Performance - Reactivity](https://vuejs.org/guide/best-practices/performance.html#reduce-reactivity-overhead-for-large-immutable-structures)

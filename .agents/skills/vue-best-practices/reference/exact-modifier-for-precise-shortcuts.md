@@ -18,6 +18,7 @@ tags: [vue3, events, keyboard, modifiers, shortcuts, accessibility]
 - [ ] Use `@click.exact` for plain clicks with no modifiers
 
 **Incorrect:**
+
 ```html
 <!-- WRONG: Fires even with additional modifiers -->
 <template>
@@ -41,6 +42,7 @@ tags: [vue3, events, keyboard, modifiers, shortcuts, accessibility]
 ```
 
 **Correct:**
+
 ```html
 <!-- CORRECT: Precise modifier matching with .exact -->
 <template>
@@ -65,12 +67,7 @@ tags: [vue3, events, keyboard, modifiers, shortcuts, accessibility]
 <!-- CORRECT: Non-conflicting shortcuts -->
 <template>
   <div class="editor">
-    <div
-      @click.exact="selectItem"
-      @click.ctrl.exact="addToSelection"
-      @click.shift.exact="extendSelection"
-      @click.ctrl.shift.exact="selectRange"
-    >
+    <div @click.exact="selectItem" @click.ctrl.exact="addToSelection" @click.shift.exact="extendSelection" @click.ctrl.shift.exact="selectRange">
       Click, Ctrl+Click, Shift+Click, or Ctrl+Shift+Click
     </div>
   </div>
@@ -139,17 +136,12 @@ function addRangeToSelection(file) {
 
 ```html
 <template>
-  <div
-    tabindex="0"
-    @keydown.ctrl.s.exact.prevent="save"
-    @keydown.ctrl.shift.s.exact.prevent="saveAs"
-    @keydown.ctrl.z.exact.prevent="undo"
-    @keydown.ctrl.shift.z.exact.prevent="redo"
-  >
+  <div tabindex="0" @keydown.ctrl.s.exact.prevent="save" @keydown.ctrl.shift.s.exact.prevent="saveAs" @keydown.ctrl.z.exact.prevent="undo" @keydown.ctrl.shift.z.exact.prevent="redo">
     <!-- Each shortcut is precisely defined -->
   </div>
 </template>
 ```
 
 ## Reference
+
 - [Vue.js Event Handling - .exact Modifier](https://vuejs.org/guide/essentials/event-handling.html#exact-modifier)

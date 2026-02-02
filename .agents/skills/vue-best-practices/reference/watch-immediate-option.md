@@ -17,6 +17,7 @@ tags: [vue3, watch, watchers, immediate, best-practices, DRY]
 - [ ] Remember immediate callback receives `undefined` as oldValue on first run
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { ref, watch, onMounted } from 'vue'
@@ -31,11 +32,11 @@ async function loadUser(id) {
 }
 
 onMounted(() => {
-  loadUser(userId.value)  // Initial call
+  loadUser(userId.value) // Initial call
 })
 
 watch(userId, (newId) => {
-  loadUser(newId)  // On change
+  loadUser(newId) // On change
 })
 </script>
 ```
@@ -47,11 +48,11 @@ export default {
     return { userId: 1, userData: null }
   },
   created() {
-    this.loadUser()  // Initial call
+    this.loadUser() // Initial call
   },
   watch: {
     userId() {
-      this.loadUser()  // On change - duplicate!
+      this.loadUser() // On change - duplicate!
     }
   },
   methods: {
@@ -64,6 +65,7 @@ export default {
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { ref, watch } from 'vue'
@@ -165,4 +167,5 @@ watch(
 ```
 
 ## Reference
+
 - [Vue.js Watchers - Eager Watchers](https://vuejs.org/guide/essentials/watchers.html#eager-watchers)

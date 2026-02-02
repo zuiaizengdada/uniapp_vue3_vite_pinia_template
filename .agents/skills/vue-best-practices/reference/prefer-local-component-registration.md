@@ -20,6 +20,7 @@ Use local registration for better maintainability, smaller bundles, and explicit
 - [ ] Review existing global components and migrate to local registration where possible
 
 **Incorrect:**
+
 ```javascript
 // main.js - registering many components globally
 import { createApp } from 'vue'
@@ -59,6 +60,7 @@ app.mount('#app')
 ```
 
 **Correct:**
+
 ```javascript
 // main.js - only register truly universal components globally
 import { createApp } from 'vue'
@@ -125,13 +127,14 @@ app.component('BaseInput', BaseInput)
 
 ## Benefits of Local Registration
 
-| Aspect | Global | Local |
-|--------|--------|-------|
-| Tree-shaking | Not possible | Full support |
-| Dependency tracking | Implicit/hidden | Explicit imports |
-| Component location | Hard to find | Follow import path |
-| Bundle size | All registered components | Only used components |
-| Refactoring | Risk of breaking unknown usages | Clear dependency graph |
+| Aspect              | Global                          | Local                  |
+| ------------------- | ------------------------------- | ---------------------- |
+| Tree-shaking        | Not possible                    | Full support           |
+| Dependency tracking | Implicit/hidden                 | Explicit imports       |
+| Component location  | Hard to find                    | Follow import path     |
+| Bundle size         | All registered components       | Only used components   |
+| Refactoring         | Risk of breaking unknown usages | Clear dependency graph |
 
 ## Reference
+
 - [Vue.js Component Registration](https://vuejs.org/guide/components/registration.html)

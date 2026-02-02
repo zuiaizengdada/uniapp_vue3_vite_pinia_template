@@ -18,6 +18,7 @@ tags: [vue3, sfc, scoped-css, performance, css-selectors]
 - [ ] For heavy styling, consider CSS modules or utility-first approaches
 
 **Problematic Code:**
+
 ```vue
 <template>
   <article>
@@ -63,6 +64,7 @@ li {
 ```
 
 **Correct Code:**
+
 ```vue
 <template>
   <article class="article">
@@ -116,19 +118,29 @@ Vue transforms scoped CSS by adding data attributes:
 
 ```css
 /* What you write */
-p { color: red; }
-.text { color: blue; }
+p {
+  color: red;
+}
+.text {
+  color: blue;
+}
 
 /* What Vue generates */
-p[data-v-7ba5bd90] { color: red; }
-.text[data-v-7ba5bd90] { color: blue; }
+p[data-v-7ba5bd90] {
+  color: red;
+}
+.text[data-v-7ba5bd90] {
+  color: blue;
+}
 ```
 
 Browser CSS matching for `p[data-v-xxx]`:
+
 1. Find all `<p>` elements (element lookup)
 2. Check each for the `data-v-xxx` attribute (attribute check)
 
 Browser CSS matching for `.text[data-v-xxx]`:
+
 1. Find all elements with class `text` (class lookup - optimized)
 2. Check each for the `data-v-xxx` attribute
 
@@ -137,6 +149,7 @@ Class lookups are highly optimized in modern browsers, making option 2 faster.
 ## When Performance Matters
 
 This optimization matters most when:
+
 - Rendering large lists (100+ items)
 - Complex component trees
 - Animation-heavy interfaces
@@ -204,5 +217,6 @@ For performance-critical components, CSS modules avoid the attribute selector en
 ```
 
 ## Reference
+
 - [Vue Loader Scoped CSS](https://vue-loader.vuejs.org/guide/scoped-css.html#child-component-root-elements)
 - [CSS Selector Performance](https://csswizardry.com/2011/09/writing-efficient-css-selectors/)

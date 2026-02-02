@@ -19,6 +19,7 @@ This is useful for notification stacks, modal layering, and tooltip systems.
 - [ ] Consider a notification/modal management system for complex cases
 
 **Basic Example:**
+
 ```vue
 <template>
   <Teleport to="#notifications">
@@ -32,6 +33,7 @@ This is useful for notification stacks, modal layering, and tooltip systems.
 ```
 
 **Resulting DOM:**
+
 ```html
 <div id="notifications">
   <div class="notification">First notification</div>
@@ -46,12 +48,7 @@ This is useful for notification stacks, modal layering, and tooltip systems.
 <template>
   <Teleport to="#notifications">
     <TransitionGroup name="notification" tag="div" class="notification-stack">
-      <div
-        v-for="notification in notifications"
-        :key="notification.id"
-        class="notification"
-        :class="notification.type"
-      >
+      <div v-for="notification in notifications" :key="notification.id" class="notification" :class="notification.type">
         {{ notification.message }}
         <button @click="dismiss(notification.id)">×</button>
       </div>
@@ -71,7 +68,7 @@ function notify(message, type = 'info') {
 }
 
 function dismiss(id) {
-  notifications.value = notifications.value.filter(n => n.id !== id)
+  notifications.value = notifications.value.filter((n) => n.id !== id)
 }
 
 defineExpose({ notify })
@@ -116,15 +113,11 @@ For explicit control over stacking:
 ```vue
 <template>
   <Teleport to="#modals">
-    <div v-if="showBase" class="modal" style="z-index: 100;">
-      Base Modal
-    </div>
+    <div v-if="showBase" class="modal" style="z-index: 100;">Base Modal</div>
   </Teleport>
 
   <Teleport to="#modals">
-    <div v-if="showConfirm" class="modal" style="z-index: 200;">
-      Confirmation Dialog (always on top)
-    </div>
+    <div v-if="showConfirm" class="modal" style="z-index: 200;">Confirmation Dialog (always on top)</div>
   </Teleport>
 </template>
 ```
@@ -152,4 +145,5 @@ Components from different parts of the app can teleport to the same target:
 ```
 
 ## Reference
+
 - [Vue.js Teleport - Multiple Teleports on Same Target](https://vuejs.org/guide/built-ins/teleport.html#multiple-teleports-on-the-same-target)

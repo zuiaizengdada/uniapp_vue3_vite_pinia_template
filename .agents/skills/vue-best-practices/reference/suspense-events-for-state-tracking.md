@@ -7,6 +7,7 @@
 ## Why This Matters
 
 Relying solely on the fallback slot for loading indication limits your options. The events provide programmatic access to Suspense state changes, enabling:
+
 - Loading progress tracking
 - Analytics for perceived performance
 - Coordinated animations
@@ -44,11 +45,7 @@ const onFallback = () => {
 </script>
 
 <template>
-  <Suspense
-    @pending="onPending"
-    @resolve="onResolve"
-    @fallback="onFallback"
-  >
+  <Suspense @pending="onPending" @resolve="onResolve" @fallback="onFallback">
     <AsyncPage />
     <template #fallback>
       <LoadingSkeleton />
@@ -89,10 +86,7 @@ const onSuspenseResolve = () => {
   </Transition>
 
   <RouterView v-slot="{ Component }">
-    <Suspense
-      @pending="onSuspensePending"
-      @resolve="onSuspenseResolve"
-    >
+    <Suspense @pending="onSuspensePending" @resolve="onSuspenseResolve">
       <component :is="Component" />
       <template #fallback>
         <PageSkeleton />

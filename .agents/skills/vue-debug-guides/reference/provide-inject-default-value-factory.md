@@ -20,6 +20,7 @@ tags: [vue3, provide-inject, composition-api, memory, shared-state]
 ## The Gotcha: Shared Default References
 
 **Wrong - Object literal creates shared reference:**
+
 ```vue
 <script setup>
 import { inject } from 'vue'
@@ -35,6 +36,7 @@ config.debug = true
 ```
 
 **Correct - Factory function creates unique instance:**
+
 ```vue
 <script setup>
 import { inject } from 'vue'
@@ -81,17 +83,25 @@ const enabled = inject('enabled', false)
 import { inject } from 'vue'
 
 // Objects MUST use factory
-const user = inject('user', () => ({
-  id: null,
-  name: 'Anonymous',
-  preferences: {}
-}), true)
+const user = inject(
+  'user',
+  () => ({
+    id: null,
+    name: 'Anonymous',
+    preferences: {}
+  }),
+  true
+)
 
-const settings = inject('settings', () => ({
-  theme: 'light',
-  language: 'en',
-  notifications: true
-}), true)
+const settings = inject(
+  'settings',
+  () => ({
+    theme: 'light',
+    language: 'en',
+    notifications: true
+  }),
+  true
+)
 </script>
 ```
 
@@ -169,14 +179,18 @@ provide('formContext', formContext)
 import { inject } from 'vue'
 
 // Safe default that won't be shared
-const formContext = inject('formContext', () => ({
-  values: {},
-  errors: {},
-  touched: {},
-  isSubmitting: false,
-  // Mark as standalone mode
-  isStandalone: true
-}), true)
+const formContext = inject(
+  'formContext',
+  () => ({
+    values: {},
+    errors: {},
+    touched: {},
+    isSubmitting: false,
+    // Mark as standalone mode
+    isStandalone: true
+  }),
+  true
+)
 
 // Component works both inside and outside FormProvider
 </script>
@@ -197,11 +211,15 @@ interface Config {
 const ConfigKey: InjectionKey<Config> = Symbol('config')
 
 // TypeScript understands the factory return type
-const config = inject(ConfigKey, () => ({
-  apiUrl: 'https://api.example.com',
-  debug: false,
-  features: []
-}), true)
+const config = inject(
+  ConfigKey,
+  () => ({
+    apiUrl: 'https://api.example.com',
+    debug: false,
+    features: []
+  }),
+  true
+)
 ```
 
 ## Common Mistake in Testing
@@ -240,5 +258,6 @@ it('test with provider', () => {
 ```
 
 ## Reference
+
 - [Vue.js inject() API Reference](https://vuejs.org/api/composition-api-dependency-injection.html#inject)
 - [Vue.js Provide/Inject Guide](https://vuejs.org/guide/components/provide-inject.html)

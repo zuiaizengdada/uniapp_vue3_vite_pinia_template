@@ -17,12 +17,14 @@ When using `:style` bindings in Vue, prefer camelCase property names over kebab-
 ```vue
 <template>
   <!-- Requires quotes, harder to read -->
-  <div :style="{
-    'font-size': fontSize + 'px',
-    'background-color': bgColor,
-    'margin-top': marginTop + 'px',
-    'z-index': zIndex
-  }">
+  <div
+    :style="{
+      'font-size': fontSize + 'px',
+      'background-color': bgColor,
+      'margin-top': marginTop + 'px',
+      'z-index': zIndex
+    }"
+  >
     Content
   </div>
 </template>
@@ -33,12 +35,14 @@ When using `:style` bindings in Vue, prefer camelCase property names over kebab-
 ```vue
 <template>
   <!-- Clean camelCase syntax -->
-  <div :style="{
-    fontSize: fontSize + 'px',
-    backgroundColor: bgColor,
-    marginTop: marginTop + 'px',
-    zIndex: zIndex
-  }">
+  <div
+    :style="{
+      fontSize: fontSize + 'px',
+      backgroundColor: bgColor,
+      marginTop: marginTop + 'px',
+      zIndex: zIndex
+    }"
+  >
     Content
   </div>
 </template>
@@ -66,9 +70,7 @@ const containerStyle = computed(() => ({
 </script>
 
 <template>
-  <div :style="containerStyle">
-    Content
-  </div>
+  <div :style="containerStyle">Content</div>
 </template>
 ```
 
@@ -79,9 +81,7 @@ Vue automatically detects and applies vendor prefixes. For properties that need 
 ```vue
 <template>
   <!-- Vue will use the last value supported by the browser -->
-  <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }">
-    Flexbox content
-  </div>
+  <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }">Flexbox content</div>
 </template>
 ```
 
@@ -92,12 +92,7 @@ The `:style` directive can coexist with the regular `style` attribute:
 ```vue
 <template>
   <!-- Static styles + dynamic styles are merged -->
-  <div
-    style="border: 1px solid gray"
-    :style="{ backgroundColor: dynamicColor }"
-  >
-    Content
-  </div>
+  <div style="border: 1px solid gray" :style="{ backgroundColor: dynamicColor }">Content</div>
 </template>
 ```
 
@@ -120,9 +115,7 @@ const themeStyles = computed(() => ({
 
 <template>
   <!-- Later objects override earlier ones for conflicting properties -->
-  <div :style="[baseStyles, themeStyles]">
-    Content
-  </div>
+  <div :style="[baseStyles, themeStyles]">Content</div>
 </template>
 ```
 

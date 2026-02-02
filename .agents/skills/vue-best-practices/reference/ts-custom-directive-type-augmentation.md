@@ -45,7 +45,7 @@ export const vHighlight: Directive<HTMLElement, HighlightValue> = {
 // Type augmentation for template usage
 declare module 'vue' {
   interface ComponentCustomProperties {
-    vHighlight: typeof vHighlight  // Use 'v' prefix!
+    vHighlight: typeof vHighlight // Use 'v' prefix!
   }
 }
 ```
@@ -160,9 +160,7 @@ app.mount('#app')
 
   <input v-focus="shouldFocus" />
 
-  <button v-tooltip="{ text: 'Click me', delay: 500 }">
-    Hover for tooltip
-  </button>
+  <button v-tooltip="{ text: 'Click me', delay: 500 }">Hover for tooltip</button>
 
   <!-- With modifiers -->
   <span v-tooltip.top="{ text: 'Above' }">Top tooltip</span>
@@ -207,11 +205,7 @@ declare module 'vue' {
   "compilerOptions": {
     // ...
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.vue",
-    "src/types/**/*.d.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.vue", "src/types/**/*.d.ts"]
 }
 ```
 
@@ -260,5 +254,6 @@ const vLocalHighlight: Directive<HTMLElement, string> = {
 Note: Local directives don't need module augmentation since TypeScript can infer the type from the local variable.
 
 ## Reference
+
 - [Vue.js Custom Directives](https://vuejs.org/guide/reusability/custom-directives.html)
 - [Vue.js TypeScript - Augmenting Global Properties](https://vuejs.org/guide/typescript/options-api.html#augmenting-global-properties)

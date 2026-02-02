@@ -25,6 +25,7 @@ This is especially dangerous with object/array props because JavaScript passes t
 ## The Problem
 
 **Incorrect - Direct primitive prop mutation:**
+
 ```vue
 <script setup>
 const props = defineProps({
@@ -39,6 +40,7 @@ function increment() {
 ```
 
 **Incorrect - Object/array prop mutation (silent but dangerous):**
+
 ```vue
 <script setup>
 const props = defineProps({
@@ -58,6 +60,7 @@ function addItem() {
 ```
 
 This pattern is dangerous because:
+
 1. Parent component doesn't know about the change
 2. Data can become out of sync
 3. Makes debugging difficult - where did the change come from?
@@ -68,6 +71,7 @@ This pattern is dangerous because:
 Let the parent handle all data changes.
 
 **Correct:**
+
 ```vue
 <!-- ChildComponent.vue -->
 <script setup>
@@ -91,12 +95,7 @@ function updateName(newName) {
 ```vue
 <!-- ParentComponent.vue -->
 <template>
-  <ChildComponent
-    :count="count"
-    :user="user"
-    @update:count="count = $event"
-    @update-user="user = $event"
-  />
+  <ChildComponent :count="count" :user="user" @update:count="count = $event" @update-user="user = $event" />
 </template>
 ```
 
@@ -105,6 +104,7 @@ function updateName(newName) {
 When the component needs to work with a modified version of prop data.
 
 **Correct:**
+
 ```vue
 <script setup>
 import { ref, watch } from 'vue'
@@ -121,13 +121,20 @@ const localValue = ref(props.initialValue)
 const localUser = ref({ ...props.user })
 
 // Sync when parent changes the prop
-watch(() => props.initialValue, (newVal) => {
-  localValue.value = newVal
-})
+watch(
+  () => props.initialValue,
+  (newVal) => {
+    localValue.value = newVal
+  }
+)
 
-watch(() => props.user, (newUser) => {
-  localUser.value = { ...newUser }
-}, { deep: true })
+watch(
+  () => props.user,
+  (newUser) => {
+    localUser.value = { ...newUser }
+  },
+  { deep: true }
+)
 </script>
 
 <template>
@@ -141,6 +148,7 @@ watch(() => props.user, (newUser) => {
 When you need a derived/transformed version of the prop.
 
 **Correct:**
+
 ```vue
 <script setup>
 import { computed } from 'vue'
@@ -154,9 +162,7 @@ const props = defineProps({
 const uppercaseText = computed(() => props.text.toUpperCase())
 
 // Filtered view - doesn't mutate prop
-const activeItems = computed(() =>
-  props.items.filter(item => item.active)
-)
+const activeItems = computed(() => props.items.filter((item) => item.active))
 </script>
 ```
 
@@ -165,6 +171,7 @@ const activeItems = computed(() =>
 For form-like components that need two-way binding.
 
 **Correct:**
+
 ```vue
 <!-- CustomInput.vue -->
 <script setup>
@@ -176,10 +183,7 @@ const emit = defineEmits(['update:modelValue'])
 </script>
 
 <template>
-  <input
-    :value="modelValue"
-    @input="emit('update:modelValue', $event.target.value)"
-  />
+  <input :value="modelValue" @input="emit('update:modelValue', $event.target.value)" />
 </template>
 ```
 
@@ -203,6 +207,7 @@ props.config.theme = 'dark' // No Vue warning, but still wrong
 ```
 
 Vue doesn't warn because it can't efficiently detect deep mutations. But this still:
+
 - Breaks one-way data flow
 - Makes the component unpredictable
 - Causes maintenance nightmares
@@ -210,5 +215,6 @@ Vue doesn't warn because it can't efficiently detect deep mutations. But this st
 **Always treat props as if they were deeply frozen.**
 
 ## Reference
+
 - [Vue.js Props - One-Way Data Flow](https://vuejs.org/guide/components/props.html#one-way-data-flow)
 - [Vue.js Props - Mutating Object/Array Props](https://vuejs.org/guide/components/props.html#mutating-object-array-props)

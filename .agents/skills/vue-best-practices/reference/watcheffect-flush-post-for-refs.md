@@ -20,6 +20,7 @@ This timing issue is particularly confusing because the watcher runs, but the re
 - [ ] Consider using `watch` with explicit ref watching instead
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { ref, watchEffect } from 'vue'
@@ -57,13 +58,14 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div v-for="item in items" :key="item" :ref="el => itemRefs.value.push(el)">
+  <div v-for="item in items" :key="item" :ref="(el) => itemRefs.value.push(el)">
     {{ item }}
   </div>
 </template>
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { ref, watchEffect } from 'vue'
@@ -72,12 +74,15 @@ const inputEl = ref(null)
 const text = ref('')
 
 // CORRECT: flush: 'post' runs AFTER DOM update
-watchEffect(() => {
-  if (inputEl.value) {
-    console.log('Input value:', inputEl.value.value) // Current!
-    inputEl.value.focus()
-  }
-}, { flush: 'post' })
+watchEffect(
+  () => {
+    if (inputEl.value) {
+      console.log('Input value:', inputEl.value.value) // Current!
+      inputEl.value.focus()
+    }
+  },
+  { flush: 'post' }
+)
 </script>
 
 <template>
@@ -112,11 +117,15 @@ import { ref, watch, onMounted } from 'vue'
 const inputEl = ref(null)
 
 // ALTERNATIVE: Use watch on the ref directly
-watch(inputEl, (el) => {
-  if (el) {
-    el.focus()
-  }
-}, { flush: 'post' })
+watch(
+  inputEl,
+  (el) => {
+    if (el) {
+      el.focus()
+    }
+  },
+  { flush: 'post' }
+)
 
 // ALTERNATIVE: For one-time setup, onMounted is sufficient
 onMounted(() => {
@@ -164,13 +173,14 @@ watchSyncEffect(() => { ... }) // Shorthand
 
 ## When to Use Each Flush Mode
 
-| Scenario | Recommended Flush |
-|----------|-------------------|
-| Accessing template refs | `post` |
-| Reading updated DOM | `post` |
-| Triggering before render | `pre` (default) |
+| Scenario                          | Recommended Flush     |
+| --------------------------------- | --------------------- |
+| Accessing template refs           | `post`                |
+| Reading updated DOM               | `post`                |
+| Triggering before render          | `pre` (default)       |
 | Performance-critical sync updates | `sync` (with caution) |
 
 ## Reference
+
 - [Vue.js Watchers - Callback Flush Timing](https://vuejs.org/guide/essentials/watchers.html#callback-flush-timing)
 - [Vue.js watchEffect API](https://vuejs.org/api/reactivity-core.html#watcheffect)

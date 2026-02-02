@@ -22,13 +22,14 @@ Use `@pinia/testing` package with `createTestingPinia` for component tests and `
 - [ ] Use `stubActions: false` when you need real action execution
 
 **Incorrect:**
+
 ```javascript
 import { mount } from '@vue/test-utils'
 import UserProfile from './UserProfile.vue'
 
 // BAD: Missing Pinia - causes injection error
 test('displays user name', () => {
-  const wrapper = mount(UserProfile)  // ERROR: injection "Symbol(pinia)" not found
+  const wrapper = mount(UserProfile) // ERROR: injection "Symbol(pinia)" not found
   expect(wrapper.text()).toContain('John')
 })
 ```
@@ -38,12 +39,13 @@ import { useUserStore } from '@/stores/user'
 
 // BAD: No active Pinia instance
 test('user store actions', () => {
-  const store = useUserStore()  // ERROR: no active Pinia
+  const store = useUserStore() // ERROR: no active Pinia
   store.login('john', 'password')
 })
 ```
 
 **Correct - Component Testing:**
+
 ```javascript
 import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
@@ -57,7 +59,7 @@ test('displays user name', () => {
     global: {
       plugins: [
         createTestingPinia({
-          createSpy: vi.fn,  // Required if not using globals: true
+          createSpy: vi.fn, // Required if not using globals: true
           initialState: {
             user: { name: 'John', email: 'john@example.com' }
           }
@@ -88,6 +90,7 @@ test('calls logout action', async () => {
 ```
 
 **Correct - Store Unit Testing:**
+
 ```javascript
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
@@ -117,7 +120,7 @@ describe('User Store', () => {
 
   it('clears user on logout', () => {
     const store = useUserStore()
-    store.user = { name: 'John' }  // Set initial state
+    store.user = { name: 'John' } // Set initial state
 
     store.logout()
 
@@ -136,7 +139,7 @@ const wrapper = mount(Component, {
   global: {
     plugins: [
       createTestingPinia({
-        createSpy: vi.fn,
+        createSpy: vi.fn
         // stubActions: true (default) - actions are mocked
       })
     ]
@@ -149,7 +152,7 @@ const wrapper = mount(Component, {
     plugins: [
       createTestingPinia({
         createSpy: vi.fn,
-        stubActions: false  // Actions execute normally
+        stubActions: false // Actions execute normally
       })
     ]
   }
@@ -223,6 +226,7 @@ test('subscription triggers on state change', () => {
 ```
 
 ## Reference
+
 - [Pinia Testing Guide](https://pinia.vuejs.org/cookbook/testing.html)
 - [@pinia/testing Package](https://www.npmjs.com/package/@pinia/testing)
 - [Vue Test Utils - Plugins](https://test-utils.vuejs.org/guide/advanced/plugins.html)

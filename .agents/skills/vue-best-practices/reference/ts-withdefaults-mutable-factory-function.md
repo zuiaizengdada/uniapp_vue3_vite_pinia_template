@@ -20,6 +20,7 @@ tags: [vue3, typescript, props, withDefaults, mutable-types]
 ## The Problem: Shared Mutable References
 
 **WRONG - Shared reference across instances:**
+
 ```vue
 <script setup lang="ts">
 interface Props {
@@ -28,13 +29,14 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  items: ['default'],           // WRONG! All instances share this array
-  config: { theme: 'light' }    // WRONG! All instances share this object
+  items: ['default'], // WRONG! All instances share this array
+  config: { theme: 'light' } // WRONG! All instances share this object
 })
 </script>
 ```
 
 When you have multiple instances of this component:
+
 ```vue
 <template>
   <!-- Both share the SAME items array! -->
@@ -44,13 +46,14 @@ When you have multiple instances of this component:
 
 <script setup>
 // If comp1 modifies its items, comp2's items change too!
-comp1.value.items.push('new item')  // comp2 also has 'new item' now
+comp1.value.items.push('new item') // comp2 also has 'new item' now
 </script>
 ```
 
 ## The Solution: Factory Functions
 
 **CORRECT - Unique instance per component:**
+
 ```vue
 <script setup lang="ts">
 interface Props {
@@ -60,26 +63,26 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  items: () => ['default'],                      // Factory function!
-  config: () => ({ theme: 'light' }),            // Factory function!
-  nested: () => ({ data: { values: [] } })       // Factory function!
+  items: () => ['default'], // Factory function!
+  config: () => ({ theme: 'light' }), // Factory function!
+  nested: () => ({ data: { values: [] } }) // Factory function!
 })
 </script>
 ```
 
 ## When Factory Functions Are Required
 
-| Type | Factory Required | Example Default |
-|------|-----------------|-----------------|
-| `string` | No | `'hello'` |
-| `number` | No | `42` |
-| `boolean` | No | `false` |
-| `string[]` | **Yes** | `() => []` |
-| `number[]` | **Yes** | `() => [1, 2, 3]` |
-| `object` | **Yes** | `() => ({})` |
-| `Map` | **Yes** | `() => new Map()` |
-| `Set` | **Yes** | `() => new Set()` |
-| `Date` | **Yes** | `() => new Date()` |
+| Type       | Factory Required | Example Default    |
+| ---------- | ---------------- | ------------------ |
+| `string`   | No               | `'hello'`          |
+| `number`   | No               | `42`               |
+| `boolean`  | No               | `false`            |
+| `string[]` | **Yes**          | `() => []`         |
+| `number[]` | **Yes**          | `() => [1, 2, 3]`  |
+| `object`   | **Yes**          | `() => ({})`       |
+| `Map`      | **Yes**          | `() => new Map()`  |
+| `Set`      | **Yes**          | `() => new Set()`  |
+| `Date`     | **Yes**          | `() => new Date()` |
 
 ## Complete Example
 
@@ -131,7 +134,7 @@ interface Props {
 
 // Vue 3.5+ - defaults work correctly without explicit factory functions
 const {
-  items = ['default'],        // Each instance gets its own array
+  items = ['default'], // Each instance gets its own array
   config = { theme: 'light' } // Each instance gets its own object
 } = defineProps<Props>()
 </script>
@@ -152,7 +155,7 @@ interface Props {
 
 // All ListItems share the same selectedRows array!
 const props = withDefaults(defineProps<Props>(), {
-  selectedRows: []  // BUG: Missing factory function
+  selectedRows: [] // BUG: Missing factory function
 })
 </script>
 ```
@@ -160,12 +163,14 @@ const props = withDefaults(defineProps<Props>(), {
 Users report: "Selecting a row in one table selects it in all tables!"
 
 **Fix:**
+
 ```typescript
 const props = withDefaults(defineProps<Props>(), {
-  selectedRows: () => []  // Now each instance has its own array
+  selectedRows: () => [] // Now each instance has its own array
 })
 ```
 
 ## Reference
+
 - [Vue.js TypeScript with Composition API - Default Props](https://vuejs.org/guide/typescript/composition-api.html#props-default-values)
 - [Vue RFC - Reactive Props Destructure](https://github.com/vuejs/rfcs/discussions/502)

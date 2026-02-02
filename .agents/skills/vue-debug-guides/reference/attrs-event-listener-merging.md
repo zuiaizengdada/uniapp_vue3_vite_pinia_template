@@ -39,7 +39,7 @@ function internalClick() {
 <script setup>
 function parentClick() {
   // This ALSO runs (after internal)
-  submitForm()  // Might cause double submission!
+  submitForm() // Might cause double submission!
   console.log('Parent click handler')
 }
 </script>
@@ -70,7 +70,7 @@ const emit = defineEmits(['click'])
 function handleClick(event) {
   // Component controls all click behavior
   console.log('Handled internally')
-  emit('click', event)  // Explicitly forward if needed
+  emit('click', event) // Explicitly forward if needed
 }
 </script>
 
@@ -145,10 +145,7 @@ The additive behavior can be useful for extending functionality:
 ```vue
 <!-- EnhancedButton.vue - Leveraging additive listeners -->
 <template>
-  <button
-    @click="trackClick"
-    @focus="trackFocus"
-  >
+  <button @click="trackClick" @focus="trackFocus">
     <slot />
   </button>
 </template>

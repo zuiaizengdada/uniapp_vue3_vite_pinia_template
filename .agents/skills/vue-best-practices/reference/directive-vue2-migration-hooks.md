@@ -23,18 +23,19 @@ This is a breaking change that requires updating all custom directives when migr
 
 ## Hook Name Mapping
 
-| Vue 2           | Vue 3          |
-|-----------------|----------------|
-| `bind`          | `beforeMount`  |
-| `inserted`      | `mounted`      |
-| `update`        | **removed**    |
-| `componentUpdated` | `updated`   |
-| `unbind`        | `unmounted`    |
-| (none)          | `created`      |
-| (none)          | `beforeUpdate` |
-| (none)          | `beforeUnmount`|
+| Vue 2              | Vue 3           |
+| ------------------ | --------------- |
+| `bind`             | `beforeMount`   |
+| `inserted`         | `mounted`       |
+| `update`           | **removed**     |
+| `componentUpdated` | `updated`       |
+| `unbind`           | `unmounted`     |
+| (none)             | `created`       |
+| (none)             | `beforeUpdate`  |
+| (none)             | `beforeUnmount` |
 
 **Vue 2 (old):**
+
 ```javascript
 // Vue 2 directive - WILL NOT WORK IN VUE 3
 Vue.directive('demo', {
@@ -57,6 +58,7 @@ Vue.directive('demo', {
 ```
 
 **Vue 3 (new):**
+
 ```javascript
 // Vue 3 directive - Correct hook names
 app.directive('demo', {
@@ -88,6 +90,7 @@ app.directive('demo', {
 ## Migration Examples
 
 ### Simple Focus Directive
+
 ```javascript
 // Vue 2
 Vue.directive('focus', {
@@ -105,6 +108,7 @@ app.directive('focus', {
 ```
 
 ### Directive with Cleanup
+
 ```javascript
 // Vue 2
 Vue.directive('click-outside', {
@@ -121,7 +125,8 @@ Vue.directive('click-outside', {
 
 // Vue 3
 app.directive('click-outside', {
-  beforeMount(el, binding) {  // or mounted
+  beforeMount(el, binding) {
+    // or mounted
     el._handler = (e) => {
       if (!el.contains(e.target)) binding.value(e)
     }
@@ -134,6 +139,7 @@ app.directive('click-outside', {
 ```
 
 ### Directive with Updates
+
 ```javascript
 // Vue 2 - using update hook
 Vue.directive('color', {
@@ -206,5 +212,6 @@ In Vue 3, the `vnode` and `prevVnode` arguments also have different structure:
 ```
 
 ## Reference
+
 - [Vue 3 Migration Guide - Custom Directives](https://v3-migration.vuejs.org/breaking-changes/custom-directives)
 - [Vue.js Custom Directives - Directive Hooks](https://vuejs.org/guide/reusability/custom-directives#directive-hooks)

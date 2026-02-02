@@ -16,15 +16,17 @@ When class bindings involve multiple conditions or complex logic, extract them i
 ```vue
 <template>
   <!-- Hard to read, error-prone -->
-  <div :class="{
-    'btn': true,
-    'btn-primary': type === 'primary' && !disabled,
-    'btn-secondary': type === 'secondary' && !disabled,
-    'btn-disabled': disabled,
-    'btn-loading': isLoading,
-    'btn-large': size === 'large',
-    'btn-small': size === 'small'
-  }">
+  <div
+    :class="{
+      btn: true,
+      'btn-primary': type === 'primary' && !disabled,
+      'btn-secondary': type === 'secondary' && !disabled,
+      'btn-disabled': disabled,
+      'btn-loading': isLoading,
+      'btn-large': size === 'large',
+      'btn-small': size === 'small'
+    }"
+  >
     {{ label }}
   </div>
 
@@ -50,7 +52,7 @@ const props = defineProps({
 })
 
 const buttonClasses = computed(() => ({
-  'btn': true,
+  btn: true,
   [`btn-${props.type}`]: !props.disabled,
   'btn-disabled': props.disabled,
   'btn-loading': props.isLoading,
@@ -109,9 +111,7 @@ const dynamicClasses = computed(() => ({
 
 <template>
   <!-- Static 'card' class + dynamic classes -->
-  <div :class="['card', dynamicClasses]">
-    Content
-  </div>
+  <div :class="['card', dynamicClasses]">Content</div>
 </template>
 ```
 

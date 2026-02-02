@@ -15,9 +15,7 @@ Network failures, timeouts, and server errors are common in production. Without 
 import { defineAsyncComponent } from 'vue'
 
 // No error handling - fails silently
-const AsyncWidget = defineAsyncComponent(() =>
-  import('./Widget.vue')
-)
+const AsyncWidget = defineAsyncComponent(() => import('./Widget.vue'))
 </script>
 ```
 
@@ -28,9 +26,10 @@ import { defineAsyncComponent } from 'vue'
 // isLoading never becomes false on error - infinite spinner
 const isLoading = ref(true)
 const Widget = defineAsyncComponent({
-  loader: () => import('./Widget.vue').finally(() => {
-    isLoading.value = false  // Only runs on success
-  })
+  loader: () =>
+    import('./Widget.vue').finally(() => {
+      isLoading.value = false // Only runs on success
+    })
 })
 </script>
 ```
@@ -47,7 +46,7 @@ const AsyncWidget = defineAsyncComponent({
   loader: () => import('./Widget.vue'),
   loadingComponent: LoadingSpinner,
   errorComponent: ErrorDisplay,
-  delay: 200,    // Prevent loading flicker
+  delay: 200, // Prevent loading flicker
   timeout: 10000 // Show error after 10 seconds
 })
 </script>
@@ -80,9 +79,7 @@ const AsyncWidget = defineAsyncComponent({
 import { defineAsyncComponent } from 'vue'
 
 // Fallback component pattern - catch in loader
-const AsyncWidget = defineAsyncComponent(() =>
-  import('./Widget.vue').catch(() => import('./WidgetFallback.vue'))
-)
+const AsyncWidget = defineAsyncComponent(() => import('./Widget.vue').catch(() => import('./WidgetFallback.vue')))
 </script>
 ```
 
@@ -90,12 +87,12 @@ const AsyncWidget = defineAsyncComponent(() =>
 
 The `onError` callback receives four arguments:
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `error` | `Error` | The error that caused the load to fail |
-| `retry` | `Function` | Call to retry loading the component |
-| `fail` | `Function` | Call to give up and show errorComponent |
-| `attempts` | `number` | Number of load attempts so far |
+| Parameter  | Type       | Description                             |
+| ---------- | ---------- | --------------------------------------- |
+| `error`    | `Error`    | The error that caused the load to fail  |
+| `retry`    | `Function` | Call to retry loading the component     |
+| `fail`     | `Function` | Call to give up and show errorComponent |
+| `attempts` | `number`   | Number of load attempts so far          |
 
 ## Key Points
 

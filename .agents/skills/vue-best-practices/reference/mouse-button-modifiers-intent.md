@@ -18,6 +18,7 @@ tags: [vue3, events, mouse, accessibility, modifiers]
 - [ ] Don't assume users have a traditional right-handed mouse
 
 **Potentially Confusing:**
+
 ```html
 <template>
   <!-- Documentation says "left click only" but... -->
@@ -30,22 +31,17 @@ tags: [vue3, events, mouse, accessibility, modifiers]
 ```
 
 **Clear Understanding:**
+
 ```html
 <template>
   <!-- Think of it as "primary action" -->
-  <div @click.left="handlePrimaryAction">
-    Primary action (main button)
-  </div>
+  <div @click.left="handlePrimaryAction">Primary action (main button)</div>
 
   <!-- Think of it as "secondary/context action" -->
-  <div @click.right="handleSecondaryAction">
-    Secondary action (context menu button)
-  </div>
+  <div @click.right="handleSecondaryAction">Secondary action (context menu button)</div>
 
   <!-- Think of it as "auxiliary action" -->
-  <div @click.middle="handleAuxiliaryAction">
-    Auxiliary action (scroll wheel click)
-  </div>
+  <div @click.middle="handleAuxiliaryAction">Auxiliary action (scroll wheel click)</div>
 </template>
 ```
 
@@ -115,20 +111,13 @@ tags: [vue3, events, mouse, accessibility, modifiers]
   <!-- Don't require specific mouse buttons for essential actions -->
 
   <!-- BETTER: Provide keyboard alternatives -->
-  <div
-    @click.left="select"
-    @click.right.prevent="showMenu"
-    @keydown.enter="select"
-    @keydown.space="select"
-    @contextmenu.prevent="showMenu"
-    tabindex="0"
-    role="button"
-  >
+  <div @click.left="select" @click.right.prevent="showMenu" @keydown.enter="select" @keydown.space="select" @contextmenu.prevent="showMenu" tabindex="0" role="button">
     Accessible interactive element
   </div>
 </template>
 ```
 
 ## Reference
+
 - [Vue.js Event Handling - Mouse Button Modifiers](https://vuejs.org/guide/essentials/event-handling.html#mouse-button-modifiers)
 - [MDN - MouseEvent.button](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button)

@@ -17,6 +17,7 @@ tags: [vue3, render-function, migration, h, vnode, breaking-change]
 - [ ] Update all render functions when migrating from Vue 2
 
 **Incorrect (Vue 2 pattern - broken in Vue 3):**
+
 ```js
 // WRONG: Vue 2 pattern - h is not passed as argument in Vue 3
 export default {
@@ -36,15 +37,14 @@ export default {
 ```
 
 **Correct (Vue 3 pattern):**
+
 ```js
 // CORRECT: Import h from vue
 import { h } from 'vue'
 
 export default {
   render() {
-    return h('div', [
-      h('span', 'Hello')
-    ])
+    return h('div', [h('span', 'Hello')])
   }
 }
 ```
@@ -59,9 +59,7 @@ export default {
     const count = ref(0)
 
     // Return a render function from setup
-    return () => h('div', [
-      h('button', { onClick: () => count.value++ }, `Count: ${count.value}`)
-    ])
+    return () => h('div', [h('button', { onClick: () => count.value++ }, `Count: ${count.value}`)])
   }
 }
 ```
@@ -106,6 +104,7 @@ export default {
 In Vue 3, you must also explicitly resolve components:
 
 **Incorrect:**
+
 ```js
 // Vue 2: Could use string names for registered components
 render(h) {
@@ -114,6 +113,7 @@ render(h) {
 ```
 
 **Correct:**
+
 ```js
 import { h, resolveComponent } from 'vue'
 
@@ -139,10 +139,12 @@ export default {
 ## Why This Changed
 
 Vue 3's `h` is globally importable to:
+
 1. Enable tree-shaking (unused features can be removed)
 2. Support better TypeScript inference
 3. Allow use outside of component context
 
 ## Reference
+
 - [Vue 3 Migration Guide - Render Function API](https://v3-migration.vuejs.org/breaking-changes/render-function-api.html)
 - [Vue.js Render Functions & JSX](https://vuejs.org/guide/extras/render-function.html)

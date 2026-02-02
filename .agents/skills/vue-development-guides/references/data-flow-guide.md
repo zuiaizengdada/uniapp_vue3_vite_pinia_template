@@ -46,9 +46,9 @@ defineEmits<{ (e: 'increment'): void }>()
 
 ## `defineProps` best practices
 
-* Treat props as your **public API**: small, stable, well-typed.
-* Avoid “god props” (one prop that configures everything).
-* Never mutate props (they are readonly).
+- Treat props as your **public API**: small, stable, well-typed.
+- Avoid “god props” (one prop that configures everything).
+- Never mutate props (they are readonly).
 
 ### Prefer props destructuring with defaults (Vue 3.5+)
 
@@ -95,10 +95,10 @@ Use provide/inject to avoid props drilling (over ~3 layers).
 
 Good for shared context:
 
-* Forms (validation context)
-* Theme / design tokens
-* Parent-child coordination APIs
-* Dependency injection (services)
+- Forms (validation context)
+- Theme / design tokens
+- Parent-child coordination APIs
+- Dependency injection (services)
 
 In TypeScript, prefer `InjectionKey<T>` and keep keys in a shared module.
 
@@ -125,7 +125,7 @@ export const themeKey: InjectionKey<Ref<Theme>> = Symbol('theme')
 import { provide, ref } from 'vue'
 import { themeKey } from './keys'
 
-const theme = ref<"light" | "dark">('light')
+const theme = ref<'light' | 'dark'>('light')
 provide(themeKey, theme)
 </script>
 ```

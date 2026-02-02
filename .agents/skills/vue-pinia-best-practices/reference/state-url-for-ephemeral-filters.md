@@ -87,7 +87,7 @@ function updateQuery(newParams) {
 
 <template>
   <div>
-    <input v-model="searchQuery" placeholder="Search...">
+    <input v-model="searchQuery" placeholder="Search..." />
 
     <select v-model="selectedCategory">
       <option value="all">All Categories</option>
@@ -124,14 +124,16 @@ const showOutOfStock = useRouteQuery('inStock', false, { transform: Boolean })
 
 // Arrays work too
 const selectedTags = useRouteQuery('tags', [], {
-  transform: (v) => Array.isArray(v) ? v : v ? [v] : []
+  transform: (v) => (Array.isArray(v) ? v : v ? [v] : [])
 })
 </script>
 
 <template>
-  <input v-model="search" placeholder="Search...">
-  <select v-model="category">...</select>
-  <input type="checkbox" v-model="showOutOfStock"> Show out of stock
+  <input v-model="search" placeholder="Search..." />
+  <select v-model="category">
+    ...
+  </select>
+  <input type="checkbox" v-model="showOutOfStock" /> Show out of stock
 </template>
 ```
 
@@ -193,17 +195,17 @@ export const useProductFiltersStore = defineStore('productFilters', () => {
 
 ## What Goes in URL vs Store
 
-| State Type | URL | Store | Notes |
-|------------|-----|-------|-------|
-| Filters | Yes | Optional | Shareable, bookmarkable |
-| Search query | Yes | Optional | SEO benefit |
-| Pagination | Yes | Optional | Deep linking |
-| Sort order | Yes | Optional | User expectation |
-| Selected tab | Yes | Optional | Deep linking |
-| Modal open state | Maybe | Yes | Usually not shareable |
-| Form draft | No | Yes | Private, temporary |
-| User session | No | Yes | Security |
-| Shopping cart | No | Yes | Persistence needed |
+| State Type       | URL   | Store    | Notes                   |
+| ---------------- | ----- | -------- | ----------------------- |
+| Filters          | Yes   | Optional | Shareable, bookmarkable |
+| Search query     | Yes   | Optional | SEO benefit             |
+| Pagination       | Yes   | Optional | Deep linking            |
+| Sort order       | Yes   | Optional | User expectation        |
+| Selected tab     | Yes   | Optional | Deep linking            |
+| Modal open state | Maybe | Yes      | Usually not shareable   |
+| Form draft       | No    | Yes      | Private, temporary      |
+| User session     | No    | Yes      | Security                |
+| Shopping cart    | No    | Yes      | Persistence needed      |
 
 ## Benefits of URL State
 
@@ -233,6 +235,7 @@ const sort = useRouteQuery('sort', 'newest')
 ```
 
 ## Reference
+
 - [VueUse - useRouteQuery](https://vueuse.org/router/useRouteQuery/)
 - [Vue Router - Query Parameters](https://router.vuejs.org/guide/essentials/passing-props.html#passing-props-to-route-components)
 - [Mastering Pinia - URL State](https://masteringpinia.com/blog/top-5-mistakes-to-avoid-when-using-pinia)

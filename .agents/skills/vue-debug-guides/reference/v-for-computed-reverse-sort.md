@@ -20,12 +20,13 @@ Computed properties should be pure - they calculate a value without side effects
 - [ ] Consider using `toSorted()` and `toReversed()` (ES2023) which return new arrays
 
 **Incorrect:**
+
 ```javascript
 const numbers = ref([1, 2, 3, 4, 5])
 
 // WRONG: Mutates the original array
 const reversedNumbers = computed(() => {
-  return numbers.value.reverse()  // Modifies numbers.value!
+  return numbers.value.reverse() // Modifies numbers.value!
 })
 
 // WRONG: Same issue with sort
@@ -35,6 +36,7 @@ const sortedItems = computed(() => {
 ```
 
 **Correct:**
+
 ```javascript
 const numbers = ref([1, 2, 3, 4, 5])
 
@@ -76,11 +78,10 @@ function getSortedChildren(parent) {
 
 ```html
 <ul v-for="parent in parents" :key="parent.id">
-  <li v-for="child in getSortedChildren(parent)" :key="child.id">
-    {{ child.name }}
-  </li>
+  <li v-for="child in getSortedChildren(parent)" :key="child.id">{{ child.name }}</li>
 </ul>
 ```
 
 ## Reference
+
 - [Vue.js List Rendering - Displaying Filtered/Sorted Results](https://vuejs.org/guide/essentials/list.html#displaying-filtered-sorted-results)

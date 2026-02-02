@@ -22,15 +22,16 @@ Use `watchEffect` for simple cases where the callback uses the same state as wha
 
 ## Comparison Table
 
-| Feature | `watch` | `watchEffect` |
-|---------|---------|---------------|
-| Dependency tracking | Explicit (you specify) | Automatic (uses accessed properties) |
-| Lazy by default | Yes (runs only on change) | No (runs immediately) |
-| Access old value | Yes | No |
-| Async dependency tracking | Full control | Only before first await |
-| Multiple sources | Array syntax | Automatic |
+| Feature                   | `watch`                   | `watchEffect`                        |
+| ------------------------- | ------------------------- | ------------------------------------ |
+| Dependency tracking       | Explicit (you specify)    | Automatic (uses accessed properties) |
+| Lazy by default           | Yes (runs only on change) | No (runs immediately)                |
+| Access old value          | Yes                       | No                                   |
+| Async dependency tracking | Full control              | Only before first await              |
+| Multiple sources          | Array syntax              | Automatic                            |
 
 **When to prefer `watchEffect`:**
+
 ```vue
 <script setup>
 import { ref, watchEffect } from 'vue'
@@ -40,15 +41,14 @@ const data = ref(null)
 
 // GOOD: watchEffect is cleaner when callback uses same state
 watchEffect(async () => {
-  const response = await fetch(
-    `https://api.example.com/todos/${todoId.value}`
-  )
+  const response = await fetch(`https://api.example.com/todos/${todoId.value}`)
   data.value = await response.json()
 })
 </script>
 ```
 
 **When to prefer `watch`:**
+
 ```vue
 <script setup>
 import { ref, watch } from 'vue'
@@ -89,12 +89,9 @@ const category = ref('all')
 const results = ref([])
 
 // BAD: Repetitive - listing same deps in source and using in callback
-watch(
-  [searchQuery, category],
-  ([query, cat]) => {
-    fetchResults(query, cat)  // Same variables repeated
-  }
-)
+watch([searchQuery, category], ([query, cat]) => {
+  fetchResults(query, cat) // Same variables repeated
+})
 
 // GOOD: watchEffect removes repetition
 watchEffect(() => {
@@ -131,7 +128,7 @@ watch(
   (id) => {
     if (id) loadUserProfile(id)
   },
-  { immediate: true }  // Explicit about running immediately
+  { immediate: true } // Explicit about running immediately
 )
 </script>
 ```
@@ -183,4 +180,5 @@ watch(
 ```
 
 ## Reference
+
 - [Vue.js Watchers - watch vs. watchEffect](https://vuejs.org/guide/essentials/watchers.html#watch-vs-watcheffect)

@@ -20,6 +20,7 @@ Custom directives are designed for direct DOM manipulation on native HTML elemen
 - [ ] If you must use a directive on a component, ensure it has a single root element
 
 **Incorrect:**
+
 ```vue
 <template>
   <!-- WRONG: Directive on a component - may be ignored -->
@@ -42,6 +43,7 @@ import MultiRootComponent from './MultiRootComponent.vue'
 ```
 
 **Correct:**
+
 ```vue
 <template>
   <!-- CORRECT: Directive on native HTML element -->
@@ -79,6 +81,7 @@ Directives only work reliably on components with a **single root element**. The 
 ```
 
 However, this is still not recommended because:
+
 1. It's fragile - refactoring to multi-root breaks the directive silently
 2. It's unclear which element receives the directive
 3. The component author may not expect external DOM manipulation
@@ -86,6 +89,7 @@ However, this is still not recommended because:
 ## Better Patterns
 
 ### Option 1: Component Prop
+
 ```vue
 <!-- FocusableInput.vue -->
 <template>
@@ -113,6 +117,7 @@ onMounted(() => {
 ```
 
 ### Option 2: Exposed Method
+
 ```vue
 <!-- FocusableInput.vue -->
 <template>
@@ -146,4 +151,5 @@ onMounted(() => {
 ```
 
 ## Reference
+
 - [Vue.js Custom Directives - Usage on Components](https://vuejs.org/guide/reusability/custom-directives#usage-on-components)

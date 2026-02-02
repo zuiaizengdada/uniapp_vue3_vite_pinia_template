@@ -21,12 +21,13 @@ Understanding this fundamental difference is crucial for writing idiomatic Vue c
 - [ ] Don't worry about "call order" - Vue composables can be conditional
 
 **React Patterns to Avoid in Vue:**
+
 ```javascript
 // These patterns are UNNECESSARY in Vue - they solve React-specific problems
 
 // WRONG: Trying to implement dependency arrays (React pattern)
 watch(
-  [dep1, dep2, dep3],  // Vue tracks deps automatically in watchEffect
+  [dep1, dep2, dep3], // Vue tracks deps automatically in watchEffect
   () => {
     // ...
   }
@@ -47,7 +48,7 @@ function useData() {
   // In React, this could capture stale 'data' - NOT in Vue!
   // Vue refs are always current
   const handler = () => {
-    console.log(data.value)  // Always gets current value
+    console.log(data.value) // Always gets current value
   }
 
   return { data, handler }
@@ -55,6 +56,7 @@ function useData() {
 ```
 
 **Correct Vue Patterns:**
+
 ```javascript
 import { ref, computed, watchEffect } from 'vue'
 
@@ -91,7 +93,7 @@ function logState() {
 }
 
 setTimeout(() => {
-  logState()  // Gets current values even if called later
+  logState() // Gets current values even if called later
 }, 5000)
 ```
 
@@ -111,7 +113,7 @@ onMounted(() => {
 
 // 2. Composables can be conditional
 if (featureEnabled) {
-  const { data } = useSomeFeature()  // This is FINE in Vue!
+  const { data } = useSomeFeature() // This is FINE in Vue!
 }
 // In React: "Hooks cannot be conditional" - not a problem in Vue
 
@@ -132,25 +134,20 @@ watchEffect(() => {
 ```javascript
 // Setup runs once - so initialization happens once
 <script setup>
-import { ref, onMounted } from 'vue'
-
-// This code runs ONCE when component is created
-const data = ref(null)
-console.log('Setup running')  // Only logs once
-
-onMounted(() => {
-  console.log('Mounted')  // Only logs once
-})
-
-// If you need something to run on every reactive change,
-// use watch or watchEffect
-watchEffect(() => {
-  // This runs when dependencies change
-  console.log('Data changed:', data.value)
-})
+  import {(ref, onMounted)} from 'vue' // This code runs ONCE when component is created const data = ref(null) console.log('Setup running') // Only logs once onMounted(() =>{' '}
+  {
+    console.log('Mounted') // Only logs once
+  }
+  ) // If you need something to run on every reactive change, // use watch or watchEffect watchEffect(() =>{' '}
+  {
+    // This runs when dependencies change
+    console.log('Data changed:', data.value)
+  }
+  )
 </script>
 ```
 
 ## Reference
+
 - [Composition API FAQ - Relationship with React Hooks](https://vuejs.org/guide/extras/composition-api-faq.html#relationship-with-react-hooks)
 - [Reactivity Fundamentals](https://vuejs.org/guide/essentials/reactivity-fundamentals.html)

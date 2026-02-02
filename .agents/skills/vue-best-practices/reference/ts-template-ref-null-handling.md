@@ -28,10 +28,10 @@ import { ref } from 'vue'
 const inputRef = ref<HTMLInputElement>()
 
 // WRONG: Will crash if accessed before mount
-inputRef.value.focus()  // Error: Cannot read properties of null
+inputRef.value.focus() // Error: Cannot read properties of null
 
 // WRONG: Accessed in setup, element doesn't exist yet
-console.log(inputRef.value.value)  // Error!
+console.log(inputRef.value.value) // Error!
 </script>
 
 <template>
@@ -50,7 +50,7 @@ const inputRef = ref<HTMLInputElement | null>(null)
 
 // CORRECT: Access in onMounted when DOM exists
 onMounted(() => {
-  inputRef.value?.focus()  // Safe with optional chaining
+  inputRef.value?.focus() // Safe with optional chaining
 })
 
 // CORRECT: Guard before accessing
@@ -100,7 +100,7 @@ const modalRef = ref<HTMLDivElement | null>(null)
 
 // WRONG: Assuming ref always exists after first mount
 function closeModal() {
-  modalRef.value.classList.remove('open')  // May be null!
+  modalRef.value.classList.remove('open') // May be null!
 }
 
 // CORRECT: Always guard access
@@ -119,9 +119,7 @@ watch(modalRef, (newRef) => {
 </script>
 
 <template>
-  <div v-if="showModal" ref="modalRef" class="modal">
-    Modal content
-  </div>
+  <div v-if="showModal" ref="modalRef" class="modal">Modal content</div>
 </template>
 ```
 
@@ -179,7 +177,7 @@ onMounted(() => {
   itemRefs.value[0]?.focus()
 
   // Iterate safely
-  itemRefs.value.forEach(el => {
+  itemRefs.value.forEach((el) => {
     el?.classList.add('mounted')
   })
 })
@@ -190,7 +188,11 @@ onMounted(() => {
     <li
       v-for="(item, index) in items"
       :key="item"
-      :ref="el => { itemRefs[index] = el as HTMLLIElement }"
+      :ref="
+        (el) => {
+          itemRefs[index] = el as HTMLLIElement
+        }
+      "
     >
       {{ item }}
     </li>
@@ -228,10 +230,7 @@ Create a reusable type guard for cleaner code:
 
 ```typescript
 // utils/refs.ts
-export function assertRef<T>(
-  ref: Ref<T | null>,
-  message = 'Ref is not available'
-): asserts ref is Ref<T> {
+export function assertRef<T>(ref: Ref<T | null>, message = 'Ref is not available'): asserts ref is Ref<T> {
   if (ref.value === null) {
     throw new Error(message)
   }
@@ -240,10 +239,11 @@ export function assertRef<T>(
 // Usage in component
 function mustFocus() {
   assertRef(inputRef, 'Input element not mounted')
-  inputRef.value.focus()  // TypeScript knows it's not null here
+  inputRef.value.focus() // TypeScript knows it's not null here
 }
 ```
 
 ## Reference
+
 - [Vue.js TypeScript with Composition API - Template Refs](https://vuejs.org/guide/typescript/composition-api.html#typing-template-refs)
 - [Vue.js Template Refs](https://vuejs.org/guide/essentials/template-refs.html)

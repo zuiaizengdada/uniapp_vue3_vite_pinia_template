@@ -39,7 +39,7 @@ function reset() {
 defineExpose({
   increment,
   reset,
-  count: internalCount  // Expose ref for reading
+  count: internalCount // Expose ref for reading
 })
 </script>
 ```
@@ -55,11 +55,11 @@ const childRef = ref<InstanceType<typeof ChildComponent> | null>(null)
 
 onMounted(() => {
   // TypeScript knows about exposed methods
-  childRef.value?.increment()  // OK
-  childRef.value?.reset()      // OK
+  childRef.value?.increment() // OK
+  childRef.value?.reset() // OK
 
   // Access exposed ref
-  console.log(childRef.value?.count)  // Ref<number>
+  console.log(childRef.value?.count) // Ref<number>
 })
 
 function handleClick() {
@@ -134,7 +134,7 @@ const listRef = useTemplateRef<ComponentExposed<typeof GenericList<User>>>('list
 
 function selectFirstUser() {
   const users: User[] = [{ id: '1', name: 'John' }]
-  listRef.value?.selectItem(users[0])  // Properly typed as User
+  listRef.value?.selectItem(users[0]) // Properly typed as User
 }
 </script>
 
@@ -194,12 +194,7 @@ function focusItem(index: number) {
 </script>
 
 <template>
-  <ListItem
-    v-for="(item, index) in items"
-    :key="item.id"
-    :item="item"
-    :ref="(el) => setItemRef(el, index)"
-  />
+  <ListItem v-for="(item, index) in items" :key="item.id" :item="item" :ref="(el) => setItemRef(el, index)" />
 </template>
 ```
 
@@ -247,7 +242,7 @@ const childRef = ref<InstanceType<typeof Child> | null>(null)
 onMounted(() => {
   // childRef.value?.doSomething is undefined!
   // Script setup components don't expose anything by default
-  childRef.value?.doSomething()  // Runtime: undefined is not a function
+  childRef.value?.doSomething() // Runtime: undefined is not a function
 })
 </script>
 ```
@@ -255,6 +250,7 @@ onMounted(() => {
 Always use `defineExpose` in `<script setup>` components to make methods/properties accessible to parent refs.
 
 ## Reference
+
 - [Vue.js TypeScript - Component Template Refs](https://vuejs.org/guide/typescript/composition-api.html#typing-component-template-refs)
 - [Vue.js Template Refs](https://vuejs.org/guide/essentials/template-refs.html#ref-on-component)
 - [vue-component-type-helpers](https://www.npmjs.com/package/vue-component-type-helpers)

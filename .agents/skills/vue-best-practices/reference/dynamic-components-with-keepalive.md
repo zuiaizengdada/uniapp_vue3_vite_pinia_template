@@ -162,6 +162,7 @@ onDeactivated(() => {
 ```
 
 **Common use cases for activation hooks:**
+
 - Refresh stale data when returning to a tab
 - Resume/pause video or audio playback
 - Reconnect/disconnect WebSocket connections
@@ -229,5 +230,6 @@ const currentTab = shallowRef(TabA)
 ```
 
 ## Reference
+
 - [Vue.js KeepAlive](https://vuejs.org/guide/built-ins/keep-alive.html)
 - [Vue.js Dynamic Components](https://vuejs.org/guide/essentials/component-basics.html#dynamic-components)

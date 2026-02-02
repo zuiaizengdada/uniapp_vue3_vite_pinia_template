@@ -21,6 +21,7 @@ The `.mount()` method should always be called after all app configurations and a
 - [ ] Call `.mount()` as the final step in app initialization
 
 **Incorrect:**
+
 ```javascript
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -40,6 +41,7 @@ app.component('GlobalButton', GlobalButton)
 ```
 
 **Correct:**
+
 ```javascript
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -73,17 +75,14 @@ app.mount('#app')
 // WRONG: Chaining mount in the middle of configuration
 createApp(App)
   .use(router)
-  .mount('#app')  // Everything after this line is a problem
-  .use(pinia)     // This doesn't even work - mount returns component instance!
+  .mount('#app') // Everything after this line is a problem
+  .use(pinia) // This doesn't even work - mount returns component instance!
 
 // CORRECT: Either complete chain before mount, or use intermediate variable
-createApp(App)
-  .use(router)
-  .use(pinia)
-  .component('GlobalButton', GlobalButton)
-  .mount('#app')  // Mount at the very end
+createApp(App).use(router).use(pinia).component('GlobalButton', GlobalButton).mount('#app') // Mount at the very end
 ```
 
 ## Reference
+
 - [Vue.js - Creating a Vue Application](https://vuejs.org/guide/essentials/application.html)
 - [Vue.js Application API](https://vuejs.org/api/application.html)

@@ -34,6 +34,7 @@ npm init playwright@latest
 ```
 
 **playwright.config.ts:**
+
 ```typescript
 import { defineConfig, devices } from '@playwright/test'
 
@@ -51,35 +52,35 @@ export default defineConfig({
     // Capture trace on first retry
     trace: 'on-first-retry',
     // Screenshot on failure
-    screenshot: 'only-on-failure',
+    screenshot: 'only-on-failure'
   },
 
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'] }
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { ...devices['Desktop Firefox'] }
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { ...devices['Desktop Safari'] }
     },
     // Mobile viewports
     {
       name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
+      use: { ...devices['Pixel 5'] }
+    }
   ],
 
   // Run local dev server before tests
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-  },
+    reuseExistingServer: !process.env.CI
+  }
 })
 ```
 
@@ -119,16 +120,16 @@ test.describe('User Authentication', () => {
 
 ## Playwright vs Cypress Comparison
 
-| Feature | Playwright | Cypress |
-|---------|------------|---------|
-| Browsers | Chromium, Firefox, WebKit | Chromium, Firefox, Electron (WebKit experimental) |
-| Cross-browser | Full support | Limited |
-| Parallelization | Built-in | Requires Cypress Cloud |
-| Open source | Fully | Core only |
-| Mobile testing | Device emulation | Limited |
-| Debugging | Inspector, trace viewer | Time-travel UI |
-| API testing | Built-in | Plugin required |
-| Iframes | Full support | Limited |
+| Feature         | Playwright                | Cypress                                           |
+| --------------- | ------------------------- | ------------------------------------------------- |
+| Browsers        | Chromium, Firefox, WebKit | Chromium, Firefox, Electron (WebKit experimental) |
+| Cross-browser   | Full support              | Limited                                           |
+| Parallelization | Built-in                  | Requires Cypress Cloud                            |
+| Open source     | Fully                     | Core only                                         |
+| Mobile testing  | Device emulation          | Limited                                           |
+| Debugging       | Inspector, trace viewer   | Time-travel UI                                    |
+| API testing     | Built-in                  | Plugin required                                   |
+| Iframes         | Full support              | Limited                                           |
 
 ## Testing Vue Components with Data-Testid
 
@@ -237,6 +238,7 @@ npx playwright codegen localhost:5173
 ```
 
 ## Reference
+
 - [Playwright Documentation](https://playwright.dev/)
 - [Vue.js E2E Testing Recommendations](https://vuejs.org/guide/scaling-up/testing#e2e-testing)
 - [Playwright Best Practices](https://playwright.dev/docs/best-practices)

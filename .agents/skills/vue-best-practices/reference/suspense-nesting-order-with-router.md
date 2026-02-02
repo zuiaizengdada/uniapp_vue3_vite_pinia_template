@@ -7,6 +7,7 @@ When combining `<Suspense>` with `<Transition>`, `<KeepAlive>`, and `<RouterView
 ## Why This Matters
 
 Each of these components wraps and controls its child in specific ways. Incorrect nesting leads to:
+
 - Transitions not animating
 - Components not being cached by KeepAlive
 - Suspense not catching async dependencies
@@ -58,9 +59,7 @@ Each of these components wraps and controls its child in specific ways. Incorrec
 
             <!-- Loading state -->
             <template #fallback>
-              <div class="route-loading">
-                Loading...
-              </div>
+              <div class="route-loading">Loading...</div>
             </template>
           </Suspense>
         </KeepAlive>

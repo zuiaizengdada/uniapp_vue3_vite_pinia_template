@@ -14,8 +14,8 @@
 
 ### Always provide a stable `:key`
 
-* Prefer primitive keys (`string | number`).
-* Avoid using objects as keys.
+- Prefer primitive keys (`string | number`).
+- Avoid using objects as keys.
 
 Good
 
@@ -45,7 +45,7 @@ Good: filter in computed
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const activeUsers = computed(() => users.value.filter(u => u.active))
+const activeUsers = computed(() => users.value.filter((u) => u.active))
 </script>
 
 <template>
@@ -71,6 +71,7 @@ Good: move `v-if` to a container element or `<template>`
 ### Shorthand syntax for named slots
 
 Bad: use verbose syntax
+
 ```vue
 <MyComponent>
   <template v-slot:header> ... </template>
@@ -78,6 +79,7 @@ Bad: use verbose syntax
 ```
 
 Good: use shorthand syntax
+
 ```vue
 <MyComponent>
   <template #header> ... </template>
@@ -114,8 +116,8 @@ Fallthrough attributes let consumers pass `class`, `id`, `aria-*`, and listeners
 
 When you need control:
 
-* Disable inheritance
-* Forward `$attrs` to the real target
+- Disable inheritance
+- Forward `$attrs` to the real target
 
 Good: disable inheritance + forward `$attrs`
 
@@ -134,16 +136,18 @@ defineOptions({ inheritAttrs: false })
 
 ## Prefer component-scoped styles
 
-* Use `<style scoped>` for styles that belong to a component.
-* Keep **global CSS** in a dedicated file (e.g. `src/assets/main.css`) for resets, typography, tokens, etc.
-* Use `:deep()` sparingly (edge cases only).
+- Use `<style scoped>` for styles that belong to a component.
+- Keep **global CSS** in a dedicated file (e.g. `src/assets/main.css`) for resets, typography, tokens, etc.
+- Use `:deep()` sparingly (edge cases only).
 
 Bad: global styles inside random components
 
 ```vue
 <style>
 /* ❌ leaks everywhere */
-button { border-radius: 999px; }
+button {
+  border-radius: 999px;
+}
 </style>
 ```
 
@@ -151,7 +155,9 @@ Good: scoped by default
 
 ```vue
 <style scoped>
-.button { border-radius: 999px; }
+.button {
+  border-radius: 999px;
+}
 </style>
 ```
 
@@ -160,5 +166,7 @@ Good: global CSS belongs in a global entry
 ```css
 /* src/assets/main.css */
 /* ✅ resets, tokens, typography, app-wide rules */
-:root { --radius: 999px; }
+:root {
+  --radius: 999px;
+}
 ```

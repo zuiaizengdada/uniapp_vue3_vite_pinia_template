@@ -22,13 +22,14 @@ tags: [vue3, typescript, events, dom-events, composition-api]
 ```vue
 <script setup lang="ts">
 // WRONG: event has implicit 'any' type
-function handleChange(event) {  // Error in strict mode!
-  console.log(event.target.value)  // Also error: target might be null
+function handleChange(event) {
+  // Error in strict mode!
+  console.log(event.target.value) // Also error: target might be null
 }
 
 // WRONG: Missing type assertion for element access
 function handleInput(event: Event) {
-  console.log(event.target.value)  // Error: 'value' doesn't exist on EventTarget
+  console.log(event.target.value) // Error: 'value' doesn't exist on EventTarget
 }
 </script>
 
@@ -74,16 +75,16 @@ function handleSubmit(event: SubmitEvent) {
 
 ## Common Event Types
 
-| Event | Type | Common Properties |
-|-------|------|-------------------|
-| click, dblclick | `MouseEvent` | clientX, clientY, button |
+| Event                    | Type            | Common Properties            |
+| ------------------------ | --------------- | ---------------------------- |
+| click, dblclick          | `MouseEvent`    | clientX, clientY, button     |
 | keydown, keyup, keypress | `KeyboardEvent` | key, code, ctrlKey, shiftKey |
-| input, change | `Event` | target (needs assertion) |
-| focus, blur | `FocusEvent` | relatedTarget |
-| submit | `SubmitEvent` | submitter |
-| drag, dragstart, drop | `DragEvent` | dataTransfer |
-| wheel, scroll | `WheelEvent` | deltaX, deltaY |
-| touch events | `TouchEvent` | touches, changedTouches |
+| input, change            | `Event`         | target (needs assertion)     |
+| focus, blur              | `FocusEvent`    | relatedTarget                |
+| submit                   | `SubmitEvent`   | submitter                    |
+| drag, dragstart, drop    | `DragEvent`     | dataTransfer                 |
+| wheel, scroll            | `WheelEvent`    | deltaX, deltaY               |
+| touch events             | `TouchEvent`    | touches, changedTouches      |
 
 ## Element-Specific Type Assertions
 
@@ -163,8 +164,8 @@ const agreed = ref(false)
 </script>
 
 <template>
-  <input @input="e => name = getInputValue(e)" />
-  <input type="checkbox" @change="e => agreed = getCheckboxChecked(e)" />
+  <input @input="(e) => (name = getInputValue(e))" />
+  <input type="checkbox" @change="(e) => (agreed = getCheckboxChecked(e))" />
 </template>
 ```
 
@@ -208,6 +209,7 @@ function handleClick(event: MouseEvent) {
 ```
 
 ## Reference
+
 - [Vue.js TypeScript with Composition API - Event Handlers](https://vuejs.org/guide/typescript/composition-api.html#typing-event-handlers)
 - [MDN Event Reference](https://developer.mozilla.org/en-US/docs/Web/Events)
 - [TypeScript DOM Types](https://github.com/microsoft/TypeScript/blob/main/lib/lib.dom.d.ts)

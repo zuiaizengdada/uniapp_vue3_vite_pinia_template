@@ -46,6 +46,7 @@ const currentView = computed(() => {
 ```
 
 **What happens:**
+
 1. Component mounts, adds listener
 2. Component unmounts (e.g., route change, v-if toggle)
 3. Component mounts again, adds ANOTHER listener
@@ -175,10 +176,13 @@ import Home from './Home.vue'
 import About from './About.vue'
 import NotFound from './NotFound.vue'
 
-const { currentView } = useHashRouter({
-  '/': Home,
-  '/about': About
-}, NotFound)
+const { currentView } = useHashRouter(
+  {
+    '/': Home,
+    '/about': About
+  },
+  NotFound
+)
 </script>
 
 <template>
@@ -188,13 +192,13 @@ const { currentView } = useHashRouter({
 
 ## When to Use Simple Routing vs Vue Router
 
-| Use Simple Hash Routing | Use Vue Router |
-|------------------------|----------------|
-| Learning/prototyping | Production apps |
-| Very simple apps (2-3 pages) | Nested routes needed |
-| No build step available | Navigation guards needed |
-| Bundle size critical | Lazy loading needed |
-| Static hosting only | History mode (clean URLs) |
+| Use Simple Hash Routing      | Use Vue Router            |
+| ---------------------------- | ------------------------- |
+| Learning/prototyping         | Production apps           |
+| Very simple apps (2-3 pages) | Nested routes needed      |
+| No build step available      | Navigation guards needed  |
+| Bundle size critical         | Lazy loading needed       |
+| Static hosting only          | History mode (clean URLs) |
 
 ## Key Points
 
@@ -205,5 +209,6 @@ const { currentView } = useHashRouter({
 5. **Composables help encapsulate cleanup logic** - Reusable and automatic
 
 ## Reference
+
 - [Vue.js Routing Documentation](https://vuejs.org/guide/scaling-up/routing.html)
 - [Vue Router Official Library](https://router.vuejs.org/)

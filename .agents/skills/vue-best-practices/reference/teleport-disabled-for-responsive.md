@@ -17,6 +17,7 @@ tags: [vue3, teleport, responsive, mobile]
 - [ ] Consider accessibility implications of position changes
 
 **Basic Usage:**
+
 ```vue
 <template>
   <Teleport to="body" :disabled="isMobile">
@@ -109,17 +110,21 @@ const isMobile = useMediaQuery('(max-width: 768px)')
 }
 
 /* Transitions */
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.3s;
 }
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
-.slide-up-enter-active, .slide-up-leave-active {
+.slide-up-enter-active,
+.slide-up-leave-active {
   transition: transform 0.3s;
 }
-.slide-up-enter-from, .slide-up-leave-to {
+.slide-up-enter-from,
+.slide-up-leave-to {
   transform: translateY(100%);
 }
 </style>
@@ -132,9 +137,7 @@ const isMobile = useMediaQuery('(max-width: 768px)')
 <template>
   <div class="layout">
     <header>
-      <button @click="sidebarOpen = !sidebarOpen" class="menu-toggle">
-        Menu
-      </button>
+      <button @click="sidebarOpen = !sidebarOpen" class="menu-toggle">Menu</button>
     </header>
 
     <main>
@@ -205,7 +208,7 @@ const isMobile = useMediaQuery('(max-width: 768px)')
 const breakpoints = useBreakpoints({
   mobile: 0,
   tablet: 768,
-  desktop: 1024,
+  desktop: 1024
 })
 
 const isMobileOrTablet = breakpoints.smaller('desktop')
@@ -219,5 +222,6 @@ const isMobileOrTablet = breakpoints.smaller('desktop')
 ```
 
 ## Reference
+
 - [Vue.js Teleport - Disabling Teleport](https://vuejs.org/guide/built-ins/teleport.html#disabling-teleport)
 - [VueUse - useMediaQuery](https://vueuse.org/core/useMediaQuery/)

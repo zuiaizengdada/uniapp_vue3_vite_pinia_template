@@ -21,6 +21,7 @@ tags: [vue3, pinia, state-management, devtools, architecture, scalability]
 ## When Hand-Rolled State is Acceptable
 
 Simple reactive state is fine for:
+
 - Prototypes and proof-of-concepts
 - Very small applications with minimal shared state
 - Single-developer projects with limited scope
@@ -45,6 +46,7 @@ Use Pinia when you have any of these requirements:
 ### 1. DevTools Integration
 
 Pinia provides rich Vue DevTools support:
+
 - Timeline of state changes
 - State inspection and editing
 - Time-travel debugging
@@ -58,7 +60,7 @@ export const useCounterStore = defineStore('counter', {
   state: () => ({ count: 0 }),
   actions: {
     increment() {
-      this.count++  // Tracked in DevTools timeline
+      this.count++ // Tracked in DevTools timeline
     }
   }
 })
@@ -97,9 +99,9 @@ export const useUserStore = defineStore('user', {
 
 // Usage is fully typed
 const userStore = useUserStore()
-userStore.name  // string
-userStore.displayName  // string
-userStore.setUser('John', 30)  // Type-checked
+userStore.name // string
+userStore.displayName // string
+userStore.setUser('John', 30) // Type-checked
 ```
 
 ### 3. Team Collaboration
@@ -110,16 +112,28 @@ Pinia enforces conventions that help teams:
 // Consistent structure across all stores
 // stores/products.js
 export const useProductsStore = defineStore('products', {
-  state: () => ({ /* ... */ }),
-  getters: { /* ... */ },
-  actions: { /* ... */ }
+  state: () => ({
+    /* ... */
+  }),
+  getters: {
+    /* ... */
+  },
+  actions: {
+    /* ... */
+  }
 })
 
 // stores/cart.js - Same structure
 export const useCartStore = defineStore('cart', {
-  state: () => ({ /* ... */ }),
-  getters: { /* ... */ },
-  actions: { /* ... */ }
+  state: () => ({
+    /* ... */
+  }),
+  getters: {
+    /* ... */
+  },
+  actions: {
+    /* ... */
+  }
 })
 ```
 
@@ -159,23 +173,23 @@ export const useSettingsStore = defineStore('settings', {
     theme: 'light',
     language: 'en'
   }),
-  persist: true  // Automatically saved/restored
+  persist: true // Automatically saved/restored
 })
 ```
 
 ## Pinia vs Hand-Rolled Comparison
 
-| Feature | Hand-Rolled `reactive()` | Pinia |
-|---------|-------------------------|-------|
-| DevTools integration | No | Yes |
-| TypeScript inference | Manual | Automatic |
-| HMR support | No | Yes |
-| SSR support | Manual | Built-in |
-| Plugins | No | Yes |
-| Time-travel debugging | No | Yes |
-| Learning curve | Lower | Slightly higher |
-| Bundle size | Smaller | ~1KB |
-| Team conventions | None | Enforced |
+| Feature               | Hand-Rolled `reactive()` | Pinia           |
+| --------------------- | ------------------------ | --------------- |
+| DevTools integration  | No                       | Yes             |
+| TypeScript inference  | Manual                   | Automatic       |
+| HMR support           | No                       | Yes             |
+| SSR support           | Manual                   | Built-in        |
+| Plugins               | No                       | Yes             |
+| Time-travel debugging | No                       | Yes             |
+| Learning curve        | Lower                    | Slightly higher |
+| Bundle size           | Smaller                  | ~1KB            |
+| Team conventions      | None                     | Enforced        |
 
 ## Migration from Vuex
 
@@ -186,10 +200,14 @@ Vuex is now in maintenance mode. Migrate to Pinia for new features:
 export default createStore({
   state: { count: 0 },
   mutations: {
-    INCREMENT(state) { state.count++ }
+    INCREMENT(state) {
+      state.count++
+    }
   },
   actions: {
-    increment({ commit }) { commit('INCREMENT') }
+    increment({ commit }) {
+      commit('INCREMENT')
+    }
   }
 })
 
@@ -197,12 +215,15 @@ export default createStore({
 export const useCounterStore = defineStore('counter', {
   state: () => ({ count: 0 }),
   actions: {
-    increment() { this.count++ }  // No mutations needed!
+    increment() {
+      this.count++
+    } // No mutations needed!
   }
 })
 ```
 
 **Pinia advantages over Vuex:**
+
 - No mutations (simpler mental model)
 - Better TypeScript support
 - No nested modules complexity
@@ -222,7 +243,9 @@ export const useCounterStore = defineStore('counter', {
     double: (state) => state.count * 2
   },
   actions: {
-    increment() { this.count++ }
+    increment() {
+      this.count++
+    }
   }
 })
 ```
@@ -233,7 +256,9 @@ export const useCounterStore = defineStore('counter', {
 export const useCounterStore = defineStore('counter', () => {
   const count = ref(0)
   const double = computed(() => count.value * 2)
-  function increment() { count.value++ }
+  function increment() {
+    count.value++
+  }
 
   return { count, double, increment }
 })
@@ -257,6 +282,7 @@ app.mount('#app')
 ```
 
 ## Reference
+
 - [Vue.js - State Management](https://vuejs.org/guide/scaling-up/state-management.html)
 - [Pinia Documentation](https://pinia.vuejs.org/)
 - [Pinia vs Vuex](https://pinia.vuejs.org/introduction.html#comparison-with-vuex)

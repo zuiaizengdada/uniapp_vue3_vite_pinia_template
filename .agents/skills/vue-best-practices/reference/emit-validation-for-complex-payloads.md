@@ -20,6 +20,7 @@ tags: [vue3, emits, defineEmits, validation, debugging]
 ## Basic Validation
 
 **Using object syntax with validators:**
+
 ```vue
 <script setup>
 const emit = defineEmits({
@@ -63,14 +64,14 @@ function handleSubmit(formData) {
 const emit = defineEmits({
   submit: (data) => {
     if (!data?.email) {
-      return false  // Validation fails
+      return false // Validation fails
     }
     return true
   }
 })
 
 function badSubmit() {
-  emit('submit', {})  // Missing email
+  emit('submit', {}) // Missing email
   // Console: [Vue warn]: Invalid event arguments: event validation failed for event "submit"
   // Event STILL fires - validation is advisory only
 }
@@ -82,44 +83,24 @@ function badSubmit() {
 ## Common Validation Patterns
 
 ### Required Fields
+
 ```vue
-const emit = defineEmits({
-  'user-created': (user) => {
-    const required = ['id', 'name', 'email']
-    const missing = required.filter(field => !user?.[field])
-    if (missing.length) {
-      console.warn(`user-created missing fields: ${missing.join(', ')}`)
-      return false
-    }
-    return true
-  }
-})
+const emit = defineEmits({ 'user-created': (user) => { const required = ['id', 'name', 'email'] const missing = required.filter(field => !user?.[field]) if (missing.length) {
+console.warn(`user-created missing fields: ${missing.join(', ')}`) return false } return true } })
 ```
 
 ### Type Checking
+
 ```vue
-const emit = defineEmits({
-  'page-change': (page) => typeof page === 'number' && page > 0,
-
-  'items-selected': (items) => Array.isArray(items),
-
-  'filter-applied': (filter) => {
-    return filter && typeof filter.field === 'string' && filter.value !== undefined
-  }
-})
+const emit = defineEmits({ 'page-change': (page) => typeof page === 'number' && page > 0, 'items-selected': (items) => Array.isArray(items), 'filter-applied': (filter) => { return filter && typeof
+filter.field === 'string' && filter.value !== undefined } })
 ```
 
 ### Range Validation
+
 ```vue
-const emit = defineEmits({
-  'rating-change': (rating) => {
-    if (typeof rating !== 'number' || rating < 1 || rating > 5) {
-      console.warn('Rating must be a number between 1 and 5')
-      return false
-    }
-    return true
-  }
-})
+const emit = defineEmits({ 'rating-change': (rating) => { if (typeof rating !== 'number' || rating < 1 || rating > 5) { console.warn('Rating must be a number between 1 and 5') return false } return
+true } })
 ```
 
 ## TypeScript Alternative
@@ -147,6 +128,7 @@ emit('submit', { email: 'test@test.com' })
 ```
 
 TypeScript validation is:
+
 - Caught at compile time, not runtime
 - Provides IDE autocompletion
 - Zero runtime overhead
@@ -154,6 +136,7 @@ TypeScript validation is:
 ## When to Use Runtime Validation
 
 Use object syntax validation when:
+
 - You're not using TypeScript
 - You need to validate values that can't be expressed in types (ranges, formats)
 - You want runtime debugging help during development
@@ -187,4 +170,5 @@ const emit = defineEmits({
 ```
 
 ## Reference
+
 - [Vue.js Component Events - Events Validation](https://vuejs.org/guide/components/events.html#events-validation)

@@ -19,6 +19,7 @@ This is a common issue when using CSS animations on parent elements or when moda
 - [ ] Avoid relying on `z-index` alone for stacking - teleport ensures proper layering
 
 **Problem - Without Teleport:**
+
 ```vue
 <template>
   <div class="animated-container">
@@ -46,12 +47,13 @@ This is a common issue when using CSS animations on parent elements or when moda
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9999;  /* z-index constrained by parent stacking context */
+  z-index: 9999; /* z-index constrained by parent stacking context */
 }
 </style>
 ```
 
 **Solution - With Teleport:**
+
 ```vue
 <template>
   <div class="animated-container">
@@ -69,7 +71,7 @@ This is a common issue when using CSS animations on parent elements or when moda
 
 <style>
 .animated-container {
-  transform: translateX(0);  /* No longer affects modal */
+  transform: translateX(0); /* No longer affects modal */
 }
 
 .modal {
@@ -77,7 +79,7 @@ This is a common issue when using CSS animations on parent elements or when moda
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9999;  /* z-index now works as expected */
+  z-index: 9999; /* z-index now works as expected */
 }
 </style>
 ```
@@ -91,9 +93,7 @@ Even without transform/filter, deeply nested elements create stacking contexts t
   <div class="sidebar" style="z-index: 100; position: relative;">
     <div class="nested-component">
       <!-- Without Teleport: z-index: 9999 is constrained within sidebar -->
-      <div v-if="showDropdown" class="dropdown" style="z-index: 9999;">
-        This dropdown may be covered by other elements
-      </div>
+      <div v-if="showDropdown" class="dropdown" style="z-index: 9999;">This dropdown may be covered by other elements</div>
     </div>
   </div>
 
@@ -104,14 +104,13 @@ Even without transform/filter, deeply nested elements create stacking contexts t
 ```
 
 **Solution:**
+
 ```vue
 <template>
   <div class="sidebar">
     <div class="nested-component">
       <Teleport to="body">
-        <div v-if="showDropdown" class="dropdown">
-          Dropdown now renders at body level - no z-index constraints
-        </div>
+        <div v-if="showDropdown" class="dropdown">Dropdown now renders at body level - no z-index constraints</div>
       </Teleport>
     </div>
   </div>
@@ -120,14 +119,15 @@ Even without transform/filter, deeply nested elements create stacking contexts t
 
 ## When to Use Teleport
 
-| UI Element | Should Teleport? | Reason |
-|------------|-----------------|--------|
-| Full-screen modals | Yes | Fixed positioning, need to escape stacking contexts |
-| Tooltips | Often | May need to escape overflow: hidden containers |
-| Dropdowns | Sometimes | Depends on container overflow/positioning |
-| Notifications/toasts | Yes | Should appear above all content |
-| Inline popups | Usually no | Position relative to trigger element |
+| UI Element           | Should Teleport? | Reason                                              |
+| -------------------- | ---------------- | --------------------------------------------------- |
+| Full-screen modals   | Yes              | Fixed positioning, need to escape stacking contexts |
+| Tooltips             | Often            | May need to escape overflow: hidden containers      |
+| Dropdowns            | Sometimes        | Depends on container overflow/positioning           |
+| Notifications/toasts | Yes              | Should appear above all content                     |
+| Inline popups        | Usually no       | Position relative to trigger element                |
 
 ## Reference
+
 - [Vue.js Teleport - Basic Usage](https://vuejs.org/guide/built-ins/teleport.html#basic-usage)
 - [MDN - Stacking Context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context)

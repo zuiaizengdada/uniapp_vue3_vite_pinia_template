@@ -36,6 +36,7 @@ props: {
 ## Using PropType for Complex Types
 
 **Import and use PropType:**
+
 ```typescript
 import { defineComponent, PropType } from 'vue'
 // or
@@ -94,9 +95,9 @@ export default defineComponent({
   methods: {
     async handleSubmit() {
       // Full type inference!
-      await this.onSubmit(this.user)  // onSubmit is properly typed
-      console.log(this.user.email)    // user.email is string
-      console.log(this.config.theme)  // theme is 'light' | 'dark'
+      await this.onSubmit(this.user) // onSubmit is properly typed
+      console.log(this.user.email) // user.email is string
+      console.log(this.config.theme) // theme is 'light' | 'dark'
     }
   }
 })
@@ -195,7 +196,7 @@ You might think to skip `PropType`:
 ```typescript
 // WRONG - doesn't work as expected
 props: {
-  user: Object as User  // TypeScript error or incorrect inference
+  user: Object as User // TypeScript error or incorrect inference
 }
 
 // CORRECT - use PropType

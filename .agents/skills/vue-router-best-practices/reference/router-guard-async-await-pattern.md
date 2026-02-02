@@ -24,7 +24,7 @@ tags: [vue3, vue-router, navigation-guards, async, promises]
 // WRONG: Not awaiting - navigation proceeds immediately
 router.beforeEach((to, from) => {
   if (to.meta.requiresAuth) {
-    checkAuth()  // This returns a Promise but we're not waiting!
+    checkAuth() // This returns a Promise but we're not waiting!
     // Navigation continues before checkAuth completes
   }
 })
@@ -71,12 +71,12 @@ router.beforeEach(async (to, from) => {
 router.beforeEach((to, from) => {
   if (to.meta.requiresAuth) {
     return checkAuth()
-      .then(isAuthenticated => {
+      .then((isAuthenticated) => {
         if (!isAuthenticated) {
           return { name: 'Login' }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Auth check failed:', error)
         return { name: 'Error' }
       })
@@ -130,12 +130,7 @@ const { isNavigating } = useNavigationLoading()
 ```javascript
 // CORRECT: Add timeout to prevent indefinite waiting
 function withTimeout(promise, ms = 5000) {
-  return Promise.race([
-    promise,
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Request timeout')), ms)
-    )
-  ])
+  return Promise.race([promise, new Promise((_, reject) => setTimeout(() => reject(new Error('Request timeout')), ms))])
 }
 
 router.beforeEach(async (to, from) => {
@@ -164,10 +159,7 @@ router.beforeEach(async (to, from) => {
 router.beforeEach(async (to, from) => {
   if (to.meta.requiresAuth && to.meta.requiresSubscription) {
     try {
-      const [isAuthenticated, hasSubscription] = await Promise.all([
-        checkAuth(),
-        checkSubscription()
-      ])
+      const [isAuthenticated, hasSubscription] = await Promise.all([checkAuth(), checkSubscription()])
 
       if (!isAuthenticated) {
         return '/login'
@@ -223,5 +215,6 @@ router.beforeEach(async (to, from) => {
 6. **Parallelize independent checks** - Use Promise.all for better performance
 
 ## Reference
+
 - [Vue Router Navigation Guards](https://router.vuejs.org/guide/advanced/navigation-guards.html)
 - [Vue Router Navigation Failures](https://router.vuejs.org/guide/advanced/navigation-failures.html)

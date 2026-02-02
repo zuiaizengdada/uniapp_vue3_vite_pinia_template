@@ -25,6 +25,7 @@ Understanding the common causes helps you prevent and debug these issues effecti
 Browsers auto-correct invalid HTML, creating different DOM than Vue expects.
 
 **Incorrect:**
+
 ```vue
 <template>
   <!-- WRONG: <div> cannot be inside <p> -->
@@ -45,6 +46,7 @@ Browsers auto-correct invalid HTML, creating different DOM than Vue expects.
 ```
 
 Browser converts the first example to:
+
 ```html
 <p></p>
 <div>This will break hydration</div>
@@ -52,6 +54,7 @@ Browser converts the first example to:
 ```
 
 **Correct:**
+
 ```vue
 <template>
   <!-- CORRECT: Use appropriate nesting -->
@@ -76,12 +79,11 @@ Browser converts the first example to:
 Server and client generate different random values.
 
 **Incorrect:**
+
 ```vue
 <template>
   <!-- WRONG: Different ID on server vs client -->
-  <div :id="'field-' + Math.random()">
-    Form field
-  </div>
+  <div :id="'field-' + Math.random()">Form field</div>
 
   <!-- WRONG: Random order differs -->
   <div v-for="item in shuffledItems" :key="item.id">
@@ -92,21 +94,20 @@ Server and client generate different random values.
 <script setup>
 import { computed } from 'vue'
 
-const items = [/* ... */]
+const items = [
+  /* ... */
+]
 
 // WRONG: Random shuffle runs differently on server and client
-const shuffledItems = computed(() =>
-  [...items].sort(() => Math.random() - 0.5)
-)
+const shuffledItems = computed(() => [...items].sort(() => Math.random() - 0.5))
 </script>
 ```
 
 **Correct - Client-Only Random:**
+
 ```vue
 <template>
-  <div :id="fieldId">
-    Form field
-  </div>
+  <div :id="fieldId">Form field</div>
 
   <div v-for="item in displayItems" :key="item.id">
     {{ item.name }}
@@ -116,7 +117,9 @@ const shuffledItems = computed(() =>
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const items = [/* ... */]
+const items = [
+  /* ... */
+]
 
 // CORRECT: Start with deterministic value
 const fieldId = ref('field-default')
@@ -131,10 +134,11 @@ onMounted(() => {
 ```
 
 **Correct - Seeded Random:**
+
 ```javascript
 // utils/seededRandom.js
 export function createSeededRandom(seed) {
-  return function() {
+  return function () {
     seed = (seed * 9301 + 49297) % 233280
     return seed / 233280
   }
@@ -150,6 +154,7 @@ const random = createSeededRandom(seed)
 Server may be in different timezone than client.
 
 **Incorrect:**
+
 ```vue
 <template>
   <!-- WRONG: Server time != client time -->
@@ -167,6 +172,7 @@ function formatDate(date) {
 ```
 
 **Correct:**
+
 ```vue
 <template>
   <!-- CORRECT: Render placeholder, update on client -->
@@ -208,6 +214,7 @@ const formattedDate = computed(() => {
 Browser extensions can inject content into the DOM.
 
 **Mitigation:**
+
 ```vue
 <template>
   <!-- Use data-allow-mismatch for areas extensions might modify -->
@@ -234,6 +241,7 @@ Browser extensions can inject content into the DOM.
 ```
 
 Valid `data-allow-mismatch` values:
+
 - `text` - Text content mismatches
 - `children` - Child element mismatches
 - `class` - Class attribute mismatches
@@ -267,14 +275,15 @@ onMounted(() => {
 
 ## Common Error Messages
 
-| Error | Likely Cause |
-|-------|--------------|
+| Error                             | Likely Cause                                    |
+| --------------------------------- | ----------------------------------------------- |
 | "Hydration text content mismatch" | Different text on server/client (dates, random) |
-| "Hydration children mismatch" | Invalid HTML nesting, conditional rendering |
-| "Hydration attribute mismatch" | Dynamic attributes with different values |
-| "Hydration node mismatch" | Completely different elements rendered |
+| "Hydration children mismatch"     | Invalid HTML nesting, conditional rendering     |
+| "Hydration attribute mismatch"    | Dynamic attributes with different values        |
+| "Hydration node mismatch"         | Completely different elements rendered          |
 
 ## Reference
+
 - [Vue.js SSR Guide - Hydration Mismatch](https://vuejs.org/guide/scaling-up/ssr.html#hydration-mismatch)
 - [Nuxt Hydration Best Practices](https://nuxt.com/docs/guide/best-practices/hydration)
 - [data-allow-mismatch RFC](https://github.com/vuejs/core/pull/9562)

@@ -20,6 +20,7 @@ This is one of the most common causes of "my transition isn't working" issues.
 - [ ] Remember: without `key`, only text content updates, no animation
 
 **Problematic Code:**
+
 ```vue
 <template>
   <!-- BAD: Same element type, no key - no transition occurs! -->
@@ -51,6 +52,7 @@ const count = ref(0)
 ```
 
 **Correct Code:**
+
 ```vue
 <template>
   <!-- GOOD: Key bound to changing value forces re-render -->
@@ -137,12 +139,7 @@ const count = ref(0)
 ```vue
 <template>
   <div class="tabs">
-    <button
-      v-for="tab in tabs"
-      :key="tab.id"
-      :class="{ active: currentTab === tab.id }"
-      @click="currentTab = tab.id"
-    >
+    <button v-for="tab in tabs" :key="tab.id" :class="{ active: currentTab === tab.id }" @click="currentTab = tab.id">
       {{ tab.label }}
     </button>
   </div>
@@ -188,4 +185,5 @@ Keys are not necessary when transitioning between **different** element types:
 4. DevTools shows element content changing but no transition state
 
 ## Reference
+
 - [Vue.js Transition - Between Elements](https://vuejs.org/guide/built-ins/transition.html#transition-between-elements)

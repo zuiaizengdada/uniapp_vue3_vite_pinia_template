@@ -20,6 +20,7 @@ Before creating a custom directive, consider if the same result can be achieved 
 - [ ] Only use custom directives for low-level DOM manipulation that can't be done declaratively
 
 **Incorrect:**
+
 ```vue
 <template>
   <!-- WRONG: Custom directive for something v-show does -->
@@ -69,6 +70,7 @@ const vSetColor = (el, binding) => {
 ```
 
 **Correct:**
+
 ```vue
 <template>
   <!-- CORRECT: Use built-in v-show -->
@@ -96,6 +98,7 @@ const textColor = ref('blue')
 Custom directives are appropriate when you need:
 
 ### 1. Direct DOM API Access
+
 ```javascript
 // GOOD: Focus management requires DOM API
 const vFocus = {
@@ -109,6 +112,7 @@ const vFocus = {
 ```
 
 ### 2. Third-Party Library Integration
+
 ```javascript
 // GOOD: Integrating with external libraries
 const vTippy = {
@@ -128,6 +132,7 @@ const vTippy = {
 ```
 
 ### 3. Event Handling Outside Vue's Scope
+
 ```javascript
 // GOOD: Global event that Vue doesn't provide
 const vClickOutside = {
@@ -146,6 +151,7 @@ const vClickOutside = {
 ```
 
 ### 4. Intersection/Mutation/Resize Observers
+
 ```javascript
 // GOOD: IntersectionObserver requires DOM API
 const vLazyLoad = {
@@ -216,5 +222,6 @@ const vSafeForSSR = {
 ```
 
 ## Reference
+
 - [Vue.js Custom Directives - Introduction](https://vuejs.org/guide/reusability/custom-directives#introduction)
 - [Vue.js Composables](https://vuejs.org/guide/reusability/composables.html)

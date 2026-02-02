@@ -18,6 +18,7 @@ tags: [vue3, sfc, script-setup, reactivity, ref, composition-api]
 - [ ] Use `computed()` from Vue, not a plain function, for derived reactive state
 
 **Problematic Code:**
+
 ```vue
 <script setup>
 // BAD: These are NOT reactive!
@@ -26,11 +27,11 @@ let message = 'Hello'
 let user = { name: 'John', age: 30 }
 
 function increment() {
-  count++  // This change won't update the UI!
+  count++ // This change won't update the UI!
 }
 
 function updateMessage() {
-  message = 'World'  // UI won't reflect this change!
+  message = 'World' // UI won't reflect this change!
 }
 </script>
 
@@ -46,6 +47,7 @@ function updateMessage() {
 ```
 
 **Correct Code:**
+
 ```vue
 <script setup>
 import { ref, reactive, computed } from 'vue'
@@ -61,7 +63,7 @@ const user = reactive({ name: 'John', age: 30 })
 const doubleCount = computed(() => count.value * 2)
 
 function increment() {
-  count.value++  // Use .value for refs in script
+  count.value++ // Use .value for refs in script
 }
 
 function updateMessage() {
@@ -69,7 +71,7 @@ function updateMessage() {
 }
 
 function updateUser() {
-  user.name = 'Jane'  // No .value needed for reactive objects
+  user.name = 'Jane' // No .value needed for reactive objects
 }
 </script>
 
@@ -117,7 +119,8 @@ const total = computed(() => items.value.reduce((sum, n) => sum + n, 0))
 </script>
 
 <template>
-  <p>Total: {{ total }}</p>  <!-- Updates when items change -->
+  <p>Total: {{ total }}</p>
+  <!-- Updates when items change -->
 </template>
 ```
 
@@ -132,7 +135,7 @@ import { ref, reactive } from 'vue'
 // - Values you might reassign entirely
 const count = ref(0)
 const isLoading = ref(false)
-const selectedId = ref<number | null>(null)
+const selectedId = (ref < number) | (null > null)
 
 // Use reactive() for:
 // - Objects/arrays you'll mutate but not reassign
@@ -150,7 +153,7 @@ const user = reactive({ name: 'John' })
 
 // Use ref() if you need to reassign objects
 const userData = ref({ name: 'John' })
-userData.value = { name: 'Jane' }  // This works
+userData.value = { name: 'Jane' } // This works
 </script>
 ```
 
@@ -170,7 +173,7 @@ const user = ref({ name: 'John' })
   <!-- All of these work - no .value needed -->
   <p>{{ count }}</p>
   <p>{{ user.name }}</p>
-  <input v-model="count" type="number">
+  <input v-model="count" type="number" />
   <button @click="count++">Increment</button>
 </template>
 ```
@@ -183,13 +186,20 @@ But in event handlers written inline, you might still need `.value`:
   <button @click="count++">+1</button>
 
   <!-- For complex logic, .value may be needed -->
-  <button @click="() => { count.value = Math.max(0, count.value - 1) }">
+  <button
+    @click="
+      () => {
+        count.value = Math.max(0, count.value - 1)
+      }
+    "
+  >
     -1 (min 0)
   </button>
 </template>
 ```
 
 ## Reference
+
 - [Vue.js Reactivity Fundamentals](https://vuejs.org/guide/essentials/reactivity-fundamentals.html)
 - [Vue.js ref()](https://vuejs.org/api/reactivity-core.html#ref)
 - [Vue.js reactive()](https://vuejs.org/api/reactivity-core.html#reactive)

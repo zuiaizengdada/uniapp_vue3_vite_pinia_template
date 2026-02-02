@@ -22,22 +22,25 @@ This is a common mistake when learning Vue 3 with TypeScript.
 ## The Problem
 
 **Incorrect - Mixing both styles:**
+
 ```vue
 <script setup lang="ts">
 // ERROR: Cannot use both type argument and runtime argument
 const emit = defineEmits<{
   submit: [data: FormData]
-}>(['submit'])  // This array argument causes the error!
+}>(['submit']) // This array argument causes the error!
 </script>
 ```
 
 **Compiler error:**
+
 ```
 defineEmits() cannot accept both type and non-type arguments at the same time.
 Use one or the other.
 ```
 
 **Also incorrect:**
+
 ```vue
 <script setup lang="ts">
 // ERROR: Same problem with object syntax
@@ -60,13 +63,14 @@ const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
 
-emit('submit', formData)  // TypeScript validates this
+emit('submit', formData) // TypeScript validates this
 emit('cancel')
-emit('unknown')  // TypeScript error: unknown event
+emit('unknown') // TypeScript error: unknown event
 </script>
 ```
 
 **Alternative call signature syntax:**
+
 ```vue
 <script setup lang="ts">
 const emit = defineEmits<{
@@ -80,6 +84,7 @@ const emit = defineEmits<{
 ## Correct: Runtime Declaration (JavaScript or Simple Cases)
 
 **Array syntax:**
+
 ```vue
 <script setup>
 // CORRECT: Runtime array, no type argument
@@ -91,6 +96,7 @@ emit('cancel')
 ```
 
 **Object syntax with validation:**
+
 ```vue
 <script setup>
 // CORRECT: Runtime object for validation
@@ -102,7 +108,7 @@ const emit = defineEmits({
     }
     return true
   },
-  cancel: null  // No validation
+  cancel: null // No validation
 })
 </script>
 ```
@@ -140,11 +146,11 @@ function emitSubmit(data: FormData) {
 
 ## Choosing Between Styles
 
-| Style | Use When | Benefits |
-|-------|----------|----------|
-| Type-based | TypeScript project | Compile-time checking, IDE support |
-| Array | JavaScript, simple events | Simple, no types needed |
-| Object | Need runtime validation | Validates payloads at runtime |
+| Style      | Use When                  | Benefits                           |
+| ---------- | ------------------------- | ---------------------------------- |
+| Type-based | TypeScript project        | Compile-time checking, IDE support |
+| Array      | JavaScript, simple events | Simple, no types needed            |
+| Object     | Need runtime validation   | Validates payloads at runtime      |
 
 **Recommendation:** In TypeScript projects, use type-based declaration. It provides the best developer experience with autocompletion and type checking.
 
@@ -166,5 +172,6 @@ const props = defineProps({ name: String })
 ```
 
 ## Reference
+
 - [Vue.js SFC script setup - defineEmits](https://vuejs.org/api/sfc-script-setup.html#defineprops-defineemits)
 - [Vue.js TypeScript with Composition API](https://vuejs.org/guide/typescript/composition-api.html#typing-component-emits)

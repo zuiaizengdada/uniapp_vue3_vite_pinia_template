@@ -87,9 +87,13 @@ export function useProvideWithLogging(key, value, name) {
 
     // Log reactive changes
     if (value && typeof value === 'object' && 'value' in value) {
-      watch(value, (newVal) => {
-        console.log(`[Provide] ${name} changed:`, newVal)
-      }, { deep: true })
+      watch(
+        value,
+        (newVal) => {
+          console.log(`[Provide] ${name} changed:`, newVal)
+        },
+        { deep: true }
+      )
     }
   }
 }
@@ -122,11 +126,7 @@ export function useSafeInject(key, fallback, keyName) {
     const componentName = instance?.type?.name || 'Unknown'
 
     if (import.meta.env.DEV) {
-      console.warn(
-        `[Inject] ${keyName || String(key)} not provided. ` +
-        `Component <${componentName}> is using fallback value. ` +
-        `Ensure a provider exists in the ancestor chain.`
-      )
+      console.warn(`[Inject] ${keyName || String(key)} not provided. ` + `Component <${componentName}> is using fallback value. ` + `Ensure a provider exists in the ancestor chain.`)
     }
 
     return typeof fallback === 'function' ? fallback() : fallback
@@ -184,20 +184,22 @@ if (import.meta.env.DEV) {
 
 If you find yourself needing extensive debugging for state:
 
-| Use Provide/Inject | Use Pinia |
-|-------------------|-----------|
-| Component library internals | Application-wide state |
-| Theme/locale configuration | User session data |
-| Form context | Shopping cart |
-| Simple parent-child sharing | Complex state with actions |
-| Plugin configuration | State that needs time-travel debugging |
+| Use Provide/Inject          | Use Pinia                              |
+| --------------------------- | -------------------------------------- |
+| Component library internals | Application-wide state                 |
+| Theme/locale configuration  | User session data                      |
+| Form context                | Shopping cart                          |
+| Simple parent-child sharing | Complex state with actions             |
+| Plugin configuration        | State that needs time-travel debugging |
 
 Pinia provides excellent DevTools integration with:
+
 - State inspection
 - Time-travel debugging
 - Action logging
 - Hot module replacement
 
 ## Reference
+
 - [Vue DevTools](https://devtools.vuejs.org/)
 - [Pinia DevTools](https://pinia.vuejs.org/core-concepts/index.html#devtools)

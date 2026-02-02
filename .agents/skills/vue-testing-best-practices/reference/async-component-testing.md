@@ -24,9 +24,7 @@ tags: [vue3, testing, async, defineAsyncComponent, flushPromises, vitest]
 import { mount } from '@vue/test-utils'
 import { defineAsyncComponent } from 'vue'
 
-const AsyncWidget = defineAsyncComponent(() =>
-  import('./Widget.vue')
-)
+const AsyncWidget = defineAsyncComponent(() => import('./Widget.vue'))
 
 test('renders async component', () => {
   const wrapper = mount(AsyncWidget)
@@ -42,9 +40,7 @@ test('renders async component', () => {
 import { mount, flushPromises } from '@vue/test-utils'
 import { defineAsyncComponent, nextTick } from 'vue'
 
-const AsyncWidget = defineAsyncComponent(() =>
-  import('./Widget.vue')
-)
+const AsyncWidget = defineAsyncComponent(() => import('./Widget.vue'))
 
 test('renders async component', async () => {
   const wrapper = mount(AsyncWidget)
@@ -81,9 +77,7 @@ test('shows loading state initially', async () => {
 import { mount, flushPromises } from '@vue/test-utils'
 import { Suspense, defineAsyncComponent, h } from 'vue'
 
-const AsyncWidget = defineAsyncComponent(() =>
-  import('./Widget.vue')
-)
+const AsyncWidget = defineAsyncComponent(() => import('./Widget.vue'))
 
 test('renders async component with Suspense', async () => {
   const wrapper = mount({
@@ -131,11 +125,11 @@ test('shows error component on load failure', async () => {
 
 ## Utilities Reference
 
-| Utility | Purpose |
-|---------|---------|
-| `await flushPromises()` | Resolves all pending promises |
-| `await nextTick()` | Waits for Vue's next DOM update cycle |
-| `await wrapper.trigger('click')` | Triggers event and waits for update |
+| Utility                          | Purpose                               |
+| -------------------------------- | ------------------------------------- |
+| `await flushPromises()`          | Resolves all pending promises         |
+| `await nextTick()`               | Waits for Vue's next DOM update cycle |
+| `await wrapper.trigger('click')` | Triggers event and waits for update   |
 
 ## Dynamic Import Handling
 

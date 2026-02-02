@@ -76,8 +76,8 @@ export default defineComponent({
 
   mounted() {
     // Now works - typed from ComponentCustomProperties
-    console.log(this.theme)  // 'light' | 'dark'
-    console.log(this.user.name)  // string
+    console.log(this.theme) // 'light' | 'dark'
+    console.log(this.user.name) // string
   }
 })
 ```

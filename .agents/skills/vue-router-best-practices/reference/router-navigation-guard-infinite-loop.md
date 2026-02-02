@@ -23,7 +23,7 @@ tags: [vue3, vue-router, navigation-guards, redirect, debugging]
 // WRONG: Infinite loop - always redirects to login, even when on login!
 router.beforeEach((to, from) => {
   if (!isAuthenticated()) {
-    return '/login'  // Redirects to /login, which triggers guard again...
+    return '/login' // Redirects to /login, which triggers guard again...
   }
 })
 
@@ -33,12 +33,13 @@ router.beforeEach((to, from) => {
     return '/profile'
   }
   if (to.path === '/profile' && !isVerified()) {
-    return '/dashboard'  // Back to dashboard, which goes to profile...
+    return '/dashboard' // Back to dashboard, which goes to profile...
   }
 })
 ```
 
 **Error you'll see:**
+
 ```
 [Vue Router warn]: Detected an infinite redirection in a navigation guard when going from "/" to "/login". Aborting to avoid a Stack Overflow.
 ```
@@ -107,7 +108,7 @@ router.beforeEach((to, from) => {
 
   if (redirectCount > 3) {
     console.error('Too many redirects, stopping at:', to.path)
-    return '/error'  // Escape hatch
+    return '/error' // Escape hatch
   }
 
   if (needsRedirect(to)) {
@@ -167,12 +168,12 @@ router.afterEach((to, from) => {
 
 ## Common Redirect Loop Patterns
 
-| Pattern | Problem | Fix |
-|---------|---------|-----|
-| Auth check without exclusion | Login redirects to login | Exclude `/login` from check |
-| Role-based with circular deps | Admin -> User -> Admin | Use single source of truth for role requirements |
-| Onboarding flow | Step 1 -> Step 2 -> Step 1 | Track completion state properly |
-| Redirect query handling | Reading redirect creates new redirect | Process redirect only once |
+| Pattern                       | Problem                               | Fix                                              |
+| ----------------------------- | ------------------------------------- | ------------------------------------------------ |
+| Auth check without exclusion  | Login redirects to login              | Exclude `/login` from check                      |
+| Role-based with circular deps | Admin -> User -> Admin                | Use single source of truth for role requirements |
+| Onboarding flow               | Step 1 -> Step 2 -> Step 1            | Track completion state properly                  |
+| Redirect query handling       | Reading redirect creates new redirect | Process redirect only once                       |
 
 ## Key Points
 
@@ -183,5 +184,6 @@ router.afterEach((to, from) => {
 5. **Have an escape hatch** - Error page or max redirect count
 
 ## Reference
+
 - [Vue Router Navigation Guards](https://router.vuejs.org/guide/advanced/navigation-guards.html)
 - [Vue Router Route Meta Fields](https://router.vuejs.org/guide/advanced/meta.html)

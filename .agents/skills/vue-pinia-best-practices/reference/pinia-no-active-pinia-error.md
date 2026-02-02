@@ -31,13 +31,13 @@ Did you forget to install pinia?
 // main.js - WRONG ORDER
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import router from './router'  // Router uses a store in navigation guard
+import router from './router' // Router uses a store in navigation guard
 import App from './App.vue'
 
 const app = createApp(App)
 
 // WRONG: Router is installed first, but its guards use stores
-app.use(router)  // Router guard calls useAuthStore() - FAILS!
+app.use(router) // Router guard calls useAuthStore() - FAILS!
 app.use(createPinia())
 app.mount('#app')
 ```
@@ -55,7 +55,7 @@ const app = createApp(App)
 
 // CORRECT: Pinia installed before anything that uses stores
 app.use(createPinia())
-app.use(router)  // Now router guards can safely use stores
+app.use(router) // Now router guards can safely use stores
 app.mount('#app')
 ```
 
@@ -66,7 +66,7 @@ app.mount('#app')
 import { useAuthStore } from '@/stores/auth'
 
 // This runs immediately when the module is imported!
-const authStore = useAuthStore()  // ERROR: No active Pinia yet
+const authStore = useAuthStore() // ERROR: No active Pinia yet
 
 export function fetchUser() {
   return fetch('/api/user', {
@@ -103,7 +103,7 @@ export function fetchUser() {
 import { useUserStore } from '@/stores/user'
 
 // This runs too early, before the component is set up
-const userStore = useUserStore()  // ERROR!
+const userStore = useUserStore() // ERROR!
 
 export default {
   // ...
@@ -119,7 +119,7 @@ export default {
 import { useUserStore } from '@/stores/user'
 
 // This runs during component setup, Pinia is active
-const userStore = useUserStore()  // Works!
+const userStore = useUserStore() // Works!
 </script>
 ```
 
@@ -131,7 +131,7 @@ import { useUserStore } from '@/stores/user'
 export default {
   setup() {
     // Called during component initialization
-    const userStore = useUserStore()  // Works!
+    const userStore = useUserStore() // Works!
     return { userStore }
   }
 }
@@ -148,7 +148,7 @@ import { useProductsStore } from '@/stores/products'
 export default {
   computed: {
     // WRONG: Called the function instead of passing it
-    ...mapStores(useProductsStore())  // ERROR!
+    ...mapStores(useProductsStore()) // ERROR!
   }
 }
 </script>
@@ -164,7 +164,7 @@ import { useProductsStore } from '@/stores/products'
 export default {
   computed: {
     // CORRECT: Pass the function without calling it
-    ...mapStores(useProductsStore)  // No parentheses!
+    ...mapStores(useProductsStore) // No parentheses!
   }
 }
 </script>
@@ -177,12 +177,14 @@ export default {
 import { createRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
-const router = createRouter({ /* ... */ })
+const router = createRouter({
+  /* ... */
+})
 
 // This guard is registered immediately
 router.beforeEach((to) => {
   // When this runs during app startup, Pinia might not be ready
-  const authStore = useAuthStore()  // May fail!
+  const authStore = useAuthStore() // May fail!
 
   if (to.meta.requiresAuth && !authStore.isLoggedIn) {
     return '/login'
@@ -243,6 +245,7 @@ export function safelyUseStore() {
 ```
 
 ## Reference
+
 - [Vue Land FAQ - No Active Pinia](https://vue-land.github.io/faq/no-active-pinia)
 - [Pinia - Using a Store Outside of a Component](https://pinia.vuejs.org/core-concepts/outside-component-usage.html)
 - [Pinia - Getting Started](https://pinia.vuejs.org/getting-started.html)

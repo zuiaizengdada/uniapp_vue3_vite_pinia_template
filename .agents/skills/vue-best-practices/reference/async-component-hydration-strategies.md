@@ -129,12 +129,12 @@ const AsyncWidget = defineAsyncComponent({
 
 ## Strategy Selection Guide
 
-| Component Type | Recommended Strategy |
-|----------------|---------------------|
-| Footer, related content | `hydrateOnIdle` |
-| Below-the-fold sections | `hydrateOnVisible` |
-| Interactive widgets | `hydrateOnInteraction` |
-| Mobile-only components | `hydrateOnMediaQuery` |
+| Component Type          | Recommended Strategy    |
+| ----------------------- | ----------------------- |
+| Footer, related content | `hydrateOnIdle`         |
+| Below-the-fold sections | `hydrateOnVisible`      |
+| Interactive widgets     | `hydrateOnInteraction`  |
+| Mobile-only components  | `hydrateOnMediaQuery`   |
 | Critical above-the-fold | No strategy (immediate) |
 
 ## References

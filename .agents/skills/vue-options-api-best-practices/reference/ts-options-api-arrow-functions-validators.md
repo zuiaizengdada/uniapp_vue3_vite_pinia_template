@@ -23,6 +23,7 @@ tags: [vue3, typescript, options-api, props, type-inference, defineComponent, le
 TypeScript needs to infer the type of `this` inside regular functions. In Vue's Options API context, this inference can fail in versions before 4.7, causing cascading type inference failures.
 
 **BAD - Can break type inference in TS < 4.7:**
+
 ```typescript
 import { defineComponent, PropType } from 'vue'
 
@@ -38,14 +39,14 @@ export default defineComponent({
       type: Object as PropType<Book>,
       required: true,
       // Regular function - causes inference issues in TS < 4.7
-      validator: function(book: Book) {
+      validator: function (book: Book) {
         return book.title.length > 0
       }
     },
     count: {
       type: Number,
       // Regular function - causes inference issues in TS < 4.7
-      default: function() {
+      default: function () {
         return 0
       }
     }
@@ -61,6 +62,7 @@ export default defineComponent({
 ```
 
 **GOOD - Use arrow functions:**
+
 ```typescript
 import { defineComponent, PropType } from 'vue'
 
@@ -87,7 +89,7 @@ export default defineComponent({
   computed: {
     bookTitle() {
       // 'this' is properly typed
-      return this.book.title  // Type: string
+      return this.book.title // Type: string
     }
   }
 })

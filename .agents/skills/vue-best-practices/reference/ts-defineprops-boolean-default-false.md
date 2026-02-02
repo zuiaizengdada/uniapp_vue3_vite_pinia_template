@@ -22,7 +22,7 @@ tags: [vue3, typescript, props, boolean, defineProps]
 ```vue
 <script setup lang="ts">
 interface Props {
-  disabled?: boolean  // TypeScript sees: boolean | undefined
+  disabled?: boolean // TypeScript sees: boolean | undefined
 }
 
 const props = defineProps<Props>()
@@ -59,6 +59,7 @@ Vue has special "boolean casting" behavior inherited from HTML boolean attribute
 ```
 
 This is by design to match how HTML works:
+
 ```html
 <!-- HTML: presence means true, absence means false -->
 <button disabled>Can't click</button>
@@ -79,7 +80,7 @@ interface Props {
 
 // Explicitly document the default
 const props = withDefaults(defineProps<Props>(), {
-  disabled: false  // Now it's clear this defaults to false
+  disabled: false // Now it's clear this defaults to false
 })
 </script>
 ```
@@ -99,7 +100,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  state: undefined,  // Can actually be undefined
+  state: undefined, // Can actually be undefined
   toggleState: undefined
 })
 
@@ -191,7 +192,7 @@ onMounted(async () => {
 const userPreferences = ref<{
   darkMode: boolean | null
 }>({
-  darkMode: null  // Use null for "not yet loaded"
+  darkMode: null // Use null for "not yet loaded"
 })
 </script>
 
@@ -220,6 +221,7 @@ const props = defineProps<Props>()
 ```
 
 ## Reference
+
 - [Vue.js Props - Boolean Casting](https://vuejs.org/guide/components/props.html#boolean-casting)
 - [GitHub Issue: Boolean props default to false](https://github.com/vuejs/core/issues/8576)
 - [TypeScript Vue 3 Props](https://madewithlove.com/blog/typescript-vue-3-and-strongly-typed-props/)

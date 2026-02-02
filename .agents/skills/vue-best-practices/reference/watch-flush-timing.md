@@ -18,6 +18,7 @@ tags: [vue3, watch, watchers, flush, DOM, timing, post]
 - [ ] Remember default timing is ideal for most non-DOM operations
 
 **Incorrect:**
+
 ```vue
 <script setup>
 import { ref, watch, watchEffect } from 'vue'
@@ -29,7 +30,7 @@ const listItems = ref(['a', 'b', 'c'])
 watch(count, () => {
   // Element still shows the OLD count value
   const el = document.querySelector('.counter')
-  console.log('DOM shows:', el.textContent)  // Old value!
+  console.log('DOM shows:', el.textContent) // Old value!
 })
 
 // BAD: List DOM not yet updated
@@ -37,7 +38,7 @@ watchEffect(() => {
   console.log('Items:', listItems.value.length)
   // DOM still has old number of list items
   const items = document.querySelectorAll('.list-item')
-  console.log('DOM items:', items.length)  // Old count!
+  console.log('DOM items:', items.length) // Old count!
 })
 </script>
 
@@ -52,6 +53,7 @@ watchEffect(() => {
 ```
 
 **Correct:**
+
 ```vue
 <script setup>
 import { ref, watch, watchEffect, watchPostEffect } from 'vue'
@@ -64,7 +66,7 @@ watch(
   count,
   () => {
     const el = document.querySelector('.counter')
-    console.log('DOM shows:', el.textContent)  // Correct new value!
+    console.log('DOM shows:', el.textContent) // Correct new value!
   },
   { flush: 'post' }
 )
@@ -73,7 +75,7 @@ watch(
 watchPostEffect(() => {
   console.log('Items:', listItems.value.length)
   const items = document.querySelectorAll('.list-item')
-  console.log('DOM items:', items.length)  // Matches listItems.length!
+  console.log('DOM items:', items.length) // Matches listItems.length!
 })
 
 // CORRECT: Using watchEffect with flush option
@@ -104,25 +106,25 @@ watchEffect(
 import { watch, watchEffect, watchPostEffect, watchSyncEffect } from 'vue'
 
 // Default: 'pre' - runs before component DOM update
-watch(source, callback)  // Same as { flush: 'pre' }
+watch(source, callback) // Same as { flush: 'pre' }
 
 // Post: runs after component DOM update
 watch(source, callback, { flush: 'post' })
-watchPostEffect(callback)  // Shorthand
+watchPostEffect(callback) // Shorthand
 
 // Sync: runs immediately when reactive value changes
 // USE WITH CAUTION - no batching, fires on every mutation
 watch(source, callback, { flush: 'sync' })
-watchSyncEffect(callback)  // Shorthand
+watchSyncEffect(callback) // Shorthand
 ```
 
 ## When to Use Each Flush Timing
 
-| Timing | Use Case |
-|--------|----------|
-| `'pre'` (default) | Logic that doesn't need DOM access |
-| `'post'` | Reading or measuring updated DOM |
-| `'sync'` | Debug logging, simple boolean flags only |
+| Timing            | Use Case                                 |
+| ----------------- | ---------------------------------------- |
+| `'pre'` (default) | Logic that doesn't need DOM access       |
+| `'post'`          | Reading or measuring updated DOM         |
+| `'sync'`          | Debug logging, simple boolean flags only |
 
 ## Sync Watcher Warning
 
@@ -135,7 +137,7 @@ const items = ref([1, 2, 3])
 watch(
   items,
   () => {
-    console.log('Changed!')  // Called 3 times for push, push, push
+    console.log('Changed!') // Called 3 times for push, push, push
   },
   { flush: 'sync' }
 )
@@ -146,9 +148,13 @@ items.value.push(5)
 items.value.push(6)
 
 // Better: Use default flush which batches updates
-watch(items, () => {
-  console.log('Changed!')  // Called once after all mutations
-}, { deep: true })
+watch(
+  items,
+  () => {
+    console.log('Changed!') // Called once after all mutations
+  },
+  { deep: true }
+)
 ```
 
 ## Practical Example: Auto-scroll
@@ -186,4 +192,5 @@ function addMessage(text) {
 ```
 
 ## Reference
+
 - [Vue.js Watchers - Callback Flush Timing](https://vuejs.org/guide/essentials/watchers.html#callback-flush-timing)

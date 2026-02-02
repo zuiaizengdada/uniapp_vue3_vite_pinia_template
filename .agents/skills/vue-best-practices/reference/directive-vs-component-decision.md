@@ -22,16 +22,16 @@ Choosing the wrong abstraction leads to code that's harder to maintain, test, an
 
 ## Decision Matrix
 
-| Requirement | Use Directive | Use Component | Use Composable |
-|-------------|--------------|---------------|----------------|
-| DOM manipulation only | Yes | - | - |
-| Needs own template | - | Yes | - |
-| Encapsulated state | - | Yes | Maybe |
-| Reusable behavior | Yes | Yes | Yes |
-| Access to parent instance | Avoid | - | Yes |
-| SSR support needed | Avoid | Yes | Yes |
-| Third-party lib integration | Yes | - | Maybe |
-| Complex reactive logic | - | Yes | Yes |
+| Requirement                 | Use Directive | Use Component | Use Composable |
+| --------------------------- | ------------- | ------------- | -------------- |
+| DOM manipulation only       | Yes           | -             | -              |
+| Needs own template          | -             | Yes           | -              |
+| Encapsulated state          | -             | Yes           | Maybe          |
+| Reusable behavior           | Yes           | Yes           | Yes            |
+| Access to parent instance   | Avoid         | -             | Yes            |
+| SSR support needed          | Avoid         | Yes           | Yes            |
+| Third-party lib integration | Yes           | -             | Maybe          |
+| Complex reactive logic      | -             | Yes           | Yes            |
 
 ## Directive-Appropriate Use Cases
 
@@ -109,8 +109,8 @@ defineProps({
 })
 
 const isVisible = ref(false)
-const show = () => isVisible.value = true
-const hide = () => isVisible.value = false
+const show = () => (isVisible.value = true)
+const hide = () => (isVisible.value = false)
 </script>
 ```
 
@@ -143,7 +143,9 @@ const handleScroll = () => {
   const { scrollHeight, scrollTop, clientHeight } = container.value
   if (scrollHeight - scrollTop - clientHeight < props.threshold) {
     loading.value = true
-    emit('load-more', () => { loading.value = false })
+    emit('load-more', () => {
+      loading.value = false
+    })
   }
 }
 
@@ -225,6 +227,7 @@ const vPermission = {
 ```
 
 ## Reference
+
 - [Vue.js Custom Directives](https://vuejs.org/guide/reusability/custom-directives)
 - [Vue.js Composables](https://vuejs.org/guide/reusability/composables.html)
 - [Vue.js Components Basics](https://vuejs.org/guide/essentials/component-basics.html)

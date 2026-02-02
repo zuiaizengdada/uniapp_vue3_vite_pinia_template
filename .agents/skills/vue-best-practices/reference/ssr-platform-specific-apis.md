@@ -22,20 +22,21 @@ Universal/isomorphic code must guard platform-specific API access or use librari
 
 ## Common Browser APIs That Break SSR
 
-| API | Node.js Behavior |
-|-----|-----------------|
-| `window` | `ReferenceError: window is not defined` |
-| `document` | `ReferenceError: document is not defined` |
-| `localStorage` / `sessionStorage` | `ReferenceError` |
-| `navigator` | `ReferenceError` |
-| `location` | `ReferenceError` |
-| `history` | `ReferenceError` |
-| `alert` / `confirm` / `prompt` | `ReferenceError` |
-| `requestAnimationFrame` | `ReferenceError` |
-| `IntersectionObserver` | `ReferenceError` |
-| `ResizeObserver` | `ReferenceError` |
+| API                               | Node.js Behavior                          |
+| --------------------------------- | ----------------------------------------- |
+| `window`                          | `ReferenceError: window is not defined`   |
+| `document`                        | `ReferenceError: document is not defined` |
+| `localStorage` / `sessionStorage` | `ReferenceError`                          |
+| `navigator`                       | `ReferenceError`                          |
+| `location`                        | `ReferenceError`                          |
+| `history`                         | `ReferenceError`                          |
+| `alert` / `confirm` / `prompt`    | `ReferenceError`                          |
+| `requestAnimationFrame`           | `ReferenceError`                          |
+| `IntersectionObserver`            | `ReferenceError`                          |
+| `ResizeObserver`                  | `ReferenceError`                          |
 
 **Incorrect - Crashes on Server:**
+
 ```javascript
 // WRONG: These run during setup/SSR - crashes in Node.js
 const width = ref(window.innerWidth)
@@ -56,6 +57,7 @@ document.title = 'My Page'
 ```
 
 **Correct - Use onMounted:**
+
 ```vue
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
@@ -92,6 +94,7 @@ function handleScroll() {
 ```
 
 **Correct - Guard with typeof:**
+
 ```javascript
 // When you need to check outside lifecycle hooks
 function getStoredValue(key, defaultValue) {
@@ -112,7 +115,9 @@ export function useMediaQuery(query) {
 
     // Setup listener in lifecycle
     onMounted(() => {
-      const handler = (e) => { matches.value = e.matches }
+      const handler = (e) => {
+        matches.value = e.matches
+      }
       mediaQuery.addEventListener('change', handler)
       onUnmounted(() => mediaQuery.removeEventListener('change', handler))
     })
@@ -175,16 +180,17 @@ const token = useCookie('auth-token')
 
 ## Common Node.js APIs That Break in Browser
 
-| API | Browser Behavior |
-|-----|-----------------|
-| `fs` | Module not found |
-| `path` | Module not found |
-| `process` (full) | Undefined or limited |
-| `Buffer` | Undefined (unless polyfilled) |
-| `__dirname` / `__filename` | Undefined |
-| `require()` | Undefined in ES modules |
+| API                        | Browser Behavior              |
+| -------------------------- | ----------------------------- |
+| `fs`                       | Module not found              |
+| `path`                     | Module not found              |
+| `process` (full)           | Undefined or limited          |
+| `Buffer`                   | Undefined (unless polyfilled) |
+| `__dirname` / `__filename` | Undefined                     |
+| `require()`                | Undefined in ES modules       |
 
 **Incorrect:**
+
 ```javascript
 // WRONG: Node.js APIs in universal code
 import fs from 'fs'
@@ -192,6 +198,7 @@ const config = JSON.parse(fs.readFileSync('./config.json'))
 ```
 
 **Correct - Separate Server Code:**
+
 ```javascript
 // server/utils.js - Server-only file
 import fs from 'fs'
@@ -200,7 +207,7 @@ export function loadConfig() {
 }
 
 // app.js - Universal code uses API instead
-const config = await fetch('/api/config').then(r => r.json())
+const config = await fetch('/api/config').then((r) => r.json())
 ```
 
 ## Environment Detection Utility
@@ -211,8 +218,7 @@ export const isClient = typeof window !== 'undefined'
 export const isServer = !isClient
 
 export const isBrowser = isClient && typeof document !== 'undefined'
-export const isNode = typeof process !== 'undefined' &&
-                      process.versions?.node != null
+export const isNode = typeof process !== 'undefined' && process.versions?.node != null
 
 // Usage
 import { isClient, isServer } from '@/utils/environment'
@@ -233,14 +239,13 @@ import SomeChartLibrary from 'some-chart-library'
 ```
 
 **Correct - Dynamic Import:**
+
 ```vue
 <script setup>
 import { defineAsyncComponent } from 'vue'
 
 // Dynamic import only loads on client
-const Chart = defineAsyncComponent(() =>
-  import('some-chart-library').then(m => m.ChartComponent)
-)
+const Chart = defineAsyncComponent(() => import('some-chart-library').then((m) => m.ChartComponent))
 </script>
 
 <template>
@@ -251,6 +256,7 @@ const Chart = defineAsyncComponent(() =>
 ```
 
 ## Reference
+
 - [Vue.js SSR - Platform-Specific APIs](https://vuejs.org/guide/scaling-up/ssr.html#access-to-platform-specific-apis)
 - [Nuxt ClientOnly Component](https://nuxt.com/docs/api/components/client-only)
 - [MDN: Web APIs](https://developer.mozilla.org/en-US/docs/Web/API)
