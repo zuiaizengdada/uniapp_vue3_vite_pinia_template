@@ -20,8 +20,6 @@ const userStore = defineStore(
     const token = ref<string>('')
     function setToken(access_token: string) {
       token.value = access_token
-      // 手动同步到独立存储，与 ApiService 保持一致
-      uni.setStorageSync('user.token', access_token)
     }
 
     const userInfo = ref<UniApp.UserInfo>()
